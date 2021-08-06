@@ -57,7 +57,7 @@ function App() {
         </button>
       </nav>
       <div className="posts">
-        <h1>Posts</h1>
+        <h1>All Posts</h1>
         {posts.map(post => <PostView post={post} currentUser={currentUser}/>)}
       </div>
       {showAuthenticator && 
