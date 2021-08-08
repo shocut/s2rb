@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Amplify, { AuthModeStrategyType } from 'aws-amplify'
 import awsconfig from './aws-exports'
+import "./common/scss/material.scss";
 
 Amplify.configure({
   ...awsconfig,
