@@ -27,7 +27,7 @@ const useStyles = makeStyles(styles);
 export default function ProductSection() {
   const classes = useStyles();
   const signupURL = generatePath("/signup");
-  const sellerProfileURL = generatePath("/seller-profile");
+  const sellerProfileURL = generatePath("/reprofile");
   const currentUser = localStorage.getItem("currentUser");
 
   return (

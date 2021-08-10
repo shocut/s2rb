@@ -1,14 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
-import Signup from "./common/components/Signup";
-import reportWebVitals from "./reportWebVitals";
 import Amplify, { AuthModeStrategyType } from "aws-amplify";
 import awsconfig from "./aws-exports";
-import "./common/scss/material.scss";
 import { createBrowserHistory } from "history";
 import { Router, Route, Switch } from "react-router-dom";
+
+import "./index.css";
+import "./common/scss/material.scss";
+
+import App from "./App";
+import Signup from "./common/components/Signup";
+import SellerProfile from "./sellerinfo/SellerProfile.js";
+import reportWebVitals from "./reportWebVitals";
 
 var hist = createBrowserHistory();
 
@@ -24,6 +27,7 @@ ReactDOM.render(
     <Switch>
       <Route path="/home" component={App} />
       <Route path="/signup" component={Signup} />
+      <Route path="/reprofile" component={SellerProfile} />
       <Route path="/" component={App} />
     </Switch>
   </Router>,
