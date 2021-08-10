@@ -1,13 +1,12 @@
-import { Auth } from 'aws-amplify';
-import { AuthState } from '@aws-amplify/ui-components';
+import { Auth } from "aws-amplify";
+import { AuthState } from "@aws-amplify/ui-components";
 
 //add fo save data models
 //import { DataStore } from 'aws-amplify';
 //import { Post } from './models'
-import { useState } from 'react';
+import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
-import LoginPopup from './LoginPopup';
 
 // core components
 import Header from "./common/components/Header.js";
@@ -28,31 +27,34 @@ const dashboardRoutes = [];
 const useStyles = makeStyles(styles);
 
 function App(props) {
-  const [currentUser, setCurrentUser] = useState()
-  const [showAuthenticator, setShowAuthenticator] = useState(false)
+  const [currentUser, setCurrentUser] = useState();
   const { ...rest } = props;
   const classes = useStyles();
+  const onLogout = async () => {
+    await Auth.signOut();
+    localStorage.removeItem("currentUser");
+    checkLoginState();
+  };
 
   const checkLoginState = async () => {
     try {
-      const currentUser = await Auth.currentAuthenticatedUser()
+      const currentUser = await Auth.currentAuthenticatedUser();
       if (currentUser) {
-        setCurrentUser(currentUser)
-        setShowAuthenticator(false)
+        setCurrentUser(currentUser);
       }
     } catch (e) {
-      setCurrentUser(null)
+      setCurrentUser(null);
     }
-  }
+  };
+  console.log("App.js:" + currentUser);
 
   return (
-
     <div className="App">
       <Header
         color="transparent"
         routes={dashboardRoutes}
         brand="Sell To Rent Back"
-        rightLinks={<HeaderLinks currentUser={currentUser} />}
+        rightLinks={<HeaderLinks onLogout={onLogout} />}
         fixed
         changeColorOnScroll={{
           height: 400,
@@ -87,15 +89,17 @@ function App(props) {
       </Parallax>
       <div className={classNames(classes.main, classes.mainRaised)}>
         <div className={classes.container}>
-          <ProductSection />
+          <ProductSection
+            onAuthStateChange={(nextAuthState) => {
+              if (nextAuthState === AuthState.SignedIn) {
+                checkLoginState();
+              }
+            }}
+          />
           <WorkSection />
           <FAQSection />
         </div>
       </div>
-      {showAuthenticator && 
-        <LoginPopup
-        onAuthStateChange={(nextAuthState) => { if (nextAuthState === AuthState.SignedIn) { checkLoginState() } }}
-          onCancel={() => setShowAuthenticator(false)}/>}
       <Footer />
     </div>
   );

@@ -1,6 +1,5 @@
 /*eslint-disable*/
 import React from "react";
-import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 // react components for routing our app without refresh
 import { Link } from "react-router-dom";
@@ -19,15 +18,17 @@ import { Apps, CloudDownload } from "@material-ui/icons";
 import CustomDropdown from "./CustomDropdown.js";
 import Button from "./Button.js";
 import styles from "../jss/headerLinksStyle.js";
+import LoginButton from "./LoginButton";
 
 const useStyles = makeStyles(styles);
 
-export default function HeaderLinks(props) {
+export default function HeaderLinks({ onLogout }) {
   const classes = useStyles();
-  const { authStatus, userName } = props;
-
   return (
     <List className={classes.list}>
+      <ListItem className={classes.listItem}>
+        <LoginButton onLogout={onLogout} classes={classes} />
+      </ListItem>
       <ListItem className={classes.listItem}>
         <CustomDropdown
           noLiPadding
@@ -39,10 +40,10 @@ export default function HeaderLinks(props) {
           buttonIcon={Apps}
           dropdownList={[
             <Link to="/" className={classes.navLink}>
-              {userName}
+              Link-1{" "}
             </Link>,
             <a href="#" target="_blank" className={classes.navLink}>
-              {userName}
+              Link-1
             </a>,
           ]}
         />
@@ -67,8 +68,3 @@ export default function HeaderLinks(props) {
     </List>
   );
 }
-
-HeaderLinks.propTypes = {
-  authStatus: PropTypes.string,
-  userName: PropTypes.string,
-};

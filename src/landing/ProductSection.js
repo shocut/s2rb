@@ -26,8 +26,9 @@ const useStyles = makeStyles(styles);
 
 export default function ProductSection() {
   const classes = useStyles();
-  const signupURL = generatePath("/sign-up");
+  const signupURL = generatePath("/signup");
   const sellerProfileURL = generatePath("/seller-profile");
+  const currentUser = localStorage.getItem("currentUser");
 
   return (
     <div className={classes.section} id="how-it-works">
@@ -96,14 +97,17 @@ export default function ProductSection() {
               iconColor="info"
               vertical
             />
-            <Button
-              color="success"
-              href={signupURL}
-              target="_self"
-              className={classes.navLink}
-            >
-              Sign Up
-            </Button>
+
+            {!currentUser && (
+              <Button
+                color="success"
+                href={signupURL}
+                target="_self"
+                className={classes.navLink}
+              >
+                Sign Up
+              </Button>
+            )}
           </GridItem>
           <GridItem xs={12} sm={12} md={4}>
             <InfoArea
