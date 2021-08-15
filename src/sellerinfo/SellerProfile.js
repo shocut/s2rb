@@ -46,27 +46,26 @@ export default function SellerProfile() {
     var userObj = null;
     if (currentUser) {
       userObj = JSON.parse(currentUser);
-      console.log("userObj username:" + userObj.username);
+      console.log("userObj username:" + userObj.attributes.email);
     }
     const loadREProfile = async () => {
       if (userObj) {
         setREProfile(
-          /*
-          await DataStore.query(
-            SellerRealEstateProfile,
-            (p) => p.sellerReference === userObj.username
-          )*/
-          await DataStore.query(SellerRealEstateProfile, userObj.username)
+          await DataStore.query(SellerRealEstateProfile, (p) =>
+            p.sellerReference("eq", userObj.attributes.email)
+          )
         );
       }
     };
     loadREProfile();
   }, []);
 
-  const setREProfile = (reProfile) => {
-    console.log(reProfile);
-    if (reProfile) {
-      localStorage.setItem("s2rb_re_profile", JSON.stringify(reProfile));
+  const setREProfile = (reProfileList) => {
+    console.log("reProfileList.length: " + reProfileList.length);
+    if (reProfileList && reProfileList.length > 0) {
+      var reProfile = reProfileList[0];
+      localStorage.setItem("s2rb_re_profile_id", reProfile.id);
+      console.log(reProfile.id);
       //store locally for UI
       localStorage.setItem("s2rb_search_stage", reProfile.searchStage);
       localStorage.setItem("s2rb_house_type", reProfile.houseType);
@@ -76,6 +75,14 @@ export default function SellerProfile() {
         "s2rb_house_location",
         JSON.stringify(reProfile.address)
       );
+    } else {
+      console.log("No existing RE profile");
+      localStorage.removeItem("s2rb_re_profile_id");
+      localStorage.removeItem("s2rb_search_stage");
+      localStorage.removeItem("s2rb_house_type");
+      localStorage.removeItem("s2rb_primary_home");
+      localStorage.removeItem("s2rb_rentBackPeriod");
+      localStorage.removeItem("s2rb_house_location");
     }
   };
 

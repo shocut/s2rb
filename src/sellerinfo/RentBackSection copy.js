@@ -1,5 +1,4 @@
 import React from "react";
-
 import Radio from "@material-ui/core/Radio";
 
 //for amplify and datastore
@@ -25,12 +24,13 @@ export default function RentBackSection(sliderRefContainer) {
   const [fror, setFROR] = React.useState(localStorage.getItem("s2rb_fror"));
   const classes = useStyles();
 
-  var reProfileId = localStorage.getItem("s2rb_re_profile_id");
-  var homeAddress = localStorage.getItem("s2rb_house_location");
-  var homeAddressObj = null;
-  if (homeAddress) {
+  var reProfileOriginal = localStorage.getItem("s2rb_re_profile");
+  var reProfileOriginalObj = null;
+  if (reProfileOriginal) {
     try {
-      homeAddressObj = JSON.parse(homeAddress);
+      reProfileOriginalObj = JSON.parse(reProfileOriginal);
+      delete reProfileOriginalObj.createdAt;
+      delete reProfileOriginalObj.updatedAt;
     } catch (e) {}
   }
 
@@ -39,52 +39,83 @@ export default function RentBackSection(sliderRefContainer) {
     localStorage.setItem("s2rb_rentBackPeriod", event.target.value);
   };
 
-  var currentUser = localStorage.getItem("currentUser");
-  var userObj = null;
-  if (currentUser) {
-    userObj = JSON.parse(currentUser);
-    console.log("userObj username:" + userObj.attributes.email);
-  }
-  const saveToDataStore = async () => {
-    if (userObj) {
-      if (reProfileId) {
-        saveREProfile(
-          await DataStore.query(SellerRealEstateProfile, reProfileId)
+  useEffect(() => {
+    var currentUser = localStorage.getItem("currentUser");
+    var userObj = null;
+    if (currentUser) {
+      userObj = JSON.parse(currentUser);
+      console.log("userObj username:" + userObj.username);
+    }
+    const loadREProfile = async () => {
+      if (userObj) {
+        setREProfile(
+          await DataStore.query(
+            SellerRealEstateProfile,
+            reProfileOriginalObj.id
+          )
         );
-      } else {
-        saveREProfile(null);
       }
+    };
+    loadREProfile();
+  }, []);
+
+  const setREProfile = (reProfileList) => {
+    console.log(reProfileList);
+    if (reProfileList) {
+      var reProfile = reProfileList[0];
+      localStorage.setItem("s2rb_re_profile", JSON.stringify(reProfile));
+      //store locally for UI
+      localStorage.setItem("s2rb_search_stage", reProfile.searchStage);
+      localStorage.setItem("s2rb_house_type", reProfile.houseType);
+      localStorage.setItem("s2rb_primary_home", reProfile.primaryHome);
+      localStorage.setItem("s2rb_rentBackPeriod", reProfile.rentBackPeriod);
+      localStorage.setItem(
+        "s2rb_house_location",
+        JSON.stringify(reProfile.address)
+      );
     }
   };
 
-  function getNewREProfile() {
-    return new SellerRealEstateProfile({
-      sellerReference: userObj.attributes.email,
-      searchStage: localStorage.getItem("s2rb_search_stage"),
-      houseType: localStorage.getItem("s2rb_house_type"),
-      primaryHome: localStorage.getItem("s2rb_primary_home"),
-      rentBackPeriod: localStorage.getItem("s2rb_rentBackPeriod"),
-      address: homeAddressObj,
-    });
-  }
+  const saveToDataStore = (event) => {
+    //save to datastore
+    var currentUser = localStorage.getItem("currentUser");
+    if (currentUser) {
+      var userObj = JSON.parse(currentUser);
+      var homeAddress = localStorage.getItem("s2rb_house_location");
+      console.log("userObj userName:" + userObj.username);
 
-  function saveREProfile(originalREObj) {
-    if (originalREObj) {
-      //code for updating existing record
-      DataStore.save(
-        SellerRealEstateProfile.copyOf(originalREObj, (updated) => {
-          updated.searchStage = localStorage.getItem("s2rb_search_stage");
-          updated.houseType = localStorage.getItem("s2rb_house_type");
-          updated.primaryHome = localStorage.getItem("s2rb_primary_home");
-          updated.rentBackPeriod = localStorage.getItem("s2rb_rentBackPeriod");
-          updated.address = homeAddressObj;
-        })
-      );
+      var sellerRealEstateProfile = new SellerRealEstateProfile({
+        sellerReference: userObj.username,
+        searchStage: localStorage.getItem("s2rb_search_stage"),
+        houseType: localStorage.getItem("s2rb_house_type"),
+        primaryHome: localStorage.getItem("s2rb_primary_home"),
+        rentBackPeriod: localStorage.getItem("s2rb_rentBackPeriod"),
+        address: JSON.parse(homeAddress),
+      });
+      if (reProfileOriginalObj) {
+        //code for merging or versioning
+
+        const original = await DataStore.query(
+          SellerRealEstateProfile,
+          reProfileOriginalObj.id
+        );
+
+        DataStore.save(
+          SellerRealEstateProfile.copyOf(original, sellerRealEstateProfile)
+
+          /*
+          SellerRealEstateProfile.copyOf(reProfileOriginalObj, (updated) => {
+            updated.houseType = localStorage.getItem("s2rb_house_type");
+          })
+          */
+        );
+      } else {
+        DataStore.save(sellerRealEstateProfile);
+      }
     } else {
-      //new
-      DataStore.save(getNewREProfile());
+      alert("Please sign-in to save your real estate profile");
     }
-  }
+  };
 
   const handleChangeFROR = (event) => {
     setFROR(event.target.value);
