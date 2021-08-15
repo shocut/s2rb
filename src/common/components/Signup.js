@@ -22,18 +22,21 @@ Amplify.configure(aws_exports);
 function Signup() {
   const classes = useStyles();
   const history = useHistory();
-
   const checkLoginState = async () => {
     try {
       const currentUser = await Auth.currentAuthenticatedUser();
       if (currentUser) {
-        localStorage.setItem("currentUser", currentUser);
+        localStorage.setItem("currentUser", JSON.stringify(currentUser));
         //take a route fragment as parameter to go to it going /home for now
         history.push("/home");
       }
     } catch (e) {
-      localStorage.removeItem("currentUser");
+      clearUserState();
     }
+  };
+
+  const clearUserState = () => {
+    localStorage.removeItem("currentUser");
   };
 
   function onAuthStateChange(nextAuthState) {
@@ -42,7 +45,7 @@ function Signup() {
     if (nextAuthState === AuthState.SignedIn) {
       checkLoginState();
     } else {
-      localStorage.removeItem("currentUser");
+      clearUserState();
     }
   }
 

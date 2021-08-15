@@ -1,4 +1,4 @@
-import { container, title } from "../jss/baseStyles.js";
+import { container, title } from "../common/jss/baseStyles.js";
 
 const sellerProfileStyle = {
   container: {
@@ -31,11 +31,21 @@ const sellerProfileStyle = {
     zIndex: "3",
   },
   mainRaised: {
+    width: "100%",
     zIndex: "12",
     margin: "-20px 10px 0px",
     borderRadius: "6px",
     boxShadow:
       "0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2)",
+  },
+  questionPanel: {
+    width: "100%",
+    padding: "40px 0",
+    marginLeft: "10px",
+  },
+  label: {
+    letterSpacing: "0.03333em",
+    lineHeight: 1.66,
   },
 };
 

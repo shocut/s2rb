@@ -1,5 +1,10 @@
 import React from "react";
 import Radio from "@material-ui/core/Radio";
+
+//for amplify and datastore
+import { DataStore } from "aws-amplify";
+import { SellerRealEstateProfile } from "../models";
+
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
@@ -8,37 +13,59 @@ import { makeStyles } from "@material-ui/core/styles";
 import GridContainer from "../common/components/GridContainer.js";
 import GridItem from "../common/components/GridItem.js";
 import Button from "../common/components/Button.js";
-import styles from "../common/jss/sellerProfileStyle.js";
+import styles from "./sellerProfileStyle.js";
 
 const useStyles = makeStyles(styles);
 
 export default function RentBackSection(sliderRefContainer) {
   const [value, setValue] = React.useState(
-    localStorage.getItem("s2rb_house_type")
+    localStorage.getItem("s2rb_rentBackPeriod")
   );
   const [fror, setFROR] = React.useState(localStorage.getItem("s2rb_fror"));
   const classes = useStyles();
 
+  localStorage.getItem("s2rb_re_profile");
+
   const handleChange = (event) => {
     setValue(event.target.value);
-    localStorage.setItem("s2rb_house_type", event.target.value);
+    localStorage.setItem("s2rb_rentBackPeriod", event.target.value);
   };
+
+  const saveToDataStore = (event) => {
+    //save to datastore
+    var currentUser = localStorage.getItem("currentUser");
+    if (currentUser) {
+      var userObj = JSON.parse(currentUser);
+      var homeAddress = localStorage.getItem("s2rb_house_location");
+      console.log("userObj userName:" + userObj.username);
+
+      var sellerRealEstateProfile = new SellerRealEstateProfile({
+        id: userObj.username,
+        sellerReference: userObj.username,
+        searchStage: localStorage.getItem("s2rb_search_stage"),
+        houseType: localStorage.getItem("s2rb_house_type"),
+        primaryHome: localStorage.getItem("s2rb_primary_home"),
+        rentBackPeriod: localStorage.getItem("s2rb_rentBackPeriod"),
+        address: JSON.parse(homeAddress),
+      });
+      DataStore.save(sellerRealEstateProfile);
+    } else {
+      alert("Please sign-in to save your real estate profile");
+    }
+  };
+
   const handleChangeFROR = (event) => {
     setFROR(event.target.value);
     localStorage.setItem("s2rb_fror", event.target.value);
   };
-  const moveNext = function () {
-    //sliderRef.current.slickNext();
-    var carousalRef = sliderRefContainer.sliderRef.current;
-    carousalRef.next();
-  };
+
   const movePrev = function () {
     //sliderRef.current.slickNext();
     var carousalRef = sliderRefContainer.sliderRef.current;
     carousalRef.prev();
   };
   return (
-    <div className={classes.section}>
+    <div className={classes.questionPanel}>
       <GridContainer justify="center" className={classes.section}>
         <GridItem cs={12} sm={12} md={12}>
           <h2>Your best case preference after sale...</h2>
@@ -55,17 +82,17 @@ export default function RentBackSection(sliderRefContainer) {
               onChange={handleChange}
             >
               <FormControlLabel
-                value="sfh"
+                value="1-2-Years"
                 control={<Radio />}
                 label="One to Two Years"
               />
               <FormControlLabel
-                value="th"
+                value="3-4-years"
                 control={<Radio />}
                 label="Three to Four Years"
               />
               <FormControlLabel
-                value="c"
+                value="5-or-more-years"
                 control={<Radio />}
                 label="Five Years or More"
               />
@@ -99,7 +126,7 @@ export default function RentBackSection(sliderRefContainer) {
             Prev
           </Button>
 
-          <Button color="primary" onClick={moveNext}>
+          <Button color="primary" onClick={saveToDataStore}>
             Complete
           </Button>
         </GridItem>

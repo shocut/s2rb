@@ -1,4 +1,25 @@
-type Post @model @auth(rules: [{ allow: public }]) {
-  id: ID!
-  content: String!
+type Location {
+  id: ID
+  name: String!
+  description: String
+  streetAddress: String!
+  city: String!
+  adminArea: String
+  stateProvinceOrRegion: String!
+  country: String!
+  countryCode: String
+  postalCode: String!
+  postalCodeSuffix: String
+  formattedAddress: String
 }
+
+type SellerRealEstateProfile @model @auth(rules: [{allow: public}, {allow: private}, {allow: owner, operations: [create, update, delete]}]) {
+  id: ID!
+  searchStage: String
+  houseType: String
+  primaryHome: String
+  address: Location
+  sellerReference: String
+  rentBackPeriod: String
+}
+ 
