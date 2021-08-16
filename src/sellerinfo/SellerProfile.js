@@ -122,21 +122,20 @@ export default function SellerProfile(props) {
         <h3>
           <center>
             Please{" "}
-            <a href="/signup?reprofile=true" target="_self">
+            <a href="/signup?ref=reprofile" target="_self">
               <b>sign-in</b>
             </a>{" "}
             to your S2RB account to complete the real-estate profile. <br />
             If you have not yet resitered, please{" "}
-            <a href="/signup?reprofile=true" target="_self">
+            <a href="/signup?ref=reprofile" target="_self">
               <b>sign-up</b>
             </a>{" "}
             now for a free no obligation account.
           </center>
         </h3>
       )}
-
       {currentUser && (
-        <GridContainer justify="center" className={classes.section}>
+        <GridContainer justify="center" className={classes.main}>
           <GridItem xs={12} sm={12} md={12} lg={12}>
             <Carousel ref={sliderRef} {...settings}>
               <Paper>

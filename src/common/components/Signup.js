@@ -1,4 +1,5 @@
 import React from "react";
+import queryString from "query-string";
 import { Auth } from "aws-amplify";
 import { AuthState } from "@aws-amplify/ui-components";
 import { makeStyles } from "@material-ui/core/styles";
@@ -19,16 +20,23 @@ const useStyles = makeStyles(styles);
 
 Amplify.configure(aws_exports);
 
-function Signup() {
+function Signup(props) {
   const classes = useStyles();
   const history = useHistory();
+  const queryValues = queryString.parse(props.location.search);
+  console.log(queryValues.ref);
+  var nextPage = "/home";
+  if (queryValues.ref) {
+    //need a better check to make sure we don't route to any page
+    nextPage = queryValues.ref;
+  }
+
   const checkLoginState = async () => {
     try {
       const currentUser = await Auth.currentAuthenticatedUser();
       if (currentUser) {
         localStorage.setItem("currentUser", JSON.stringify(currentUser));
-        //take a route fragment as parameter to go to it going /home for now
-        history.push("/home");
+        history.push(nextPage);
       }
     } catch (e) {
       clearUserState();
