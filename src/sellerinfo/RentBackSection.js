@@ -133,10 +133,7 @@ export default function RentBackSection(sliderRefContainer) {
         </GridItem>
         <GridItem xs={12} sm={12} md={12} lg={12}>
           <div>
-            <h3>
-              If you want to buy the house back, would you like to have
-              &quot;First right of refusal&quot;?
-            </h3>
+            <h3>Are you interested in buying back the house in future?</h3>
           </div>
           <FormControl component="fieldset">
             <RadioGroup

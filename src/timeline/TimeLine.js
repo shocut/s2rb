@@ -1,29 +1,25 @@
-import React, { useRef } from "react";
+import React from "react";
+
 import { useEffect } from "react";
 import { Auth } from "aws-amplify";
+
+import Header from "../common/components/Header.js";
+import HeaderLinks from "../common/components/HeaderLinks.js";
 
 import { DataStore } from "aws-amplify";
 
 // nodejs library that concatenates classes
-import Carousel from "react-material-ui-carousel";
-import { Paper } from "@material-ui/core";
 import { SellerRealEstateProfile } from "../models";
 
 // @material-ui/core components
+import { Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-
 import Parallax from "../common/components/Parallax.js";
+import styles from "./timelineStyle.js";
 import GridContainer from "../common/components/GridContainer.js";
 import GridItem from "../common/components/GridItem.js";
-import styles from "./sellerProfileStyle.js";
 
 // Sections for this page
-import Header from "../common/components/Header.js";
-import HeaderLinks from "../common/components/HeaderLinks.js";
-import TimingSection from "./TimingSection.js";
-import HouseSection from "./HouseSection.js";
-import RentBackSection from "./RentBackSection.js";
-import AddressSection from "./AddressSection.js";
 
 /*
 import MortgageSection from "./Sections/MortgageSection.js";
@@ -31,22 +27,10 @@ import MortgageSection from "./Sections/MortgageSection.js";
 
 const useStyles = makeStyles(styles);
 
-export default function SellerProfile(props) {
+export default function TimeLine(props) {
   const classes = useStyles();
-  const sliderRef = useRef();
   const dashboardRoutes = [];
   const { ...rest } = props;
-  const currentUser = localStorage.getItem("currentUser");
-
-  const settings = {
-    autoPlay: false,
-    interval: 1000000,
-    animation: "slide",
-    cycleNavigation: false,
-    slidesToScroll: 1,
-    indicators: false,
-    navButtonsAlwaysInvisible: true,
-  };
 
   const onLogout = async () => {
     await Auth.signOut();
@@ -56,10 +40,8 @@ export default function SellerProfile(props) {
   useEffect(() => {
     var userObj = null;
     var currentUser = localStorage.getItem("currentUser");
-
     if (currentUser) {
       userObj = JSON.parse(currentUser);
-      console.log("userObj username:" + userObj.attributes.email);
     }
     const loadREProfile = async () => {
       if (userObj) {
@@ -118,40 +100,12 @@ export default function SellerProfile(props) {
         filter
         image={require("../common/img/header-bg.jpg").default}
       />
-      {!currentUser && (
-        <h3>
-          <center>
-            Please sign-in to your S2RB account to complete the real-estate
-            profile. <br />
-            If you have not yet resitered, please{" "}
-            <a href="/signup?reprofile=true" target="_self">
-              <b>sign-up</b>
-            </a>{" "}
-            now for a free no obligation account.
-          </center>
-        </h3>
-      )}
 
-      {currentUser && (
-        <GridContainer justify="center" className={classes.section}>
-          <GridItem xs={12} sm={12} md={12} lg={12}>
-            <Carousel ref={sliderRef} {...settings}>
-              <Paper>
-                <TimingSection sliderRef={sliderRef} />
-              </Paper>
-              <Paper>
-                <HouseSection sliderRef={sliderRef} />
-              </Paper>
-              <Paper>
-                <AddressSection sliderRef={sliderRef} />
-              </Paper>
-              <Paper>
-                <RentBackSection sliderRef={sliderRef} />
-              </Paper>
-            </Carousel>
-          </GridItem>
-        </GridContainer>
-      )}
+      <GridContainer justify="center" className={classes.darkbg}>
+        <GridItem xs={12} sm={12} md={12} lg={12}>
+          <Paper>Timeline Coomponent</Paper>
+        </GridItem>
+      </GridContainer>
     </div>
   );
 }
