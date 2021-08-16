@@ -121,8 +121,11 @@ export default function SellerProfile(props) {
       {!currentUser && (
         <h3>
           <center>
-            Please sign-in to your S2RB account to complete the real-estate
-            profile. <br />
+            Please{" "}
+            <a href="/signup?reprofile=true" target="_self">
+              <b>sign-in</b>
+            </a>{" "}
+            to your S2RB account to complete the real-estate profile. <br />
             If you have not yet resitered, please{" "}
             <a href="/signup?reprofile=true" target="_self">
               <b>sign-up</b>
