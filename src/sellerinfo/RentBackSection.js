@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 
 import Radio from "@material-ui/core/Radio";
 
@@ -10,6 +11,12 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import { makeStyles } from "@material-ui/core/styles";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
+import Slide from "@material-ui/core/Slide";
 
 import GridContainer from "../common/components/GridContainer.js";
 import GridItem from "../common/components/GridItem.js";
@@ -19,10 +26,14 @@ import styles from "./sellerProfileStyle.js";
 const useStyles = makeStyles(styles);
 
 export default function RentBackSection(sliderRefContainer) {
+  const history = useHistory();
+  const [classicModal, setClassicModal] = React.useState(false);
+  const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="down" ref={ref} {...props} />;
+  });
   const [value, setValue] = React.useState(
     localStorage.getItem("s2rb_rentBackPeriod")
   );
-  const [fror, setFROR] = React.useState(localStorage.getItem("s2rb_fror"));
   const classes = useStyles();
 
   var reProfileId = localStorage.getItem("s2rb_re_profile_id");
@@ -33,6 +44,11 @@ export default function RentBackSection(sliderRefContainer) {
       homeAddressObj = JSON.parse(homeAddress);
     } catch (e) {}
   }
+
+  const closeDialog = () => {
+    setClassicModal(false);
+    history.push("timeline");
+  };
 
   const handleChange = (event) => {
     setValue(event.target.value);
@@ -84,12 +100,9 @@ export default function RentBackSection(sliderRefContainer) {
       //new
       DataStore.save(getNewREProfile());
     }
+    setClassicModal(true);
+    console.log(history);
   }
-
-  const handleChangeFROR = (event) => {
-    setFROR(event.target.value);
-    localStorage.setItem("s2rb_fror", event.target.value);
-  };
 
   const movePrev = function () {
     //sliderRef.current.slickNext();
@@ -131,22 +144,6 @@ export default function RentBackSection(sliderRefContainer) {
             </RadioGroup>
           </FormControl>
         </GridItem>
-        <GridItem xs={12} sm={12} md={12} lg={12}>
-          <div>
-            <h3>Are you interested in buying back the house in future?</h3>
-          </div>
-          <FormControl component="fieldset">
-            <RadioGroup
-              aria-label="fror"
-              name="fror"
-              value={fror}
-              onChange={handleChangeFROR}
-            >
-              <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-              <FormControlLabel value="no" control={<Radio />} label="No" />
-            </RadioGroup>
-          </FormControl>
-        </GridItem>
         <GridItem xs={12} sm={12} md={12}>
           &nbsp;
         </GridItem>
@@ -160,6 +157,38 @@ export default function RentBackSection(sliderRefContainer) {
           </Button>
         </GridItem>
       </GridContainer>
+
+      <Dialog
+        classes={{
+          root: classes.center,
+          paper: classes.modal,
+        }}
+        open={classicModal}
+        keepMounted
+        TransitionComponent={Transition}
+        onBackdropClick="false"
+        onClose={closeDialog}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle
+          id="alert-dialog-slide-title"
+          disableTypography
+          className={classes.modalHeader}
+        >
+          <h4 className={classes.modalTitle}>Real Estate Profile</h4>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            Your real estate profile has been saved.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions className={classes.modalFooter}>
+          <Button color="success" onClick={closeDialog}>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
