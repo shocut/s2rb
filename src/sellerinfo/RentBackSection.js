@@ -47,7 +47,7 @@ export default function RentBackSection(sliderRefContainer) {
 
   const closeDialog = () => {
     setClassicModal(false);
-    history.push("timeline");
+    history.push("/timeline");
   };
 
   const handleChange = (event) => {
@@ -101,7 +101,6 @@ export default function RentBackSection(sliderRefContainer) {
       DataStore.save(getNewREProfile());
     }
     setClassicModal(true);
-    console.log(history);
   }
 
   const movePrev = function () {
