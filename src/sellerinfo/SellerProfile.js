@@ -50,7 +50,7 @@ export default function SellerProfile(props) {
 
   const onLogout = async () => {
     await Auth.signOut();
-    localStorage.removeItem("currentUser");
+    localStorage.clear();
   };
 
   useEffect(() => {
@@ -78,7 +78,6 @@ export default function SellerProfile(props) {
     if (reProfileList && reProfileList.length > 0) {
       var reProfile = reProfileList[0];
       localStorage.setItem("s2rb_re_profile_id", reProfile.id);
-      console.log(reProfile.id);
       //store locally for UI
       localStorage.setItem("s2rb_search_stage", reProfile.searchStage);
       localStorage.setItem("s2rb_house_type", reProfile.houseType);
