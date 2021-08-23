@@ -106,7 +106,26 @@ export default function TimeLine(props) {
         <GridItem xs={12} sm={12} md={12} lg={12}>
           <div className="App">
             <div style={{ width: "100%", height: "95vh" }}>
-              <Chrono items={data} mode="VERTICAL_ALTERNATING" />
+              <Chrono items={data} mode="VERTICAL_ALTERNATING">
+                <div className="chrono-icons">
+                  <img
+                    src="https://img.icons8.com/ios-filled/100/000000/contacts.png"
+                    alt="twitter"
+                  />
+                  <img
+                    src="https://img.icons8.com/ios-filled/50/000000/mailbox-closed-flag-down.png"
+                    alt="mail-box"
+                  />
+                  <img
+                    src="https://img.icons8.com/ios-filled/100/000000/briefcase.png"
+                    alt="twitter"
+                  />
+                  <img
+                    src="https://img.icons8.com/ios-filled/100/000000/idea.png"
+                    alt="twitter"
+                  />
+                </div>
+              </Chrono>
             </div>
           </div>
         </GridItem>

@@ -24,8 +24,7 @@ function Signup(props) {
   const classes = useStyles();
   const history = useHistory();
   const queryValues = queryString.parse(props.location.search);
-  console.log(queryValues.ref);
-  var nextPage = "/home";
+  var nextPage = "/sdashboard";
   if (queryValues.ref) {
     //need a better check to make sure we don't route to any page
     nextPage = queryValues.ref;
@@ -48,8 +47,6 @@ function Signup(props) {
   };
 
   function onAuthStateChange(nextAuthState) {
-    console.log("onAuthStateChange: " + nextAuthState);
-
     if (nextAuthState === AuthState.SignedIn) {
       checkLoginState();
     } else {
@@ -77,6 +74,19 @@ function Signup(props) {
                 usernameAlias="email"
                 headerText="Sign Up for S2RB"
                 formFields={[
+                  {
+                    type: "given_name",
+                    label: " First Name ",
+                    placeholder: "first name",
+                    inputProps: { required: true, autocomplete: "given_name" },
+                  },
+
+                  {
+                    type: "family_name",
+                    label: " Last Name ",
+                    placeholder: "last name",
+                    inputProps: { required: true, autocomplete: "family_name" },
+                  },
                   {
                     type: "email",
                     label: " Email ",

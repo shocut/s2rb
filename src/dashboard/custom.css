@@ -1,0 +1,13 @@
+.CircularProgressbar-text {
+  fill: yellow;
+  font-weight: bold;
+  text-align: center;
+}
+
+.CircularProgressbar-text p {
+  text-align: center;
+}
+
+.CircularProgressbar .CircularProgressbar-path {
+  stroke: #85c285;
+}

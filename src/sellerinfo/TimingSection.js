@@ -46,17 +46,17 @@ export default function TimingSection(sliderRefContainer) {
               onChange={handleChange}
             >
               <FormControlLabel
-                value="s1"
+                value="Just Researching"
                 control={<Radio />}
                 label="I am just researching"
               />
               <FormControlLabel
-                value="s2"
+                value="Actively Considering to Sell"
                 control={<Radio />}
                 label="I am actively considering if I should sell the house"
               />
               <FormControlLabel
-                value="s3"
+                value="Working with a Realtor"
                 control={<Radio />}
                 label="I am already working with a realtor and my mortgage bank"
               />

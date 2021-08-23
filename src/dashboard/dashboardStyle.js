@@ -25,6 +25,7 @@ const timelineStyle = {
   main: {
     background: "#FFFFFF",
     position: "relative",
+    minHeight: "500px",
     zIndex: "3",
   },
   mainRaised: {
@@ -37,6 +38,23 @@ const timelineStyle = {
   chronoTimeline: {
     fontFamily: "Nunito sans-serif",
     textAlign: "center",
+  },
+  center: {
+    margin: "auto",
+    width: "100%",
+  },
+  section: {
+    padding: "10px 0",
+    margin: "3px",
+  },
+  avatar: {
+    border: "solid 2px",
+    padding: "32px",
+    fontSize: "48px",
+    backgroundColor: "#f4f4f5",
+  },
+  dashCard: {
+    minHeight: "200px",
   },
 };
 

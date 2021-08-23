@@ -46,7 +46,6 @@ function App(props) {
       setCurrentUser(null);
     }
   };
-  console.log("App.js:" + currentUser);
 
   return (
     <div className="App">

@@ -57,17 +57,17 @@ export default function HouseSection(sliderRefContainer) {
               onChange={handleChange}
             >
               <FormControlLabel
-                value="single-family"
+                value="Single Family"
                 control={<Radio />}
                 label="It is a Single Family Home"
               />
               <FormControlLabel
-                value="townhouse"
+                value="Townhouse"
                 control={<Radio />}
                 label="It is a Town Home"
               />
               <FormControlLabel
-                value="condo"
+                value="Condo"
                 control={<Radio />}
                 label="It is a Condo"
               />
@@ -85,8 +85,8 @@ export default function HouseSection(sliderRefContainer) {
               value={primaryHome}
               onChange={handleChangePH}
             >
-              <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-              <FormControlLabel value="no" control={<Radio />} label="No" />
+              <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
+              <FormControlLabel value="No" control={<Radio />} label="No" />
             </RadioGroup>
           </FormControl>
         </GridItem>

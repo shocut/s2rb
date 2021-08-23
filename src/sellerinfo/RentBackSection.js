@@ -47,7 +47,7 @@ export default function RentBackSection(sliderRefContainer) {
 
   const closeDialog = () => {
     setClassicModal(false);
-    history.push("/timeline");
+    history.push("/sdashboard");
   };
 
   const handleChange = (event) => {
@@ -126,19 +126,24 @@ export default function RentBackSection(sliderRefContainer) {
               onChange={handleChange}
             >
               <FormControlLabel
-                value="1-2-Years"
+                value="One to Two Years"
                 control={<Radio />}
                 label="One to Two Years"
               />
               <FormControlLabel
-                value="3-4-years"
+                value="Three to Four Years"
                 control={<Radio />}
                 label="Three to Four Years"
               />
               <FormControlLabel
-                value="5-or-more-years"
+                value="Five Years or More"
                 control={<Radio />}
                 label="Five Years or More"
+              />
+              <FormControlLabel
+                value="Not Sure"
+                control={<Radio />}
+                label="Not Sure "
               />
             </RadioGroup>
           </FormControl>
