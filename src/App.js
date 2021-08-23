@@ -27,9 +27,13 @@ const dashboardRoutes = [];
 const useStyles = makeStyles(styles);
 
 function App(props) {
-  const [currentUser, setCurrentUser] = useState();
+  const [currentUser, setCurrentUser] = useState(
+    localStorage.getItem("currentUser")
+  );
   const { ...rest } = props;
   const classes = useStyles();
+
+  console.log("currentUser:" + currentUser);
   const onLogout = async () => {
     await Auth.signOut();
     localStorage.removeItem("currentUser");
