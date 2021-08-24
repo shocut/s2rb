@@ -29,33 +29,35 @@ import DescriptionIcon from "@material-ui/icons/Description";
 import StoreIcon from "@material-ui/icons/Store";
 import DonutLargeIcon from "@material-ui/icons/DonutLarge";
 
-// @material-ui/icons
-//import Dashboard from "@material-ui/icons/Dashboard";
-//import Schedule from "@material-ui/icons/Schedule";
-//import List from "@material-ui/icons/List";
-
 import styles from "./dashboardStyle.js";
 
 const useStyles = makeStyles(styles);
 
 export default function SDashboard(props) {
   const { ...rest } = props;
+  console.log(props);
+
   const [currentUser, setCurrentUser] = useState(
     localStorage.getItem("currentUser")
   );
+  const [s2rb_re_profile_id, set_s2rb_re_profile_id] = useState(
+    localStorage.getItem("s2rb_re_profile_id")
+  );
+
+  localStorage.setItem("s2rb_re_profile_progress", 30);
+  const [reProfileProgress, setREProfileProgress] = useState(
+    localStorage.getItem("s2rb_re_profile_progress")
+  );
+
+  const [reProfile, setProfile] = useState({});
+  const [streetAddress, setStreetAddress] = useState({});
+
   const classes = useStyles();
-
   const dashboardRoutes = [];
-  var reProfileProgress = 30;
-
-  var s2rb_re_profile_id = localStorage.getItem("s2rb_re_profile_id");
-  if (s2rb_re_profile_id) {
-    reProfileProgress = 60;
-  }
 
   const onLogout = async () => {
     await Auth.signOut();
-    localStorage.removeItem("currentUser");
+    localStorage.clear();
     checkLoginState();
   };
 
@@ -81,36 +83,28 @@ export default function SDashboard(props) {
         setREProfile(
           await DataStore.query(SellerRealEstateProfile, (p) =>
             p.sellerReference("eq", userObj.attributes.email)
-          )
+          ),
+          currentUser
         );
       }
     };
     loadREProfile();
   }, []);
 
-  const setREProfile = (reProfileList) => {
+  const setREProfile = (reProfileList, currentUser) => {
     console.log("reProfileList.length: " + reProfileList.length);
     if (reProfileList && reProfileList.length > 0) {
       var reProfile = reProfileList[0];
       localStorage.setItem("s2rb_re_profile_id", reProfile.id);
-      //store locally for UI
-      localStorage.setItem("s2rb_search_stage", reProfile.searchStage);
-      localStorage.setItem("s2rb_house_type", reProfile.houseType);
-      localStorage.setItem("s2rb_primary_home", reProfile.primaryHome);
-      localStorage.setItem("s2rb_rentBackPeriod", reProfile.rentBackPeriod);
-      localStorage.setItem("s2rb_address", reProfile.address.formattedAddress);
-      localStorage.setItem(
-        "s2rb_house_location",
-        JSON.stringify(reProfile.address)
-      );
+      set_s2rb_re_profile_id(reProfile.id);
+      setREProfileProgress(60);
+      setProfile(reProfile);
+      setStreetAddress(reProfile.address.formattedAddress);
     } else {
       console.log("No existing RE profile");
-      localStorage.removeItem("s2rb_re_profile_id");
-      localStorage.removeItem("s2rb_search_stage");
-      localStorage.removeItem("s2rb_house_type");
-      localStorage.removeItem("s2rb_primary_home");
-      localStorage.removeItem("s2rb_rentBackPeriod");
-      localStorage.removeItem("s2rb_house_location");
+      localStorage.clear();
+      localStorage.setItem("currentUser", currentUser); //this needs to stay!
+      set_s2rb_re_profile_id(null);
     }
   };
 
@@ -278,31 +272,29 @@ export default function SDashboard(props) {
                                   <b>Search Stage</b>
                                 </GridItem>
                                 <GridItem xs={9}>
-                                  {localStorage.getItem("s2rb_search_stage")}
+                                  {reProfile.searchStage}
                                 </GridItem>
                                 <GridItem xs={3}>
                                   <b>House Type</b>
                                 </GridItem>
                                 <GridItem xs={9}>
-                                  {localStorage.getItem("s2rb_house_type")}
+                                  {reProfile.houseType}
                                 </GridItem>
                                 <GridItem xs={3}>
                                   <b>Primary Home</b>
                                 </GridItem>
                                 <GridItem xs={9}>
-                                  {localStorage.getItem("s2rb_primary_home")}
+                                  {reProfile.primaryHome}
                                 </GridItem>
                                 <GridItem xs={3}>
                                   <b>Home Address</b>
                                 </GridItem>
-                                <GridItem xs={9}>
-                                  {localStorage.getItem("s2rb_address")}
-                                </GridItem>
+                                <GridItem xs={9}>{streetAddress}</GridItem>
                                 <GridItem xs={3}>
                                   <b>Rent-back Preference</b>
                                 </GridItem>
                                 <GridItem xs={9}>
-                                  {localStorage.getItem("s2rb_rentBackPeriod")}
+                                  {reProfile.rentBackPeriod}
                                 </GridItem>
                                 <GridItem xs={12}>
                                   <br />

@@ -35,7 +35,7 @@ export default function TimeLine(props) {
 
   const onLogout = async () => {
     await Auth.signOut();
-    localStorage.removeItem("currentUser");
+    localStorage.clear();
   };
 
   useEffect(() => {

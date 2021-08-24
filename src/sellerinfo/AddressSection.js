@@ -21,25 +21,32 @@ export default function AddressSection(sliderRefContainer) {
       console.log("No saved address!");
     }
   }
-  console.log(addressText);
   const storeLocation = (place) => {
     if (place) {
-      var addrParts = place.address_components;
-      var homeLocation = new Location({
-        name: "Seller house address",
-        description: "Address of house for S2RB consideration",
-        streetAddress: addrParts[0].long_name + " " + addrParts[1].long_name,
-        city: addrParts[2].long_name,
-        adminArea: addrParts[3].long_name,
-        stateProvinceOrRegion: addrParts[4].long_name,
-        country: addrParts[5].long_name,
-        countryCode: addrParts[5].short_name,
-        postalCode: addrParts[6].long_name,
-        postalCodeSuffix: addrParts[7].long_name,
-        formattedAddress: place.formatted_address,
-      });
-      //console.log(homeLocation);
-      localStorage.setItem("s2rb_house_location", JSON.stringify(homeLocation));
+      try {
+        var addrParts = place.address_components;
+        var homeLocation = new Location({
+          name: "Seller house address",
+          description: "Address of house for S2RB consideration",
+          streetAddress: addrParts[0].long_name + " " + addrParts[1].long_name,
+          city: addrParts[2].long_name,
+          adminArea: addrParts[3].long_name,
+          stateProvinceOrRegion: addrParts[4].long_name,
+          country: addrParts[5].long_name,
+          countryCode: addrParts[5].short_name,
+          postalCode: addrParts[6].long_name,
+          postalCodeSuffix: addrParts[7].long_name,
+          formattedAddress: place.formatted_address,
+        });
+        //console.log(homeLocation);
+        localStorage.setItem(
+          "s2rb_house_location",
+          JSON.stringify(homeLocation)
+        );
+      } catch (e) {
+        console.log(e);
+        localStorage.removeItem("s2rb_house_location");
+      }
     } else {
       localStorage.removeItem("s2rb_house_location");
     }
