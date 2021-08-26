@@ -80,6 +80,8 @@ export default function RentBackSection(sliderRefContainer) {
       primaryHome: localStorage.getItem("s2rb_primary_home"),
       rentBackPeriod: localStorage.getItem("s2rb_rentBackPeriod"),
       address: homeAddressObj,
+      bedrooms: localStorage.getItem("s2rb_bedrooms"),
+      bathrooms: localStorage.getItem("s2rb_bathrooms"),
     });
   }
 
@@ -93,6 +95,8 @@ export default function RentBackSection(sliderRefContainer) {
           updated.primaryHome = localStorage.getItem("s2rb_primary_home");
           updated.rentBackPeriod = localStorage.getItem("s2rb_rentBackPeriod");
           updated.address = homeAddressObj;
+          updated.bedrooms = localStorage.getItem("s2rb_bedrooms");
+          updated.bathrooms = localStorage.getItem("s2rb_bathrooms");
         })
       );
     } else {

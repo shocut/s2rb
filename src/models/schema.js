@@ -54,6 +54,20 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "bedrooms": {
+                    "name": "bedrooms",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "bathrooms": {
+                    "name": "bathrooms",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -209,5 +223,5 @@ export const schema = {
             }
         }
     },
-    "version": "17d4dc43ad5356b30f5cd424eca5ce18"
+    "version": "c7c5b8924ed62e74278bdb1d399d93a7"
 };

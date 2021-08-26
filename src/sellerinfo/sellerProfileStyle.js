@@ -47,6 +47,10 @@ const sellerProfileStyle = {
     letterSpacing: "0.03333em",
     lineHeight: 1.66,
   },
+  sliderContainer: {
+    width: "500px",
+    height: "100px",
+  },
 };
 
 export default sellerProfileStyle;

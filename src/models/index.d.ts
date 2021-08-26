@@ -30,6 +30,8 @@ export declare class SellerRealEstateProfile {
   readonly address?: Location;
   readonly sellerReference?: string;
   readonly rentBackPeriod?: string;
+  readonly bedrooms?: string;
+  readonly bathrooms?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<SellerRealEstateProfile, SellerRealEstateProfileMetaData>);
