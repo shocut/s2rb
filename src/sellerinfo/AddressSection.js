@@ -173,7 +173,7 @@ export default function AddressSection(sliderRefContainer) {
           </div>
         </GridItem>
         <GridItem cs={12} sm={12} md={12}>
-          <h3>Number of bathrooms:</h3>
+          <h3>Number of bathrooms: (For half baths pick 1.5, 2.5 ...)</h3>
         </GridItem>
         <GridItem cs={12} sm={12} md={12}>
           <br />

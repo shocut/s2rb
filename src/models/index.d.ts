@@ -2,6 +2,15 @@ import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplif
 
 
 
+export declare class Attachment {
+  readonly name: string;
+  readonly category?: string;
+  readonly description?: string;
+  readonly fileURL?: string;
+  readonly status?: string;
+  constructor(init: ModelInit<Attachment>);
+}
+
 export declare class Location {
   readonly id?: string;
   readonly name: string;
@@ -32,6 +41,7 @@ export declare class SellerRealEstateProfile {
   readonly rentBackPeriod?: string;
   readonly bedrooms?: string;
   readonly bathrooms?: string;
+  readonly attachments?: (Attachment | null)[];
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<SellerRealEstateProfile, SellerRealEstateProfileMetaData>);

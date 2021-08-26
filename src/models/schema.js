@@ -68,6 +68,16 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "attachments": {
+                    "name": "attachments",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "Attachment"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -133,6 +143,46 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {
+        "Attachment": {
+            "name": "Attachment",
+            "fields": {
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "category": {
+                    "name": "category",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "description": {
+                    "name": "description",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "fileURL": {
+                    "name": "fileURL",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "status": {
+                    "name": "status",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
         "Location": {
             "name": "Location",
             "fields": {
@@ -223,5 +273,5 @@ export const schema = {
             }
         }
     },
-    "version": "c7c5b8924ed62e74278bdb1d399d93a7"
+    "version": "62fd30b6a9c84ac3f1e0f365f995dda3"
 };

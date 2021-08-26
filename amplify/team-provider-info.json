@@ -14,6 +14,12 @@
     "categories": {
       "auth": {
         "socialmediademo0881b347": {}
+      },
+      "function": {
+        "S3Trigger223c98ea": {
+          "deploymentBucketName": "amplify-socialmediademo-devp-203005-deployment",
+          "s3Key": "amplify-builds/S3Trigger223c98ea-3333494549687a4f6265-build.zip"
+        }
       }
     }
   },
