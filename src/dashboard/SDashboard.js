@@ -275,12 +275,6 @@ export default function SDashboard(props) {
                               </h4>
                               <GridContainer>
                                 <GridItem xs={3}>
-                                  <b>Search Stage</b>
-                                </GridItem>
-                                <GridItem xs={9}>
-                                  {reProfile.searchStage}
-                                </GridItem>
-                                <GridItem xs={3}>
                                   <b>House Type</b>
                                 </GridItem>
                                 <GridItem xs={9}>
