@@ -59,7 +59,6 @@ export default function SellerProfile(props) {
 
     if (currentUser) {
       userObj = JSON.parse(currentUser);
-      console.log("userObj username:" + userObj.attributes.email);
     }
     const loadREProfile = async () => {
       if (userObj) {
