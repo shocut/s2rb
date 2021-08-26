@@ -59,7 +59,6 @@ export default function RentBackSection(sliderRefContainer) {
   var userObj = null;
   if (currentUser) {
     userObj = JSON.parse(currentUser);
-    console.log("userObj username:" + userObj.attributes.email);
   }
   const saveToDataStore = async () => {
     if (userObj) {
@@ -170,7 +169,6 @@ export default function RentBackSection(sliderRefContainer) {
         open={classicModal}
         keepMounted
         TransitionComponent={Transition}
-        onBackdropClick="false"
         onClose={closeDialog}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"

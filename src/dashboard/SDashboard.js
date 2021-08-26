@@ -33,9 +33,10 @@ import styles from "./dashboardStyle.js";
 
 const useStyles = makeStyles(styles);
 
-export default function SDashboard(props) {
-  const { ...rest } = props;
-  console.log(props);
+export default function SDashboard() {
+  const classes = useStyles();
+  const dashboardRoutes = [];
+  localStorage.setItem("s2rb_re_profile_progress", 30);
 
   const [currentUser, setCurrentUser] = useState(
     localStorage.getItem("currentUser")
@@ -44,16 +45,12 @@ export default function SDashboard(props) {
     localStorage.getItem("s2rb_re_profile_id")
   );
 
-  localStorage.setItem("s2rb_re_profile_progress", 30);
   const [reProfileProgress, setREProfileProgress] = useState(
     localStorage.getItem("s2rb_re_profile_progress")
   );
 
   const [reProfile, setProfile] = useState({});
   const [streetAddress, setStreetAddress] = useState({});
-
-  const classes = useStyles();
-  const dashboardRoutes = [];
 
   const onLogout = async () => {
     await Auth.signOut();
@@ -120,7 +117,6 @@ export default function SDashboard(props) {
           height: 400,
           color: "dark",
         }}
-        {...rest}
       />
       <Parallax
         smallheader
@@ -144,210 +140,224 @@ export default function SDashboard(props) {
           </center>
         </h3>
       )}
-
       {currentUser && (
         <GridContainer justify="center" className={classes.main}>
           <GridItem xs={12} sm={12} md={8} lg={6}>
-            <NavPills
-              color="success"
-              tabs={[
-                {
-                  tabButton: "Progress",
-                  tabIcon: DonutLargeIcon,
-                  tabContent: (
-                    <div>
-                      <Card className={classes.dashCard}>
-                        <CardBody>
-                          <GridContainer>
-                            <GridItem xs={2} sm={2} md={2} lg={2}>
-                              <div style={{ width: 100, height: 100 }}>
-                                <CircularProgressbar
-                                  value={reProfileProgress}
-                                  strokeWidth="18"
-                                  text={`${reProfileProgress}%`}
-                                  circleRatio={0.75}
-                                  strokeLinecap="butt"
-                                  styles={buildStyles({
-                                    rotation: 1 / 2 + 1 / 8,
-                                  })}
-                                ></CircularProgressbar>
-                                <center>Progress</center>
-                              </div>
-                            </GridItem>
-
-                            {!s2rb_re_profile_id && (
-                              <GridItem xs={10} sm={10} md={10} lg={10}>
-                                <h4>
-                                  Thank you for signing-up and creating a user
-                                  profile.
-                                </h4>
-                                <p>
-                                  To unlock the next stage, please complete
-                                  your&nbsp;
-                                  <a href="/reprofile" target="_self">
-                                    <b>real-estate profile</b>
-                                  </a>
-                                  .
-                                </p>
-                                <p>
-                                  Completing that information does NOT initiate
-                                  any application process or credit checks. It
-                                  simply helps you begin the process for
-                                  matching investors who may be interested in
-                                  your property.
-                                </p>
-                              </GridItem>
-                            )}
-                            {s2rb_re_profile_id && (
-                              <GridItem xs={10} sm={10} md={10} lg={10}>
-                                <h4>
-                                  Thank you for updating your real estate
-                                  profile.
-                                </h4>
-                                <p>
-                                  To unlock the next stage, please upload
-                                  documents showing mortgage and home-ownership
-                                  details.
-                                </p>
-                                <p>
-                                  All documents are uploaded, transimitted and
-                                  stored in encrypted format. The documents are
-                                  used to verify and validate home-ownership and
-                                  mortgage information. We do not share these
-                                  with any other users or companies including
-                                  potential investors.
-                                </p>
-                              </GridItem>
-                            )}
-                          </GridContainer>
-                        </CardBody>
-                      </Card>
-                    </div>
-                  ),
-                },
-                {
-                  tabButton: "Profile",
-                  tabIcon: StoreIcon,
-                  tabContent: (
-                    <div>
-                      {!s2rb_re_profile_id && (
+            <div>
+              <NavPills
+                color="success"
+                tabs={[
+                  {
+                    tabButton: "Progress",
+                    tabIcon: DonutLargeIcon,
+                    tabContent: (
+                      <div>
                         <Card className={classes.dashCard}>
                           <CardBody>
                             <GridContainer>
-                              <GridItem xs={12} sm={12} md={12} lg={12}>
-                                <h4>
-                                  Thank you for signing-up and creating a user
-                                  profile.
-                                </h4>
-                                <p>
-                                  To unlock the next stage, please complete
-                                  your&nbsp;
-                                  <a href="/reprofile" target="_self">
-                                    <b>real-estate profile</b>
-                                  </a>
-                                  .
-                                </p>
-                                <p>
-                                  Completing that information does NOT initiate
-                                  any application process or credit checks. It
-                                  simply helps you begin the process for
-                                  matching investors who may be interested in
-                                  your property.
-                                </p>
+                              <GridItem xs={2} sm={2} md={2} lg={2}>
+                                <div style={{ width: 100, height: 100 }}>
+                                  <CircularProgressbar
+                                    value={reProfileProgress}
+                                    strokeWidth="18"
+                                    text={`${reProfileProgress}%`}
+                                    circleRatio={0.75}
+                                    strokeLinecap="butt"
+                                    styles={buildStyles({
+                                      rotation: 1 / 2 + 1 / 8,
+                                    })}
+                                  ></CircularProgressbar>
+                                  <center>Progress</center>
+                                </div>
                               </GridItem>
+
+                              {!s2rb_re_profile_id && (
+                                <GridItem xs={10} sm={10} md={10} lg={10}>
+                                  <div>
+                                    <h4>
+                                      Thank you for signing-up and creating a
+                                      user profile.
+                                    </h4>
+                                    <p>
+                                      To unlock the next stage, please complete
+                                      your&nbsp;
+                                      <a href="/reprofile" target="_self">
+                                        <b>real-estate profile</b>
+                                      </a>
+                                      .
+                                    </p>
+                                    <p>
+                                      Completing that information does NOT
+                                      initiate any application process or credit
+                                      checks. It simply helps you begin the
+                                      process for matching investors who may be
+                                      interested in your property.
+                                    </p>
+                                  </div>
+                                </GridItem>
+                              )}
+                              {s2rb_re_profile_id && (
+                                <GridItem xs={10} sm={10} md={10} lg={10}>
+                                  <div>
+                                    <h4>
+                                      Thank you for updating your real estate
+                                      profile.
+                                    </h4>
+                                    <p>
+                                      To unlock the next stage, please upload
+                                      documents showing mortgage and
+                                      home-ownership details.
+                                    </p>
+                                    <p>
+                                      All documents are uploaded, transimitted
+                                      and stored in encrypted format. The
+                                      documents are used to verify and validate
+                                      home-ownership and mortgage information.
+                                      We do not share these with any other users
+                                      or companies including potential
+                                      investors.
+                                    </p>
+                                  </div>
+                                </GridItem>
+                              )}
                             </GridContainer>
                           </CardBody>
                         </Card>
-                      )}
-
-                      {s2rb_re_profile_id && (
-                        <div>
+                      </div>
+                    ),
+                  },
+                  {
+                    tabButton: "Profile",
+                    tabIcon: StoreIcon,
+                    tabContent: (
+                      <div>
+                        {!s2rb_re_profile_id && (
                           <Card className={classes.dashCard}>
                             <CardBody>
-                              <h4>
-                                Thank you for updating your real estate profile.
-                              </h4>
                               <GridContainer>
-                                <GridItem xs={3}>
-                                  <b>Search Stage</b>
-                                </GridItem>
-                                <GridItem xs={9}>
-                                  {reProfile.searchStage}
-                                </GridItem>
-                                <GridItem xs={3}>
-                                  <b>House Type</b>
-                                </GridItem>
-                                <GridItem xs={9}>
-                                  {reProfile.houseType}
-                                </GridItem>
-                                <GridItem xs={3}>
-                                  <b>Primary Home</b>
-                                </GridItem>
-                                <GridItem xs={9}>
-                                  {reProfile.primaryHome}
-                                </GridItem>
-                                <GridItem xs={3}>
-                                  <b>Home Address</b>
-                                </GridItem>
-                                <GridItem xs={9}>{streetAddress}</GridItem>
-                                <GridItem xs={3}>
-                                  <b>Rent-back Preference</b>
-                                </GridItem>
-                                <GridItem xs={9}>
-                                  {reProfile.rentBackPeriod}
-                                </GridItem>
-                                <GridItem xs={12}>
-                                  <br />
-                                  <Button
-                                    color="success"
-                                    href="/reprofile"
-                                    target="_self"
-                                  >
-                                    Edit
-                                  </Button>
+                                <GridItem xs={12} sm={12} md={12} lg={12}>
+                                  <div>
+                                    <h4>
+                                      Thank you for signing-up and creating a
+                                      user profile.
+                                    </h4>
+                                    <p>
+                                      To unlock the next stage, please complete
+                                      your&nbsp;
+                                      <a href="/reprofile" target="_self">
+                                        <b>real-estate profile</b>
+                                      </a>
+                                      .
+                                    </p>
+                                    <p>
+                                      Completing that information does NOT
+                                      initiate any application process or credit
+                                      checks. It simply helps you begin the
+                                      process for matching investors who may be
+                                      interested in your property.
+                                    </p>
+                                  </div>
                                 </GridItem>
                               </GridContainer>
                             </CardBody>
                           </Card>
-                        </div>
-                      )}
-                    </div>
-                  ),
-                },
-                {
-                  tabButton: "Documents",
-                  tabIcon: DescriptionIcon,
-                  tabContent: (
-                    <span>
-                      <Card className={classes.dashCard}>
-                        <CardBody>
-                          <GridContainer>
-                            <GridItem xs={12} sm={12} md={12} lg={12}>
-                              <h4>
-                                Thank you for updating your real estate profile.
-                              </h4>
-                              <p>
-                                To unlock the next stage, please upload
-                                documents showing mortgage and home-ownership
-                                details.
-                              </p>
-                              <p>
-                                All documents are uploaded, transimitted and
-                                stored in encrypted format. The documents are
-                                used to verify and validate home-ownership and
-                                mortgage information. We do not share these with
-                                any other users or companies including potential
-                                investors.
-                              </p>
-                            </GridItem>
-                          </GridContainer>
-                        </CardBody>
-                      </Card>
-                    </span>
-                  ),
-                },
-              ]}
-            />
+                        )}
+
+                        {s2rb_re_profile_id && (
+                          <div>
+                            <Card className={classes.dashCard}>
+                              <CardBody>
+                                <h4>
+                                  Thank you for updating your real estate
+                                  profile.
+                                </h4>
+                                <GridContainer>
+                                  <GridItem xs={3}>
+                                    <b>Search Stage</b>
+                                  </GridItem>
+                                  <GridItem xs={9}>
+                                    {reProfile.searchStage}
+                                  </GridItem>
+                                  <GridItem xs={3}>
+                                    <b>House Type</b>
+                                  </GridItem>
+                                  <GridItem xs={9}>
+                                    {reProfile.houseType}
+                                  </GridItem>
+                                  <GridItem xs={3}>
+                                    <b>Primary Home</b>
+                                  </GridItem>
+                                  <GridItem xs={9}>
+                                    {reProfile.primaryHome}
+                                  </GridItem>
+                                  <GridItem xs={3}>
+                                    <b>Home Address</b>
+                                  </GridItem>
+                                  <GridItem xs={9}>{streetAddress}</GridItem>
+                                  <GridItem xs={3}>
+                                    <b>Rent-back Preference</b>
+                                  </GridItem>
+                                  <GridItem xs={9}>
+                                    {reProfile.rentBackPeriod}
+                                  </GridItem>
+                                  <GridItem xs={12}>
+                                    <div>
+                                      <br />
+                                      <Button
+                                        color="success"
+                                        href="/reprofile"
+                                        target="_self"
+                                      >
+                                        Edit
+                                      </Button>
+                                    </div>
+                                  </GridItem>
+                                </GridContainer>
+                              </CardBody>
+                            </Card>
+                          </div>
+                        )}
+                      </div>
+                    ),
+                  },
+                  {
+                    tabButton: "Documents",
+                    tabIcon: DescriptionIcon,
+                    tabContent: (
+                      <span>
+                        <Card className={classes.dashCard}>
+                          <CardBody>
+                            <GridContainer>
+                              <GridItem xs={12} sm={12} md={12} lg={12}>
+                                <div>
+                                  <h4>
+                                    Thank you for updating your real estate
+                                    profile.
+                                  </h4>
+                                  <p>
+                                    To unlock the next stage, please upload
+                                    documents showing mortgage and
+                                    home-ownership details.
+                                  </p>
+                                  <p>
+                                    All documents are uploaded, transimitted and
+                                    stored in encrypted format. The documents
+                                    are used to verify and validate
+                                    home-ownership and mortgage information. We
+                                    do not share these with any other users or
+                                    companies including potential investors.
+                                  </p>
+                                </div>
+                              </GridItem>
+                            </GridContainer>
+                          </CardBody>
+                        </Card>
+                      </span>
+                    ),
+                  },
+                ]}
+              />
+            </div>
           </GridItem>
         </GridContainer>
       )}
