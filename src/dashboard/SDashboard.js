@@ -130,7 +130,7 @@ export default function SDashboard(props) {
       />
 
       {!currentUser && (
-        <h3>
+        <h4>
           <center>
             Please{" "}
             <a href="/signup?ref=sdashboard" target="_self">
@@ -143,12 +143,12 @@ export default function SDashboard(props) {
             </a>{" "}
             now for a free no obligation account.
           </center>
-        </h3>
+        </h4>
       )}
 
       {currentUser && (
         <GridContainer justify="center" className={classes.main}>
-          <GridItem xs={12} sm={12} md={10} lg={10}>
+          <GridItem xs={12} sm={12} md={9} lg={7}>
             <NavPills
               color="success"
               tabs={[
@@ -178,48 +178,47 @@ export default function SDashboard(props) {
                             {!s2rb_re_profile_id && (
                               <GridItem xs={10} sm={10} md={10} lg={10}>
                                 <div>
-                                  <h4>
+                                  <h4 className={classes.subtitle}>
                                     Thank you for signing-up and creating a user
                                     profile.
                                   </h4>
-                                  <p>
-                                    To unlock the next stage, please complete
-                                    your&nbsp;
+                                  <h5>
+                                    Please complete your&nbsp;
                                     <a href="/reprofile" target="_self">
                                       <b>real-estate profile</b>
                                     </a>
-                                    .
-                                  </p>
-                                  <p>
+                                    &nbsp; to unlock the next stage.
+                                  </h5>
+                                  <h5>
                                     Completing that information does NOT
                                     initiate any application process or credit
                                     checks. It simply helps you begin the
                                     process for matching investors who may be
                                     interested in your property.
-                                  </p>
+                                  </h5>
                                 </div>
                               </GridItem>
                             )}
                             {s2rb_re_profile_id && (
                               <GridItem xs={10} sm={10} md={10} lg={10}>
                                 <div>
-                                  <h4>
+                                  <h4 className={classes.subtitle}>
                                     Thank you for updating your real estate
                                     profile.
                                   </h4>
-                                  <p>
-                                    To unlock the next stage, please upload
-                                    documents showing mortgage and
-                                    home-ownership details.
-                                  </p>
-                                  <p>
+                                  <h5>
+                                    Please upload documents showing mortgage and
+                                    home-ownership details to unlock the next
+                                    stage.
+                                  </h5>
+                                  <h5>
                                     All documents are uploaded, transimitted and
                                     stored in encrypted format. The documents
                                     are used to verify and validate
                                     home-ownership and mortgage information. We
                                     do not share these with any other users or
                                     companies including potential investors.
-                                  </p>
+                                  </h5>
                                 </div>
                               </GridItem>
                             )}
@@ -240,25 +239,24 @@ export default function SDashboard(props) {
                             <GridContainer>
                               <GridItem xs={12} sm={12} md={12} lg={12}>
                                 <div>
-                                  <h4>
+                                  <h4 className={classes.subtitle}>
                                     Thank you for signing-up and creating a user
                                     profile.
                                   </h4>
-                                  <p>
-                                    To unlock the next stage, please complete
-                                    your&nbsp;
+                                  <h5>
+                                    Please complete your&nbsp;
                                     <a href="/reprofile" target="_self">
                                       <b>real-estate profile</b>
                                     </a>
-                                    .
-                                  </p>
-                                  <p>
+                                    &nbsp; to unlock the next stage.
+                                  </h5>
+                                  <h5>
                                     Completing that information does NOT
                                     initiate any application process or credit
                                     checks. It simply helps you begin the
                                     process for matching investors who may be
                                     interested in your property.
-                                  </p>
+                                  </h5>
                                 </div>
                               </GridItem>
                             </GridContainer>
@@ -270,7 +268,7 @@ export default function SDashboard(props) {
                         <div>
                           <Card className={classes.dashCard}>
                             <CardBody>
-                              <h4>
+                              <h4 className={classes.subtitle}>
                                 Thank you for updating your real estate profile.
                               </h4>
                               <GridContainer>
@@ -336,23 +334,23 @@ export default function SDashboard(props) {
                           <GridContainer>
                             <GridItem xs={12} sm={12} md={12} lg={12}>
                               <div>
-                                <h4>
+                                <h4 className={classes.subtitle}>
                                   Thank you for updating your real estate
                                   profile.
                                 </h4>
-                                <p>
+                                <h5>
                                   To unlock the next stage, please upload
                                   documents showing mortgage and home-ownership
                                   details.
-                                </p>
-                                <p>
+                                </h5>
+                                <h5>
                                   All documents are uploaded, transimitted and
                                   stored in encrypted format. The documents are
                                   used to verify and validate home-ownership and
                                   mortgage information. We do not share these
                                   with any other users or companies including
                                   potential investors.
-                                </p>
+                                </h5>
                               </div>
                             </GridItem>
                           </GridContainer>

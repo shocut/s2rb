@@ -20,7 +20,6 @@ const timelineStyle = {
   subtitle: {
     fontSize: "1.313rem",
     maxWidth: "500px",
-    margin: "10px auto 0",
   },
   main: {
     background: "#FFFFFF",
