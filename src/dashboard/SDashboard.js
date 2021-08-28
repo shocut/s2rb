@@ -160,23 +160,25 @@ export default function SDashboard(props) {
                       <Card className={classes.dashCard}>
                         <CardBody>
                           <GridContainer>
-                            <GridItem xs={2} sm={2} md={2} lg={2}>
-                              <div style={{ width: 100, height: 100 }}>
-                                <CircularProgressbar
-                                  value={reProfileProgress}
-                                  strokeWidth="18"
-                                  text={`${reProfileProgress}%`}
-                                  circleRatio={0.75}
-                                  strokeLinecap="butt"
-                                  styles={buildStyles({
-                                    rotation: 1 / 2 + 1 / 8,
-                                  })}
-                                ></CircularProgressbar>
-                                <center>Progress</center>
-                              </div>
+                            <GridItem xs={12} sm={2} md={2} lg={2}>
+                              <center>
+                                <div style={{ width: 100, height: 100 }}>
+                                  <CircularProgressbar
+                                    value={reProfileProgress}
+                                    strokeWidth="18"
+                                    text={`${reProfileProgress}%`}
+                                    circleRatio={0.75}
+                                    strokeLinecap="butt"
+                                    styles={buildStyles({
+                                      rotation: 1 / 2 + 1 / 8,
+                                    })}
+                                  ></CircularProgressbar>
+                                  Progress
+                                </div>{" "}
+                              </center>
                             </GridItem>
                             {!s2rb_re_profile_id && (
-                              <GridItem xs={10} sm={10} md={10} lg={10}>
+                              <GridItem xs={12} sm={10} md={10} lg={10}>
                                 <div>
                                   <h4 className={classes.subtitle}>
                                     Thank you for signing-up and creating a user
