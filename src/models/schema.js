@@ -160,13 +160,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "description": {
-                    "name": "description",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
                 "fileURL": {
                     "name": "fileURL",
                     "isArray": false,
@@ -273,5 +266,5 @@ export const schema = {
             }
         }
     },
-    "version": "62fd30b6a9c84ac3f1e0f365f995dda3"
+    "version": "b1e338a1b4adc6ae9bf22baccde1b3f9"
 };

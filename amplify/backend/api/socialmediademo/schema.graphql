@@ -1,7 +1,6 @@
 type Attachment {
   name: String!
   category: String
-  description: String
   fileURL: String
   status: String
 }

@@ -33,6 +33,6 @@ GridItem.defaultProps = {
 };
 
 GridItem.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.any,
   className: PropTypes.string,
 };

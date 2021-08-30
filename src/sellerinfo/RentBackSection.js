@@ -42,7 +42,9 @@ export default function RentBackSection(sliderRefContainer) {
   if (homeAddress) {
     try {
       homeAddressObj = JSON.parse(homeAddress);
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   const closeDialog = () => {

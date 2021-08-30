@@ -20,6 +20,7 @@ import NavPills from "../common/components/NavPills.js";
 import Card from "../common/components/Card.js";
 import CardBody from "../common/components/CardBody.js";
 import Button from "../common/components/Button.js";
+import CustomFileInput from "../common/components/CustomFileInput.js";
 
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
@@ -28,14 +29,13 @@ import "./custom.css";
 import DescriptionIcon from "@material-ui/icons/Description";
 import StoreIcon from "@material-ui/icons/Store";
 import DonutLargeIcon from "@material-ui/icons/DonutLarge";
-
+import AttachFile from "@material-ui/icons/AttachFile";
 import styles from "./dashboardStyle.js";
 
 const useStyles = makeStyles(styles);
 
 export default function SDashboard(props) {
-  const { ...rest } = props;
-
+  console.log(props);
   const [currentUser, setCurrentUser] = useState(
     localStorage.getItem("currentUser")
   );
@@ -50,6 +50,7 @@ export default function SDashboard(props) {
 
   const [reProfile, setProfile] = useState({});
   const [streetAddress, setStreetAddress] = useState({});
+  const [attachments, setAttachments] = useState([]);
 
   const classes = useStyles();
   const dashboardRoutes = [];
@@ -90,6 +91,28 @@ export default function SDashboard(props) {
     loadREProfile();
   }, []);
 
+  const saveToDataStore = async () => {
+    console.log("in saveToDataStore");
+    if (reProfile) {
+      saveREProfileAttachments(
+        await DataStore.query(SellerRealEstateProfile, reProfile.id)
+      );
+    }
+  };
+
+  function saveREProfileAttachments(originalREObj) {
+    console.log("in saveREProfileAttachments");
+
+    if (originalREObj) {
+      //code for updating existing record
+      DataStore.save(
+        SellerRealEstateProfile.copyOf(originalREObj, (updated) => {
+          updated.attachments = attachments;
+        })
+      );
+    }
+  }
+
   const setREProfile = (reProfileList, currentUser) => {
     console.log("reProfileList.length: " + reProfileList.length);
     if (reProfileList && reProfileList.length > 0) {
@@ -98,6 +121,13 @@ export default function SDashboard(props) {
       set_s2rb_re_profile_id(reProfile.id);
       setREProfileProgress(60);
       setProfile(reProfile);
+      if (!reProfile.attachments) {
+        setAttachments([]);
+      } else {
+        setAttachments(reProfile.attachments);
+      }
+
+      console.log("attachments " + attachments);
       setStreetAddress(
         reProfile.address ? reProfile.address.formattedAddress : ""
       );
@@ -121,7 +151,6 @@ export default function SDashboard(props) {
           height: 400,
           color: "dark",
         }}
-        {...rest}
       />
       <Parallax
         smallheader
@@ -353,6 +382,29 @@ export default function SDashboard(props) {
                                   with any other users or companies including
                                   potential investors.
                                 </h5>
+
+                                <div>
+                                  <CustomFileInput
+                                    attachments={attachments}
+                                    setAttachments={setAttachments}
+                                    saveToDataStore={saveToDataStore}
+                                    formControlProps={{
+                                      fullWidth: true,
+                                    }}
+                                    inputProps={{
+                                      placeholder: "Select a file to upload.",
+                                    }}
+                                    endButton={{
+                                      buttonProps: {
+                                        round: true,
+                                        color: "success",
+                                        justIcon: true,
+                                        fileButton: true,
+                                      },
+                                      icon: <AttachFile />,
+                                    }}
+                                  />
+                                </div>
                               </div>
                             </GridItem>
                           </GridContainer>

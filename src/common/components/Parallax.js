@@ -66,4 +66,5 @@ Parallax.propTypes = {
   style: PropTypes.string,
   image: PropTypes.string,
   small: PropTypes.bool,
+  smallheader: PropTypes.bool,
 };

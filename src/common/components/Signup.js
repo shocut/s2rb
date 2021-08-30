@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import queryString from "query-string";
 import { Auth } from "aws-amplify";
 import { AuthState } from "@aws-amplify/ui-components";
@@ -121,5 +123,9 @@ function Signup(props) {
     </div>
   );
 }
+
+Signup.propTypes = {
+  location: PropTypes.string,
+};
 
 export default Signup;

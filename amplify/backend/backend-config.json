@@ -40,16 +40,26 @@
       "service": "Lambda",
       "providerPlugin": "awscloudformation",
       "build": true
+    },
+    "S3Trigger881fe7d5": {
+      "service": "Lambda",
+      "providerPlugin": "awscloudformation",
+      "build": true
+    },
+    "S3Trigger055ac222": {
+      "service": "Lambda",
+      "providerPlugin": "awscloudformation",
+      "build": true
     }
   },
   "storage": {
-    "RealEstateProfile": {
+    "s2rbSellerAttachments": {
       "service": "S3",
       "providerPlugin": "awscloudformation",
       "dependsOn": [
         {
           "category": "function",
-          "resourceName": "S3Trigger223c98ea",
+          "resourceName": "S3Trigger055ac222",
           "attributes": [
             "Name",
             "Arn",

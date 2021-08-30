@@ -5,7 +5,6 @@ import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplif
 export declare class Attachment {
   readonly name: string;
   readonly category?: string;
-  readonly description?: string;
   readonly fileURL?: string;
   readonly status?: string;
   constructor(init: ModelInit<Attachment>);
