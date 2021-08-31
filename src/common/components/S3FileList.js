@@ -21,8 +21,7 @@ import styles from "../jss/customFileInputStyle.js";
 const useStyles = makeStyles(styles);
 
 export default function S3FileList(props) {
-  const { attachments, ...rest } = props;
-
+  const { attachments, deleteAttachment, ...rest } = props;
   const [fileList, setFileList] = useState({});
   const classes = useStyles();
 
@@ -59,8 +58,19 @@ export default function S3FileList(props) {
                   inputProps={{
                     ...inputProps,
                     value: getValue(item),
-                    endAdornment: buttonEnd,
-                    startAdornment: buttonStart,
+                    endAdornment: (
+                      <Button
+                        file-name={item.name}
+                        file-catg={item.category}
+                        round="true"
+                        color="warning"
+                        justIcon="true"
+                        onClick={deleteAttachment}
+                      >
+                        {endButton.icon !== undefined ? endButton.icon : null}
+                        {endButton.text !== undefined ? endButton.text : null}
+                      </Button>
+                    ),
                   }}
                 />
               </div>
@@ -96,28 +106,11 @@ export default function S3FileList(props) {
     }
   }
 
-  const { endButton, startButton, inputProps, formControlProps } = props;
+  const { endButton, inputProps, formControlProps } = props;
   if (inputProps && inputProps.type && inputProps.type === "file") {
     inputProps.type = "text";
   }
-  let buttonStart;
-  let buttonEnd;
-  if (startButton) {
-    buttonStart = (
-      <Button {...startButton.buttonProps}>
-        {startButton.icon !== undefined ? startButton.icon : null}
-        {startButton.text !== undefined ? startButton.text : null}
-      </Button>
-    );
-  }
-  if (endButton) {
-    buttonEnd = (
-      <Button {...endButton.buttonProps}>
-        {endButton.icon !== undefined ? endButton.icon : null}
-        {endButton.text !== undefined ? endButton.text : null}
-      </Button>
-    );
-  }
+
   return (
     <GridContainer>
       <S3FileRow xs={12} sm={12} md={12} lg={12} files={fileList} />
@@ -132,6 +125,7 @@ S3FileList.defaultProps = {
 S3FileList.propTypes = {
   attachments: PropTypes.array,
   setAttachments: PropTypes.func,
+  deleteAttachment: PropTypes.func,
   id: PropTypes.string,
   endButton: PropTypes.object,
   startButton: PropTypes.object,

@@ -20,7 +20,7 @@ import NavPills from "../common/components/NavPills.js";
 import Card from "../common/components/Card.js";
 import CardBody from "../common/components/CardBody.js";
 import Button from "../common/components/Button.js";
-import CustomFileInput from "../common/components/CustomFileInput.js";
+import S3FileHandler from "../common/components/S3FileHandler.js";
 
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
@@ -91,23 +91,38 @@ export default function SDashboard(props) {
     loadREProfile();
   }, []);
 
+  const setAndSaveAttachments = async (newAttachments) => {
+    console.log("in setAndSaveAttachments");
+    setAttachments(newAttachments);
+    localStorage.setItem("s2rb_attachments", JSON.stringify(newAttachments));
+    saveToDataStore();
+  };
+
   const saveToDataStore = async () => {
     console.log("in saveToDataStore");
-    if (reProfile) {
-      saveREProfileAttachments(
-        await DataStore.query(SellerRealEstateProfile, reProfile.id)
-      );
+    try {
+      var attchJson = localStorage.getItem("s2rb_attachments");
+      var attchObj = JSON.parse(attchJson);
+      localStorage.removeItem("s2rb_attachments");
+
+      if (reProfile) {
+        saveREProfileAttachments(
+          await DataStore.query(SellerRealEstateProfile, reProfile.id),
+          attchObj
+        );
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 
-  function saveREProfileAttachments(originalREObj) {
-    console.log("in saveREProfileAttachments");
-
+  function saveREProfileAttachments(originalREObj, newAttachments) {
+    console.log("in saveREProfileAttachments: " + newAttachments);
     if (originalREObj) {
       //code for updating existing record
       DataStore.save(
         SellerRealEstateProfile.copyOf(originalREObj, (updated) => {
-          updated.attachments = attachments;
+          updated.attachments = newAttachments;
         })
       );
     }
@@ -384,10 +399,11 @@ export default function SDashboard(props) {
                                 </h5>
 
                                 <div>
-                                  <CustomFileInput
+                                  <S3FileHandler
                                     attachments={attachments}
-                                    setAttachments={setAttachments}
-                                    saveToDataStore={saveToDataStore}
+                                    setAndSaveAttachments={
+                                      setAndSaveAttachments
+                                    }
                                     formControlProps={{
                                       fullWidth: true,
                                     }}
