@@ -148,6 +148,13 @@ const headerStyle = {
     paddingLeft: "0",
     ...transition,
   },
+  headerLogo: {
+    marginTop: "-10px",
+    marginBottom: "-15px",
+    height: "30px",
+    width: "150px",
+    backgroundRepeat: "no-repeat",
+  },
 };
 
 export default headerStyle;

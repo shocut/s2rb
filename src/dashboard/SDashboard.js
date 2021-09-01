@@ -157,7 +157,7 @@ export default function SDashboard(props) {
   return (
     <div>
       <Header
-        color="transparent"
+        color="white"
         routes={dashboardRoutes}
         brand="Sell To Rent Back"
         rightLinks={<HeaderLinks onLogout={onLogout} />}
@@ -167,11 +167,7 @@ export default function SDashboard(props) {
           color: "dark",
         }}
       />
-      <Parallax
-        smallheader
-        filter
-        image={require("../common/img/header-bg.jpg").default}
-      />
+      <Parallax smallheader filter />
 
       {!currentUser && (
         <h4>

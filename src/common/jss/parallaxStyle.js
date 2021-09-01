@@ -31,7 +31,7 @@ const parallaxStyle = {
     height: "380px",
   },
   smallheader: {
-    height: "90px",
+    height: "71px",
   },
 };
 
