@@ -18,7 +18,7 @@ export default function CustomLinearProgressWithLabel(props) {
 
   return (
     <Box display={isVisible === "true" ? "flex" : "none"} alignItems="center">
-      <Box width="90%" mr={1}>
+      <Box width="100%" mr={1}>
         <LinearProgress
           variant="determinate"
           {...rest}
@@ -28,7 +28,7 @@ export default function CustomLinearProgressWithLabel(props) {
           }}
         />
       </Box>
-      <Box minWidth={35}>
+      <Box className={classes.label}>
         <Typography variant="body2" color="textSecondary">{`${Math.round(
           props.value
         )}%`}</Typography>

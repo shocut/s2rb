@@ -63,7 +63,6 @@ export default function S3FileHandler(props) {
     } else {
       setCatgError(false);
       setProgress(0);
-      setIsVisible("true");
       hiddenFile.current.click(e);
     }
   };
@@ -143,10 +142,10 @@ export default function S3FileHandler(props) {
   }
 
   async function uploadFile(e) {
-    const file = e.target.files[0];
+    const file = e.currentTarget.files[0];
+    if (!file) return false;
+    setIsVisible("true");
     setFileName(file.name);
-    console.log(e);
-
     try {
       var userEmail = "";
       var currentUser = localStorage.getItem("currentUser");

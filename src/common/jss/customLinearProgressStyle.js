@@ -59,6 +59,9 @@ const customLinearProgressStyle = {
   grayBackground: {
     background: "rgba(221, 221, 221, 0.2)",
   },
+  label: {
+    marginLeft: "-50px",
+  },
 };
 
 export default customLinearProgressStyle;
