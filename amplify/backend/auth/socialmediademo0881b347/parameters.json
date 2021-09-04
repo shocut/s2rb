@@ -1,16 +1,17 @@
 {
     "identityPoolName": "socialmediademo0881b347_identitypool_0881b347",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "social0881b347",
     "userPoolName": "socialmediademo0881b347_userpool_0881b347",
     "autoVerifiedAttributes": [
         "email"
     ],
-    "mfaConfiguration": "OFF",
+    "mfaConfiguration": "OPTIONAL",
     "mfaTypes": [
-        "SMS Text Message"
+        "SMS Text Message",
+        "TOTP"
     ],
-    "smsAuthenticationMessage": "Your authentication code is {####}",
+    "smsAuthenticationMessage": "Your S2RB code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
     "emailVerificationSubject": "Your S2RB verification code",
     "emailVerificationMessage": "Your S2RB verification code is {####}",

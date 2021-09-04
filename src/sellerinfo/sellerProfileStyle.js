@@ -28,6 +28,7 @@ const sellerProfileStyle = {
   main: {
     background: "#FFFFFF",
     position: "relative",
+    minHeight: "300px",
     zIndex: "3",
   },
   mainRaised: {

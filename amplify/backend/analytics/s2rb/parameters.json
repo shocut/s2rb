@@ -1,0 +1,21 @@
+{
+    "appName": "s2rb",
+    "roleName": "pinpointLambdaRole1fd805f9",
+    "cloudformationPolicyName": "cloudformationPolicy1fd805f9",
+    "cloudWatchPolicyName": "cloudWatchPolicy1fd805f9",
+    "pinpointPolicyName": "pinpointPolicy1fd805f9",
+    "authPolicyName": "pinpoint_amplify_1fd805f9",
+    "unauthPolicyName": "pinpoint_amplify_1fd805f9",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    }
+}

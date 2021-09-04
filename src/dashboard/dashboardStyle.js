@@ -24,7 +24,7 @@ const timelineStyle = {
   main: {
     background: "#FFFFFF",
     position: "relative",
-    minHeight: "500px",
+    minHeight: "300px",
     zIndex: "3",
   },
   mainRaised: {

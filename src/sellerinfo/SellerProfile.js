@@ -101,7 +101,7 @@ export default function SellerProfile(props) {
   return (
     <div>
       <Header
-        color="transparent"
+        color="white"
         routes={dashboardRoutes}
         brand="Sell To Rent Back"
         rightLinks={<HeaderLinks onLogout={onLogout} />}
@@ -118,20 +118,27 @@ export default function SellerProfile(props) {
         image={require("../common/img/header-bg.jpg").default}
       />
       {!currentUser && (
-        <h3>
-          <center>
-            Please{" "}
-            <a href="/signup?ref=reprofile" target="_self">
-              <b>sign-in</b>
-            </a>{" "}
-            to your S2RB account to complete the real-estate profile. <br />
-            If you have not yet resitered, please{" "}
-            <a href="/signup?ref=reprofile" target="_self">
-              <b>sign-up</b>
-            </a>{" "}
-            now for a free no obligation account.
-          </center>
-        </h3>
+        <GridContainer justify="center" className={classes.main}>
+          <GridItem xs={12} sm={12} md={9} lg={7}>
+            <br></br>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={9} lg={7}>
+            <h4>
+              <center>
+                Please{" "}
+                <a href="/signup?ref=reprofile" target="_self">
+                  <b>sign-in</b>
+                </a>{" "}
+                to your S2RB account to view your dashboard. <br />
+                If you have not yet resitered, please{" "}
+                <a href="/signup?ref=sdashboard" target="_self">
+                  <b>sign-up</b>
+                </a>{" "}
+                now for a free no obligation account.
+              </center>
+            </h4>
+          </GridItem>
+        </GridContainer>
       )}
       {currentUser && (
         <GridContainer justify="center" className={classes.main}>

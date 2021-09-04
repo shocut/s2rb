@@ -68,5 +68,11 @@
         }
       ]
     }
+  },
+  "analytics": {
+    "s2rb": {
+      "service": "Pinpoint",
+      "providerPlugin": "awscloudformation"
+    }
   }
 }

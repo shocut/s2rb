@@ -170,20 +170,27 @@ export default function SDashboard(props) {
       <Parallax smallheader filter />
 
       {!currentUser && (
-        <h4>
-          <center>
-            Please{" "}
-            <a href="/signup?ref=sdashboard" target="_self">
-              <b>sign-in</b>
-            </a>{" "}
-            to your S2RB account to view your dashboard. <br />
-            If you have not yet resitered, please{" "}
-            <a href="/signup?ref=reprofile" target="_self">
-              <b>sign-up</b>
-            </a>{" "}
-            now for a free no obligation account.
-          </center>
-        </h4>
+        <GridContainer justify="center" className={classes.main}>
+          <GridItem xs={12} sm={12} md={9} lg={7}>
+            <br></br>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={9} lg={7}>
+            <h4>
+              <center>
+                Please{" "}
+                <a href="/signup?ref=sdashboard" target="_self">
+                  <b>sign-in</b>
+                </a>{" "}
+                to your S2RB account to view your dashboard. <br />
+                If you have not yet resitered, please{" "}
+                <a href="/signup?ref=reprofile" target="_self">
+                  <b>sign-up</b>
+                </a>{" "}
+                now for a free no obligation account.
+              </center>
+            </h4>
+          </GridItem>
+        </GridContainer>
       )}
 
       {currentUser && (
