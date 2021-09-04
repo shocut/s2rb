@@ -10,7 +10,7 @@ import Radio from "@material-ui/core/Radio";
 import GridContainer from "../common/components/GridContainer.js";
 import GridItem from "../common/components/GridItem.js";
 import Button from "../common/components/Button.js";
-import styles from "../common/jss/sellerProfileStyle.js";
+import styles from "./sellerProfileStyle.js";
 
 const useStyles = makeStyles(styles);
 
@@ -19,7 +19,7 @@ export default function MortgageSection() {
   const [selectedEnabled, setSelectedEnabled] = React.useState("b");
 
   return (
-    <div className={classes.section}>
+    <div className={classes.questionPanel}>
       <GridContainer justify="center">
         <GridItem cs={12} sm={12} md={8}>
           <h2>Please share your goals and house profile</h2>

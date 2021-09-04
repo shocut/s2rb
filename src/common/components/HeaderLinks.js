@@ -13,6 +13,9 @@ import Tooltip from "@material-ui/core/Tooltip";
 
 // @material-ui/icons
 import { Apps, CloudDownload } from "@material-ui/icons";
+import FacebookIcon from "@material-ui/icons/Facebook";
+import TwitterIcon from "@material-ui/icons/Twitter";
+import LinkedInIcon from "@material-ui/icons/LinkedIn";
 
 // core components
 import CustomDropdown from "./CustomDropdown.js";
@@ -30,38 +33,53 @@ export default function HeaderLinks({ onLogout }) {
         <LoginButton onLogout={onLogout} classes={classes} />
       </ListItem>
       <ListItem className={classes.listItem}>
-        <CustomDropdown
-          noLiPadding
-          buttonText="Share"
-          buttonProps={{
-            className: classes.navLink,
-            color: "transparent",
-          }}
-          buttonIcon={Apps}
-          dropdownList={[
-            <Link to="/" className={classes.navLink}>
-              Link-1{" "}
-            </Link>,
-            <a href="#" target="_blank" className={classes.navLink}>
-              Link-1
-            </a>,
-          ]}
-        />
-      </ListItem>
-      <ListItem className={classes.listItem}>
         <Tooltip
-          id="instagram-facebook"
-          title="Follow us on facebook"
+          id="sb-facebook"
+          title="Share on facebook"
           placement={window.innerWidth > 959 ? "top" : "left"}
           classes={{ tooltip: classes.tooltip }}
         >
           <Button
             color="transparent"
-            href="https://www.facebook.com/CreativeTim?ref=creativetim"
+            href="https://www.facebook.com/S2RB?ref=s2rb"
             target="_blank"
             className={classes.navLink}
           >
-            <i className={classes.socialIcons + " fab fa-facebook"} />
+            <FacebookIcon className={classes.socialIcons} />
+          </Button>
+        </Tooltip>
+      </ListItem>
+      <ListItem className={classes.listItem}>
+        <Tooltip
+          id="sb-twitter"
+          title="Share on Twitter"
+          placement={window.innerWidth > 959 ? "top" : "left"}
+          classes={{ tooltip: classes.tooltip }}
+        >
+          <Button
+            color="transparent"
+            href="https://www.twitter.com/S2RB?ref=s2rb"
+            target="_blank"
+            className={classes.navLink}
+          >
+            <TwitterIcon className={classes.socialIcons} />
+          </Button>
+        </Tooltip>
+      </ListItem>
+      <ListItem className={classes.listItem}>
+        <Tooltip
+          id="sb-twitter"
+          title="Share on LinkedIn"
+          placement={window.innerWidth > 959 ? "top" : "left"}
+          classes={{ tooltip: classes.tooltip }}
+        >
+          <Button
+            color="transparent"
+            href="https://www.linkedin.com/S2RB?ref=s2rb"
+            target="_blank"
+            className={classes.navLink}
+          >
+            <LinkedInIcon className={classes.socialIcons} />
           </Button>
         </Tooltip>
       </ListItem>

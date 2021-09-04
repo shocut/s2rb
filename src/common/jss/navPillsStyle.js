@@ -5,7 +5,7 @@ import {
   successColor,
   warningColor,
   dangerColor,
-} from "../jss/baseStyles.js";
+} from "./baseStyles.js";
 
 const navPillsStyle = (theme) => ({
   root: {
@@ -129,8 +129,8 @@ const navPillsStyle = (theme) => ({
     color: "inherit",
     position: "relative",
     fontSize: "12px",
-    lineHeight: "24px",
-    fontWeight: "500",
+    lineHeight: "18px",
+    fontWeight: "700",
     textTransform: "uppercase",
     "&,& *": {
       letterSpacing: "normal",

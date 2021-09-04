@@ -14,6 +14,20 @@
     "categories": {
       "auth": {
         "socialmediademo0881b347": {}
+      },
+      "function": {
+        "S3Trigger223c98ea": {
+          "deploymentBucketName": "amplify-socialmediademo-devp-203005-deployment",
+          "s3Key": "amplify-builds/S3Trigger223c98ea-3333494549687a4f6265-build.zip"
+        },
+        "S3Trigger881fe7d5": {
+          "deploymentBucketName": "amplify-socialmediademo-devp-203005-deployment",
+          "s3Key": "amplify-builds/S3Trigger881fe7d5-54357a74596d6f6f4b4b-build.zip"
+        },
+        "S3Trigger055ac222": {
+          "deploymentBucketName": "amplify-socialmediademo-devp-203005-deployment",
+          "s3Key": "amplify-builds/S3Trigger055ac222-4d6a7444615139672b66-build.zip"
+        }
       }
     }
   },

@@ -6,7 +6,7 @@ import {
   infoColor,
   roseColor,
   grayColor,
-} from "common/jss/baseStyles.js";
+} from "./baseStyles.js";
 
 const customLinearProgressStyle = {
   root: {
@@ -58,6 +58,9 @@ const customLinearProgressStyle = {
   },
   grayBackground: {
     background: "rgba(221, 221, 221, 0.2)",
+  },
+  label: {
+    marginLeft: "-50px",
   },
 };
 

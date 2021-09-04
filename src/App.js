@@ -1,3 +1,5 @@
+import React from "react";
+
 import { Auth } from "aws-amplify";
 import { AuthState } from "@aws-amplify/ui-components";
 
@@ -27,9 +29,12 @@ const dashboardRoutes = [];
 const useStyles = makeStyles(styles);
 
 function App(props) {
-  const [currentUser, setCurrentUser] = useState();
+  const [currentUser, setCurrentUser] = useState(
+    localStorage.getItem("currentUser")
+  );
   const { ...rest } = props;
   const classes = useStyles();
+
   const onLogout = async () => {
     await Auth.signOut();
     localStorage.removeItem("currentUser");
@@ -44,9 +49,9 @@ function App(props) {
       }
     } catch (e) {
       setCurrentUser(null);
+      console.log(currentUser);
     }
   };
-  console.log("App.js:" + currentUser);
 
   return (
     <div className="App">

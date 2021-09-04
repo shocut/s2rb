@@ -19,6 +19,7 @@ import GridItem from "common/components/GridItem.js";
 import Button from "common/components/Button.js";
 import HeaderLinks from "common/components/HeaderLinks.js";
 import Parallax from "common/components/Parallax.js";
+import logoImg from "common/img/s2rb_logo.png";
 
 import styles from "landingPageStyle.js";
 
@@ -56,6 +57,7 @@ export default function LandingPage(props) {
         color="transparent"
         routes={dashboardRoutes}
         brand="Sell To Rent Back"
+        logoImg={`url(${logoImg})`}
         rightLinks={<HeaderLinks authStatus={authStatus} userName={userName} />}
         fixed
         changeColorOnScroll={{

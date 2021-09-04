@@ -1,4 +1,7 @@
 import React from "react";
+import PropTypes from "prop-types";
+
+import queryString from "query-string";
 import { Auth } from "aws-amplify";
 import { AuthState } from "@aws-amplify/ui-components";
 import { makeStyles } from "@material-ui/core/styles";
@@ -19,30 +22,37 @@ const useStyles = makeStyles(styles);
 
 Amplify.configure(aws_exports);
 
-function Signup() {
+function Signup(props) {
   const classes = useStyles();
   const history = useHistory();
+  const queryValues = queryString.parse(props.location.search);
+  var nextPage = "/sdashboard";
+  if (queryValues.ref) {
+    //need a better check to make sure we don't route to any page
+    nextPage = queryValues.ref;
+  }
 
   const checkLoginState = async () => {
     try {
       const currentUser = await Auth.currentAuthenticatedUser();
       if (currentUser) {
-        localStorage.setItem("currentUser", currentUser);
-        //take a route fragment as parameter to go to it going /home for now
-        history.push("/home");
+        localStorage.setItem("currentUser", JSON.stringify(currentUser));
+        history.push(nextPage);
       }
     } catch (e) {
-      localStorage.removeItem("currentUser");
+      clearUserState();
     }
   };
 
-  function onAuthStateChange(nextAuthState) {
-    console.log("onAuthStateChange: " + nextAuthState);
+  const clearUserState = () => {
+    localStorage.removeItem("currentUser");
+  };
 
+  function onAuthStateChange(nextAuthState) {
     if (nextAuthState === AuthState.SignedIn) {
       checkLoginState();
     } else {
-      localStorage.removeItem("currentUser");
+      clearUserState();
     }
   }
 
@@ -66,6 +76,19 @@ function Signup() {
                 usernameAlias="email"
                 headerText="Sign Up for S2RB"
                 formFields={[
+                  {
+                    type: "given_name",
+                    label: " First Name ",
+                    placeholder: "first name",
+                    inputProps: { required: true, autocomplete: "given_name" },
+                  },
+
+                  {
+                    type: "family_name",
+                    label: " Last Name ",
+                    placeholder: "last name",
+                    inputProps: { required: true, autocomplete: "family_name" },
+                  },
                   {
                     type: "email",
                     label: " Email ",
@@ -100,5 +123,9 @@ function Signup() {
     </div>
   );
 }
+
+Signup.propTypes = {
+  location: PropTypes.string,
+};
 
 export default Signup;

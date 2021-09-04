@@ -4,8 +4,10 @@ import { schema } from './schema';
 
 
 
-const { Post } = initSchema(schema);
+const { SellerRealEstateProfile, Attachment, Location } = initSchema(schema);
 
 export {
-  Post
+  SellerRealEstateProfile,
+  Attachment,
+  Location
 };

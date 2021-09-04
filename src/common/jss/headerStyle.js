@@ -54,7 +54,8 @@ const headerStyle = {
   title: {
     ...defaultFont,
     lineHeight: "30px",
-    fontSize: "18px",
+    fontSize: "15px",
+    fontWeight: "500",
     borderRadius: "3px",
     textTransform: "none",
     color: "inherit",
@@ -146,6 +147,13 @@ const headerStyle = {
     paddingRight: "0px",
     paddingLeft: "0",
     ...transition,
+  },
+  headerLogo: {
+    marginTop: "-10px",
+    marginBottom: "-15px",
+    height: "30px",
+    width: "150px",
+    backgroundRepeat: "no-repeat",
   },
 };
 

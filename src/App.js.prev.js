@@ -1,42 +1,42 @@
-import { DataStore, Auth } from 'aws-amplify';
-import { Post } from './models'
-import PostView from './PostView';
-import { useEffect, useState } from 'react';
-import './App.css';
-import LoginButton from './LoginButton';
-import LoginPopup from './LoginPopup';
-import { AuthState } from '@aws-amplify/ui-components';
+import { DataStore, Auth } from "aws-amplify";
+import { Post } from "./models";
+import PostView from "./PostView";
+import { useEffect, useState } from "react";
+import "./App.css";
+import LoginButton from "./LoginButton";
+import LoginPopup from "./LoginPopup";
+import { AuthState } from "@aws-amplify/ui-components";
 
 function App() {
-  const [posts, setPosts] = useState([])
-  const [currentUser, setCurrentUser] = useState()
-  const [showAuthenticator, setShowAuthenticator] = useState(false)
+  const [posts, setPosts] = useState([]);
+  const [currentUser, setCurrentUser] = useState();
+  const [showAuthenticator, setShowAuthenticator] = useState(false);
 
   const checkLoginState = async () => {
     try {
-      const currentUser = await Auth.currentAuthenticatedUser()
+      const currentUser = await Auth.currentAuthenticatedUser();
       if (currentUser) {
-        setCurrentUser(currentUser)
-        setShowAuthenticator(false)
+        setCurrentUser(currentUser);
+        setShowAuthenticator(false);
       }
     } catch (e) {
-      setCurrentUser(null)
+      setCurrentUser(null);
     }
-  }
+  };
 
   useEffect(async () => {
-    checkLoginState()
+    checkLoginState();
     const loadPosts = async () => {
-      setPosts(await DataStore.query(Post))
-    }
-    loadPosts()
+      setPosts(await DataStore.query(Post));
+    };
+    loadPosts();
 
     const subscription = DataStore.observe(Post).subscribe(() => {
-      loadPosts()
-    })
+      loadPosts();
+    });
 
-    return () => subscription.unsubscribe()
-  }, [])
+    return () => subscription.unsubscribe();
+  }, []);
 
   return (
     <div className="App">
@@ -45,25 +45,39 @@ function App() {
           onLogin={() => setShowAuthenticator(true)}
           currentUser={currentUser}
           onLogout={async () => {
-            await Auth.signOut()
-            checkLoginState()
-          }} />
-        <button onClick={() => {
-          DataStore.save(new Post({
-            content: window.prompt('New post:')
-          }))
-        }}>
+            localStorage.clear();
+            await Auth.signOut();
+            checkLoginState();
+          }}
+        />
+        <button
+          onClick={() => {
+            DataStore.save(
+              new Post({
+                content: window.prompt("New post:"),
+              })
+            );
+          }}
+        >
           📝 Add a new post
         </button>
       </nav>
       <div className="posts">
         <h1>All Posts</h1>
-        {posts.map(post => <PostView post={post} currentUser={currentUser}/>)}
+        {posts.map((post) => (
+          <PostView post={post} currentUser={currentUser} />
+        ))}
       </div>
-      {showAuthenticator && 
+      {showAuthenticator && (
         <LoginPopup
-        onAuthStateChange={(nextAuthState) => { if (nextAuthState === AuthState.SignedIn) { checkLoginState() } }}
-          onCancel={() => setShowAuthenticator(false)}/>}
+          onAuthStateChange={(nextAuthState) => {
+            if (nextAuthState === AuthState.SignedIn) {
+              checkLoginState();
+            }
+          }}
+          onCancel={() => setShowAuthenticator(false)}
+        />
+      )}
     </div>
   );
 }

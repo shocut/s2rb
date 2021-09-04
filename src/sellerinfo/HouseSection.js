@@ -8,7 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import GridContainer from "../common/components/GridContainer.js";
 import GridItem from "../common/components/GridItem.js";
 import Button from "../common/components/Button.js";
-import styles from "../common/jss/sellerProfileStyle.js";
+import styles from "./sellerProfileStyle.js";
 
 const useStyles = makeStyles(styles);
 
@@ -40,7 +40,7 @@ export default function HouseSection(sliderRefContainer) {
     carousalRef.prev();
   };
   return (
-    <div className={classes.section}>
+    <div className={classes.questionPanel}>
       <GridContainer justify="center" className={classes.section}>
         <GridItem cs={12} sm={12} md={12} lg={12}>
           <h2>Thats great! You are at the right place.</h2>
@@ -57,17 +57,17 @@ export default function HouseSection(sliderRefContainer) {
               onChange={handleChange}
             >
               <FormControlLabel
-                value="sfh"
+                value="Single Family"
                 control={<Radio />}
                 label="It is a Single Family Home"
               />
               <FormControlLabel
-                value="th"
+                value="Townhouse"
                 control={<Radio />}
                 label="It is a Town Home"
               />
               <FormControlLabel
-                value="c"
+                value="Condo"
                 control={<Radio />}
                 label="It is a Condo"
               />
@@ -85,8 +85,8 @@ export default function HouseSection(sliderRefContainer) {
               value={primaryHome}
               onChange={handleChangePH}
             >
-              <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-              <FormControlLabel value="no" control={<Radio />} label="No" />
+              <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
+              <FormControlLabel value="No" control={<Radio />} label="No" />
             </RadioGroup>
           </FormControl>
         </GridItem>

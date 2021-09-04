@@ -11,6 +11,8 @@ import "./common/scss/material.scss";
 import App from "./App";
 import Signup from "./common/components/Signup";
 import SellerProfile from "./sellerinfo/SellerProfile.js";
+import SDashboard from "./dashboard/SDashboard";
+
 import reportWebVitals from "./reportWebVitals";
 
 var hist = createBrowserHistory();
@@ -28,6 +30,7 @@ ReactDOM.render(
       <Route path="/home" component={App} />
       <Route path="/signup" component={Signup} />
       <Route path="/reprofile" component={SellerProfile} />
+      <Route path="/sdashboard" component={SDashboard} />
       <Route path="/" component={App} />
     </Switch>
   </Router>,
