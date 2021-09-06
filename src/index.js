@@ -8,6 +8,7 @@ import { Router, Route, Switch } from "react-router-dom";
 import "./index.css";
 import "./common/scss/material.scss";
 
+import CommingSoon from "./CommingSoon";
 import App from "./App";
 import Signup from "./common/components/Signup";
 import SellerProfile from "./sellerinfo/SellerProfile.js";
@@ -31,7 +32,8 @@ ReactDOM.render(
       <Route path="/signup" component={Signup} />
       <Route path="/reprofile" component={SellerProfile} />
       <Route path="/sdashboard" component={SDashboard} />
-      <Route path="/" component={App} />
+      <Route path="/app" component={App} />
+      <Route path="/" component={CommingSoon} />
     </Switch>
   </Router>,
   document.getElementById("root")
