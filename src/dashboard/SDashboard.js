@@ -1,11 +1,11 @@
 import React from "react";
+import { useLocation } from "react-router";
 
 import { useEffect, useState } from "react";
 import { Auth } from "aws-amplify";
 
 import Header from "../common/components/Header.js";
 import HeaderLinks from "../common/components/HeaderLinks.js";
-
 import { DataStore } from "aws-amplify";
 
 // nodejs library that concatenates classes
@@ -51,7 +51,20 @@ export default function SDashboard(props) {
   const [reProfile, setProfile] = useState({});
   const [streetAddress, setStreetAddress] = useState({});
   const [attachments, setAttachments] = useState([]);
-  const [currentTab, setCurrentTab] = useState(0);
+
+  //default active tab - this is not ideal TODO: need to optimize flow when dashboard is already loaded!
+  /* eslint-disable */
+  var tabRef = 0;
+  var location = useLocation();
+  var tabRefPath = location.pathname.substring(
+    location.pathname.lastIndexOf("/") + 1
+  );
+  console.log("tabRefPath: " + tabRefPath);
+  if (tabRefPath) {
+    //if (tabRefPath == "r") tabRef = 1; -- some potential for async errors
+    if (tabRefPath == "d") tabRef = 2;
+  }
+  const [activeTab, setActiveTab] = useState(tabRef);
 
   const classes = useStyles();
   const dashboardRoutes = [];
@@ -119,8 +132,7 @@ export default function SDashboard(props) {
 
   /* eslint-disable */
   const showDocumentTab = () => {
-    setCurrentTab(2);
-    console.log(currentTab);
+    setActiveTab(2);
   };
 
   function saveREProfileAttachments(originalREObj, newAttachments) {
@@ -205,7 +217,7 @@ export default function SDashboard(props) {
           <GridItem xs={12} sm={12} md={9} lg={7}>
             <NavPills
               color="success"
-              active={currentTab}
+              active={activeTab}
               tabs={[
                 {
                   tabButton: "Progress",
@@ -267,7 +279,10 @@ export default function SDashboard(props) {
                                     In order to start the investor matching
                                     process we need you to upload the property
                                     documents. Plase navigate to the{" "}
-                                    <b>documents</b> tab to upload documents.
+                                    <a href="/sdashboard/d" target="_self">
+                                      Documents
+                                    </a>{" "}
+                                    tab to upload photos, statements and files.
                                   </h5>
                                   <h5>
                                     All documents are uploaded, transimitted and

@@ -77,7 +77,7 @@ export default function HeaderLinks(props) {
           <CustomDropdown
             noLiPadding
             navDropdown
-            hoverColor={successColor}
+            hoverColor="gray"
             caret={false}
             buttonProps={{
               justIcon: true,
@@ -89,11 +89,11 @@ export default function HeaderLinks(props) {
                 <DashboardIcon className={classes.dropdownIcons} />
                 Dashboard
               </Link>,
-              <Link to="/reprofile" className={classes.dropdownLink}>
-                <HomeWorkIcon className={classes.dropdownIcons} /> Estate
-                Profile
-              </Link>,
-              <Link className={classes.dropdownLink} onClick={onLogout}>
+              <Link
+                to="/sdashboard"
+                className={classes.dropdownLink}
+                onClick={onLogout}
+              >
                 <ExitToAppIcon className={classes.dropdownIcons} /> Sign Out
               </Link>,
             ]}
@@ -102,7 +102,7 @@ export default function HeaderLinks(props) {
       )}
       <ListItem className={classes.listItem}>
         <CustomDropdown
-          hoverColor={successColor}
+          hoverColor="gray"
           caret={false}
           buttonProps={{
             justIcon: true,

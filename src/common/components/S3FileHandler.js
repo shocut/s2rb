@@ -56,6 +56,7 @@ export default function S3FileHandler(props) {
   const closeDialog = () => {
     setClassicModal(false);
     setConfirmUpload(false);
+    setFileName("");
   };
 
   // eslint-disable-next-line
@@ -403,7 +404,6 @@ export default function S3FileHandler(props) {
         }}
         open={confirmUpload}
         keepMounted
-        onClose={closeDialog}
         TransitionComponent={Transition}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
@@ -412,7 +412,7 @@ export default function S3FileHandler(props) {
           id="alert-dialog-slide-title"
           className={classes.modalHeader}
         >
-          <h4 className={classes.modalTitle}>Upload this attachment?</h4>
+          <h4 className={classes.modalTitle}>Upload Attachment</h4>
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
