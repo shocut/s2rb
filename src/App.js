@@ -63,7 +63,7 @@ function App(props) {
         fixed
         changeColorOnScroll={{
           height: 400,
-          color: "dark",
+          color: "white",
         }}
         {...rest}
       />
