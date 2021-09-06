@@ -155,6 +155,10 @@ export default function S3FileHandler(props) {
         "The size of file selected was too large. Please breakdown into smaller files to upload."
       );
       setCatgError(true);
+      setTimeout(() => {
+        setFileObj(null);
+        setCatgError(false);
+      }, 10000);
       return false;
     } else {
       setCatgError(false);

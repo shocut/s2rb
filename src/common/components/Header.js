@@ -61,14 +61,14 @@ export default function Header(props) {
     [classes.fixed]: fixed,
   });
   const brandComponent = (
-    <a className={classes.title} title={brand} target="_self" href="/#">
-      <span
+    <a className={classes.title} title={brand} target="_self" href="/">
+      <div
         className={classes.headerLogo}
         style={{
           display: "flex",
           backgroundImage: `url(${logoImg})`,
         }}
-      ></span>
+      ></div>
     </a>
   );
   return (
