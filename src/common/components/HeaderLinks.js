@@ -11,77 +11,122 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Tooltip from "@material-ui/core/Tooltip";
 
+import Icon from "@material-ui/core/Icon";
+import ShareIcon from "@material-ui/icons/Share";
+import PersonIcon from "@material-ui/icons/Person";
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import HomeWorkIcon from "@material-ui/icons/HomeWork";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+
 // @material-ui/icons
 import { Apps, CloudDownload } from "@material-ui/icons";
-import FacebookIcon from "@material-ui/icons/Facebook";
-import TwitterIcon from "@material-ui/icons/Twitter";
-import LinkedInIcon from "@material-ui/icons/LinkedIn";
+
+import {
+  EmailShareButton,
+  FacebookShareButton,
+  LinkedinShareButton,
+  PinterestShareButton,
+  RedditShareButton,
+  TwitterShareButton,
+  WhatsappShareButton,
+} from "react-share";
+
+import {
+  EmailIcon,
+  FacebookIcon,
+  FacebookMessengerIcon,
+  InstapaperIcon,
+  LinkedinIcon,
+  PinterestIcon,
+  RedditIcon,
+  TwitterIcon,
+  WhatsappIcon,
+} from "react-share";
 
 // core components
 import CustomDropdown from "./CustomDropdown.js";
 import Button from "./Button.js";
 import styles from "../jss/headerLinksStyle.js";
-import LoginButton from "./LoginButton";
+import { successColor } from "../jss/baseStyles.js";
 
 const useStyles = makeStyles(styles);
 
-export default function HeaderLinks({ onLogout }) {
+export default function HeaderLinks(props) {
+  const shareUrl = "https://www.s2rb.com";
+  const shareTitle = "Check out this Sell to Rent Back (S2RB) platform.";
+  const { onLogout, dropdownHoverColor, ...rest } = props;
   const classes = useStyles();
+  const currentUser = localStorage.getItem("currentUser");
+
   return (
-    <List className={classes.list}>
-      <ListItem className={classes.listItem}>
-        <LoginButton onLogout={onLogout} classes={classes} />
-      </ListItem>
-      <ListItem className={classes.listItem}>
-        <Tooltip
-          id="sb-facebook"
-          title="Share on facebook"
-          placement={window.innerWidth > 959 ? "top" : "left"}
-          classes={{ tooltip: classes.tooltip }}
-        >
+    <List className={classes.list + " " + classes.mlAuto}>
+      {!currentUser && (
+        <ListItem className={classes.listItem}>
           <Button
             color="transparent"
-            href="https://www.facebook.com/S2RB?ref=s2rb"
-            target="_blank"
+            href="/signup"
+            target="_self"
             className={classes.navLink}
           >
-            <FacebookIcon className={classes.socialIcons} />
+            Sign in
           </Button>
-        </Tooltip>
-      </ListItem>
+        </ListItem>
+      )}
+      {currentUser && (
+        <ListItem className={classes.listItem}>
+          <CustomDropdown
+            noLiPadding
+            navDropdown
+            hoverColor={successColor}
+            caret={false}
+            buttonProps={{
+              justIcon: true,
+              color: "transparent",
+            }}
+            buttonIcon={PersonIcon}
+            dropdownList={[
+              <Link to="/sdashboard" className={classes.dropdownLink}>
+                <DashboardIcon className={classes.dropdownIcons} />
+                Dashboard
+              </Link>,
+              <Link to="/reprofile" className={classes.dropdownLink}>
+                <HomeWorkIcon className={classes.dropdownIcons} /> Estate
+                Profile
+              </Link>,
+              <Link className={classes.dropdownLink} onClick={onLogout}>
+                <ExitToAppIcon className={classes.dropdownIcons} /> Sign Out
+              </Link>,
+            ]}
+          />
+        </ListItem>
+      )}
       <ListItem className={classes.listItem}>
-        <Tooltip
-          id="sb-twitter"
-          title="Share on Twitter"
-          placement={window.innerWidth > 959 ? "top" : "left"}
-          classes={{ tooltip: classes.tooltip }}
-        >
-          <Button
-            color="transparent"
-            href="https://www.twitter.com/S2RB?ref=s2rb"
-            target="_blank"
-            className={classes.navLink}
-          >
-            <TwitterIcon className={classes.socialIcons} />
-          </Button>
-        </Tooltip>
-      </ListItem>
-      <ListItem className={classes.listItem}>
-        <Tooltip
-          id="sb-twitter"
-          title="Share on LinkedIn"
-          placement={window.innerWidth > 959 ? "top" : "left"}
-          classes={{ tooltip: classes.tooltip }}
-        >
-          <Button
-            color="transparent"
-            href="https://www.linkedin.com/S2RB?ref=s2rb"
-            target="_blank"
-            className={classes.navLink}
-          >
-            <LinkedInIcon className={classes.socialIcons} />
-          </Button>
-        </Tooltip>
+        <CustomDropdown
+          hoverColor={successColor}
+          caret={false}
+          buttonProps={{
+            justIcon: true,
+            color: "transparent",
+          }}
+          buttonIcon={ShareIcon}
+          dropdownList={[
+            <FacebookShareButton url={shareUrl} quote={shareTitle}>
+              <FacebookIcon size={32} round />
+            </FacebookShareButton>,
+            <LinkedinShareButton url={shareUrl} quote={shareTitle}>
+              <LinkedinIcon size={32} round />
+            </LinkedinShareButton>,
+            <TwitterShareButton url={shareUrl} quote={shareTitle}>
+              <TwitterIcon size={32} round />
+            </TwitterShareButton>,
+            <PinterestShareButton url={shareUrl} quote={shareTitle}>
+              <PinterestIcon size={32} round />
+            </PinterestShareButton>,
+            <EmailShareButton url={shareUrl} quote={shareTitle}>
+              <EmailIcon size={32} round />
+            </EmailShareButton>,
+          ]}
+        />
       </ListItem>
     </List>
   );

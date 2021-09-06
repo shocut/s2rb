@@ -144,6 +144,11 @@ export default function S3FileHandler(props) {
   async function uploadFile(e) {
     const file = e.currentTarget.files[0];
     if (!file) return false;
+
+    if (file.size > 1) {
+      alert("Your file is " + file.size);
+    }
+
     setIsVisible("true");
     setFileName(file.name);
     try {
@@ -392,7 +397,5 @@ S3FileHandler.propTypes = {
   inputProps: PropTypes.object,
   formControlProps: PropTypes.object,
   multiple: PropTypes.bool,
-  // it is a function from which you can get the file that was uploaded
-  // more can be read here: https://github.com/creativetimofficial/ct-material-kit-pro-react/issues/64 and here: https://github.com/creativetimofficial/ct-material-kit-pro-react/issues/37
   onChange: PropTypes.func,
 };

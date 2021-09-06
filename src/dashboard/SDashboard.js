@@ -51,6 +51,7 @@ export default function SDashboard(props) {
   const [reProfile, setProfile] = useState({});
   const [streetAddress, setStreetAddress] = useState({});
   const [attachments, setAttachments] = useState([]);
+  const [currentTab, setCurrentTab] = useState(0);
 
   const classes = useStyles();
   const dashboardRoutes = [];
@@ -114,6 +115,12 @@ export default function SDashboard(props) {
     } catch (e) {
       console.log(e);
     }
+  };
+
+  /* eslint-disable */
+  const showDocumentTab = () => {
+    setCurrentTab(2);
+    console.log(currentTab);
   };
 
   function saveREProfileAttachments(originalREObj, newAttachments) {
@@ -182,7 +189,7 @@ export default function SDashboard(props) {
                   <b>sign-in</b>
                 </a>{" "}
                 to your S2RB account to view your dashboard. <br />
-                If you have not yet resitered, please{" "}
+                If you have not yet registered, please{" "}
                 <a href="/signup?ref=reprofile" target="_self">
                   <b>sign-up</b>
                 </a>{" "}
@@ -198,6 +205,7 @@ export default function SDashboard(props) {
           <GridItem xs={12} sm={12} md={9} lg={7}>
             <NavPills
               color="success"
+              active={currentTab}
               tabs={[
                 {
                   tabButton: "Progress",
@@ -255,10 +263,11 @@ export default function SDashboard(props) {
                                     Thank you for updating your real estate
                                     profile.
                                   </h4>
-                                  <h5>
-                                    Please upload documents showing mortgage and
-                                    home-ownership details to unlock the next
-                                    stage.
+                                  <h5 onClick={showDocumentTab}>
+                                    In order to start the investor matching
+                                    process we need you to upload the property
+                                    documents. Plase navigate to the{" "}
+                                    <b>documents</b> tab to upload documents.
                                   </h5>
                                   <h5>
                                     All documents are uploaded, transimitted and

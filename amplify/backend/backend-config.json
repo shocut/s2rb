@@ -60,14 +60,9 @@
         {
           "category": "function",
           "resourceName": "S3Trigger055ac222",
-          "attributes": [
-            "Name",
-            "Arn",
-            "LambdaExecutionRole"
-          ]
+          "attributes": ["Name", "Arn", "LambdaExecutionRole"]
         }
       ]
     }
-  },
-  "analytics": {}
+  }
 }

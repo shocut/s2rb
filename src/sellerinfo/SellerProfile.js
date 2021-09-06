@@ -130,7 +130,7 @@ export default function SellerProfile(props) {
                   <b>sign-in</b>
                 </a>{" "}
                 to your S2RB account to view your dashboard. <br />
-                If you have not yet resitered, please{" "}
+                If you have not yet registered, please{" "}
                 <a href="/signup?ref=sdashboard" target="_self">
                   <b>sign-up</b>
                 </a>{" "}

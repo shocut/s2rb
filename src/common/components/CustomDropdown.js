@@ -70,10 +70,16 @@ export default function CustomDropdown(props) {
   let icon = null;
   switch (typeof buttonIcon) {
     case "object":
-      icon = <props.buttonIcon className={classes.buttonIcon} />;
+      icon = (
+        <props.buttonIcon className={classes.buttonIcon} fontSize="large" />
+      );
       break;
     case "string":
-      icon = <Icon className={classes.buttonIcon}>{props.buttonIcon}</Icon>;
+      icon = (
+        <Icon fontSize="large" className={classes.buttonIcon}>
+          {props.buttonIcon}
+        </Icon>
+      );
       break;
     default:
       icon = null;
