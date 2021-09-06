@@ -422,6 +422,7 @@ export default function SDashboard(props) {
                                     inputProps={{
                                       placeholder: "Select a file to upload.",
                                     }}
+                                    maxFileSize={10000000}
                                     endButton={{
                                       buttonProps: {
                                         round: true,

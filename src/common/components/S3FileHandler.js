@@ -38,18 +38,24 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function S3FileHandler(props) {
-  const { attachments, setAndSaveAttachments, ...rest } = props;
+  const { attachments, maxFileSize, setAndSaveAttachments, ...rest } = props;
 
   const [fileName, setFileName] = useState("");
   const [fileCategory, setFileCategory] = useState("");
   const [catgError, setCatgError] = useState(false);
+  const [fileError, setFileError] = useState(
+    "Please select a document type before attaching file."
+  );
+  const [fileObj, setFileObj] = useState(null);
   const [progress, setProgress] = useState(0);
   const [isVisible, setIsVisible] = useState("false");
-  const [classicModal, setClassicModal] = React.useState(false);
+  const [classicModal, setClassicModal] = useState(false);
   const [delFileObj, setDelFileObj] = useState({ fileName: "", fileCatg: "" });
+  const [confirmUpload, setConfirmUpload] = useState(false);
 
   const closeDialog = () => {
     setClassicModal(false);
+    setConfirmUpload(false);
   };
 
   // eslint-disable-next-line
@@ -57,7 +63,7 @@ export default function S3FileHandler(props) {
   let hiddenFile = React.createRef();
   const onFocus = (e) => {
     if (fileCategory == "") {
-      //alert("Please select a category");
+      setFileError("Please select a document type before attaching file.");
       setCatgError(true);
       return false;
     } else {
@@ -144,13 +150,25 @@ export default function S3FileHandler(props) {
   async function uploadFile(e) {
     const file = e.currentTarget.files[0];
     if (!file) return false;
-
-    if (file.size > 1) {
-      alert("Your file is " + file.size);
+    if (file.size > maxFileSize) {
+      setFileError(
+        "The size of file selected was too large. Please breakdown into smaller files to upload."
+      );
+      setCatgError(true);
+      return false;
+    } else {
+      setCatgError(false);
     }
+    setFileName(file.name);
+    setFileObj(file);
+    setConfirmUpload(true);
+  }
+
+  async function confirmedUploadFile() {
+    const file = fileObj;
+    if (!file) return false;
 
     setIsVisible("true");
-    setFileName(file.name);
     try {
       var userEmail = "";
       var currentUser = localStorage.getItem("currentUser");
@@ -167,7 +185,9 @@ export default function S3FileHandler(props) {
             setFileName("");
             setTimeout(() => {
               setIsVisible("false");
-            }, 3000);
+              setFileObj(null);
+              setConfirmUpload(false);
+            }, 2000);
 
             var attachment = new Attachment({
               name: file.name,
@@ -213,15 +233,7 @@ export default function S3FileHandler(props) {
   return (
     <div>
       <GridContainer {...rest}>
-        <GridItem xs={12} sm={12} md={12} lg={12}>
-          <CustomLinearProgressWithLabel
-            variant="determinate"
-            isVisible={isVisible}
-            color="success"
-            value={progress}
-            style={{ width: "100%", display: "inline-block" }}
-          />
-        </GridItem>
+        <GridItem xs={12} sm={12} md={12} lg={12}></GridItem>
         <GridItem xs={12} sm={12} md={12} lg={12}>
           <FormControl fullWidth className={classes.selectFormControl}>
             <InputLabel htmlFor="simple-select" className={classes.selectLabel}>
@@ -319,7 +331,7 @@ export default function S3FileHandler(props) {
               style={catgError ? {} : { display: "none" }}
               error={catgError}
             >
-              Please select a document type before attaching file.
+              {fileError}
             </FormHelperText>
           </FormControl>
         </GridItem>
@@ -380,6 +392,45 @@ export default function S3FileHandler(props) {
           </Button>
         </DialogActions>
       </Dialog>
+      <Dialog
+        classes={{
+          root: classes.center,
+          paper: classes.modal,
+        }}
+        open={confirmUpload}
+        keepMounted
+        onClose={closeDialog}
+        TransitionComponent={Transition}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle
+          id="alert-dialog-slide-title"
+          className={classes.modalHeader}
+        >
+          <h4 className={classes.modalTitle}>Upload this attachment?</h4>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            Please confirm that you want to upload file: <b>{fileName}</b>
+          </DialogContentText>
+          <CustomLinearProgressWithLabel
+            variant="determinate"
+            isVisible={isVisible}
+            color="success"
+            value={progress}
+            style={{ width: "100%", display: "inline-block" }}
+          />
+        </DialogContent>
+        <DialogActions className={classes.modalFooter}>
+          <Button color="sucess" onClick={confirmedUploadFile}>
+            Upload File
+          </Button>
+          <Button color="info" onClick={closeDialog}>
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
@@ -392,6 +443,7 @@ S3FileHandler.propTypes = {
   attachments: PropTypes.array,
   setAndSaveAttachments: PropTypes.func,
   id: PropTypes.string,
+  maxFileSize: PropTypes.number,
   endButton: PropTypes.object,
   startButton: PropTypes.object,
   inputProps: PropTypes.object,
