@@ -110,21 +110,56 @@ export default function HeaderLinks(props) {
           }}
           buttonIcon={ShareIcon}
           dropdownList={[
-            <FacebookShareButton url={shareUrl} quote={shareTitle}>
-              <FacebookIcon size={32} round />
-            </FacebookShareButton>,
-            <LinkedinShareButton url={shareUrl} quote={shareTitle}>
-              <LinkedinIcon size={32} round />
-            </LinkedinShareButton>,
-            <TwitterShareButton url={shareUrl} quote={shareTitle}>
-              <TwitterIcon size={32} round />
-            </TwitterShareButton>,
-            <PinterestShareButton url={shareUrl} quote={shareTitle}>
-              <PinterestIcon size={32} round />
-            </PinterestShareButton>,
-            <EmailShareButton url={shareUrl} quote={shareTitle}>
-              <EmailIcon size={32} round />
-            </EmailShareButton>,
+            <Tooltip
+              id="sb-twitter"
+              title="Share on Facebook"
+              placement={window.innerWidth > 959 ? "top" : "left"}
+              classes={{ tooltip: classes.tooltip }}
+            >
+              <FacebookShareButton url={shareUrl} quote={shareTitle}>
+                <FacebookIcon size={32} round />
+              </FacebookShareButton>
+            </Tooltip>,
+            <Tooltip
+              id="sb-twitter"
+              title="Share on LinkedIn"
+              placement={window.innerWidth > 959 ? "top" : "left"}
+              classes={{ tooltip: classes.tooltip }}
+            >
+              <LinkedinShareButton url={shareUrl} quote={shareTitle}>
+                <LinkedinIcon size={32} round />
+              </LinkedinShareButton>
+            </Tooltip>,
+            <Tooltip
+              id="sb-twitter"
+              title="Share on Twitter"
+              placement={window.innerWidth > 959 ? "top" : "left"}
+              classes={{ tooltip: classes.tooltip }}
+            >
+              <TwitterShareButton url={shareUrl} quote={shareTitle}>
+                <TwitterIcon size={32} round />
+              </TwitterShareButton>
+            </Tooltip>,
+            <Tooltip
+              id="sb-twitter"
+              title="Share on Pinterest"
+              placement={window.innerWidth > 959 ? "top" : "left"}
+              classes={{ tooltip: classes.tooltip }}
+            >
+              <PinterestShareButton url={shareUrl} quote={shareTitle}>
+                <PinterestIcon size={32} round />
+              </PinterestShareButton>
+            </Tooltip>,
+            <Tooltip
+              id="sb-twitter"
+              title="Share via Email"
+              placement={window.innerWidth > 959 ? "top" : "left"}
+              classes={{ tooltip: classes.tooltip }}
+            >
+              <EmailShareButton url={shareUrl} quote={shareTitle}>
+                <EmailIcon size={32} round />
+              </EmailShareButton>
+            </Tooltip>,
           ]}
         />
       </ListItem>
