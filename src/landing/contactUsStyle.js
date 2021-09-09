@@ -8,9 +8,12 @@ import {
   grayColor,
 } from "../common/jss/baseStyles.js";
 
+import customSelectStyle from "../common/jss/customSelectStyle.js";
+
 const contactUsStyle = {
   main,
   mainRaised,
+  ...customSelectStyle,
   title,
   mlAuto,
   description,
@@ -76,6 +79,12 @@ const contactUsStyle = {
     color: grayColor[12],
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
     lineHeight: "1.42857",
+  },
+  selectFormControl: {
+    paddingTop: "15px",
+    paddingBottom: "15px",
+    borderColor: grayColor[12],
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
   },
 };
 
