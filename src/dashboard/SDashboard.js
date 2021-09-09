@@ -8,7 +8,6 @@ import Header from "../common/components/Header.js";
 import HeaderLinks from "../common/components/HeaderLinks.js";
 import { DataStore } from "aws-amplify";
 
-// nodejs library that concatenates classes
 import { SellerRealEstateProfile } from "../models";
 
 // @material-ui/core components
