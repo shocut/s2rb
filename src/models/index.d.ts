@@ -26,8 +26,26 @@ export declare class Location {
   constructor(init: ModelInit<Location>);
 }
 
+type InvestorInterestMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
 type SellerRealEstateProfileMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
+export declare class InvestorInterest {
+  readonly id: string;
+  readonly name?: string;
+  readonly email?: string;
+  readonly phone?: string;
+  readonly investmentRange?: string;
+  readonly financing?: string;
+  readonly message?: string;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<InvestorInterest, InvestorInterestMetaData>);
+  static copyOf(source: InvestorInterest, mutator: (draft: MutableModel<InvestorInterest, InvestorInterestMetaData>) => MutableModel<InvestorInterest, InvestorInterestMetaData> | void): InvestorInterest;
 }
 
 export declare class SellerRealEstateProfile {

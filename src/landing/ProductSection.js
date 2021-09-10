@@ -28,7 +28,6 @@ export default function ProductSection() {
   const classes = useStyles();
   const signupURL = generatePath("/signup");
   const sellerProfileURL = generatePath("/reprofile");
-  const currentUser = localStorage.getItem("currentUser");
 
   return (
     <div className={classes.section} id="how-it-works">
@@ -94,27 +93,24 @@ export default function ProductSection() {
               title="Sign-up"
               description="We take data protection extremely seriously. That's why S2RB uses end to end encryption on all data. S2RB does not share your data without your authorization."
               icon={oneIcon}
-              iconColor="info"
+              iconColor="success"
               vertical
             />
-
-            {!currentUser && (
-              <Button
-                color="success"
-                href={signupURL}
-                target="_self"
-                className={classes.navLink}
-              >
-                Sign Up
-              </Button>
-            )}
+            <Button
+              color="success"
+              href={signupURL}
+              target="_self"
+              className={classes.navLink}
+            >
+              Sign Up
+            </Button>
           </GridItem>
           <GridItem xs={12} sm={12} md={4}>
             <InfoArea
               title="Complete House Profile"
               description="Provide details such as address, type of house, rent back period preference etc. This information will be used to find and match interested investors in the region."
               icon={twoIcon}
-              iconColor="success"
+              iconColor="info"
               vertical
             />
             <Button
@@ -131,7 +127,7 @@ export default function ProductSection() {
               title="Match Investors"
               description="S2RB helps you find real-estate investors who can meet your rent-back and other preferences to create a win-win opportunity for you both. Feel free to communicate."
               icon={threeIcon}
-              iconColor="danger"
+              iconColor="warning"
               vertical
             />
             <Button color="warning">Review Investors</Button>

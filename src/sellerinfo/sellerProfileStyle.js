@@ -1,5 +1,4 @@
 import { container, title } from "../common/jss/baseStyles.js";
-
 const sellerProfileStyle = {
   container: {
     zIndex: "12",
@@ -28,6 +27,7 @@ const sellerProfileStyle = {
   main: {
     background: "#FFFFFF",
     position: "relative",
+    minHeight: "300px",
     zIndex: "3",
   },
   mainRaised: {
@@ -52,5 +52,4 @@ const sellerProfileStyle = {
     height: "100px",
   },
 };
-
 export default sellerProfileStyle;

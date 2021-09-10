@@ -1,14 +1,13 @@
 import React from "react";
+import { useLocation } from "react-router";
 
 import { useEffect, useState } from "react";
 import { Auth } from "aws-amplify";
 
 import Header from "../common/components/Header.js";
 import HeaderLinks from "../common/components/HeaderLinks.js";
-
 import { DataStore } from "aws-amplify";
 
-// nodejs library that concatenates classes
 import { SellerRealEstateProfile } from "../models";
 
 // @material-ui/core components
@@ -51,6 +50,20 @@ export default function SDashboard(props) {
   const [reProfile, setProfile] = useState({});
   const [streetAddress, setStreetAddress] = useState({});
   const [attachments, setAttachments] = useState([]);
+
+  //default active tab - this is not ideal TODO: need to optimize flow when dashboard is already loaded!
+  /* eslint-disable */
+  var tabRef = 0;
+  var location = useLocation();
+  var tabRefPath = location.pathname.substring(
+    location.pathname.lastIndexOf("/") + 1
+  );
+  console.log("tabRefPath: " + tabRefPath);
+  if (tabRefPath) {
+    //if (tabRefPath == "r") tabRef = 1; -- some potential for async errors
+    if (tabRefPath == "d") tabRef = 2;
+  }
+  const [activeTab, setActiveTab] = useState(tabRef);
 
   const classes = useStyles();
   const dashboardRoutes = [];
@@ -116,6 +129,11 @@ export default function SDashboard(props) {
     }
   };
 
+  /* eslint-disable */
+  const showDocumentTab = () => {
+    setActiveTab(2);
+  };
+
   function saveREProfileAttachments(originalREObj, newAttachments) {
     console.log("in saveREProfileAttachments: " + newAttachments);
     if (originalREObj) {
@@ -170,20 +188,27 @@ export default function SDashboard(props) {
       <Parallax smallheader filter />
 
       {!currentUser && (
-        <h4>
-          <center>
-            Please{" "}
-            <a href="/signup?ref=sdashboard" target="_self">
-              <b>sign-in</b>
-            </a>{" "}
-            to your S2RB account to view your dashboard. <br />
-            If you have not yet resitered, please{" "}
-            <a href="/signup?ref=reprofile" target="_self">
-              <b>sign-up</b>
-            </a>{" "}
-            now for a free no obligation account.
-          </center>
-        </h4>
+        <GridContainer justify="center" className={classes.main}>
+          <GridItem xs={12} sm={12} md={9} lg={7}>
+            <br></br>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={9} lg={7}>
+            <h4>
+              <center>
+                Please{" "}
+                <a href="/signup?ref=sdashboard" target="_self">
+                  <b>sign-in</b>
+                </a>{" "}
+                to your S2RB account to view your dashboard. <br />
+                If you have not yet registered, please{" "}
+                <a href="/signup?ref=reprofile" target="_self">
+                  <b>sign-up</b>
+                </a>{" "}
+                now for a free no obligation account.
+              </center>
+            </h4>
+          </GridItem>
+        </GridContainer>
       )}
 
       {currentUser && (
@@ -191,6 +216,7 @@ export default function SDashboard(props) {
           <GridItem xs={12} sm={12} md={9} lg={7}>
             <NavPills
               color="success"
+              active={activeTab}
               tabs={[
                 {
                   tabButton: "Progress",
@@ -248,10 +274,14 @@ export default function SDashboard(props) {
                                     Thank you for updating your real estate
                                     profile.
                                   </h4>
-                                  <h5>
-                                    Please upload documents showing mortgage and
-                                    home-ownership details to unlock the next
-                                    stage.
+                                  <h5 onClick={showDocumentTab}>
+                                    In order to start the investor matching
+                                    process we need you to upload the property
+                                    documents. Plase navigate to the{" "}
+                                    <a href="/sdashboard/d" target="_self">
+                                      Documents
+                                    </a>{" "}
+                                    tab to upload photos, statements and files.
                                   </h5>
                                   <h5>
                                     All documents are uploaded, transimitted and
@@ -406,6 +436,7 @@ export default function SDashboard(props) {
                                     inputProps={{
                                       placeholder: "Select a file to upload.",
                                     }}
+                                    maxFileSize={10000000}
                                     endButton={{
                                       buttonProps: {
                                         round: true,

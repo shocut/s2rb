@@ -22,8 +22,8 @@ import styles from "./landing/landingPageStyle.js";
 
 // Sections for this page
 import ProductSection from "./landing/ProductSection.js";
-import WorkSection from "./landing/WorkSection.js";
 import FAQSection from "./landing/FAQSection.js";
+import ContactUsSection from "./landing/ContactUS";
 
 const dashboardRoutes = [];
 const useStyles = makeStyles(styles);
@@ -63,7 +63,7 @@ function App(props) {
         fixed
         changeColorOnScroll={{
           height: 400,
-          color: "dark",
+          color: "white",
         }}
         {...rest}
       />
@@ -101,7 +101,7 @@ function App(props) {
               }
             }}
           />
-          <WorkSection />
+          <ContactUsSection />
           <FAQSection />
         </div>
       </div>
