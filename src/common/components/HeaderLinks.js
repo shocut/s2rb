@@ -55,7 +55,7 @@ export default function HeaderLinks(props) {
   const shareUrl = "https://www.s2rb.com";
   const shareTitle = "Check out Sell to Rent Back (S2RB) that is solving your housing needs post foreclosure.";
   const summary = "Sell to Rent Back (S2RB) helps home owners stay " +
-                "in their home when facing foreclosure of their home. " +
+                "in their home when facing foreclosure. " +
                 "Learn more at https://www.s2rb.com";
   const socialTags = ['s2rb', 'sell2rent'];
   const { onLogout, dropdownHoverColor, ...rest } = props;
