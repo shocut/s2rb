@@ -23,6 +23,7 @@ export declare class Location {
   readonly postalCode: string;
   readonly postalCodeSuffix?: string;
   readonly formattedAddress?: string;
+  readonly status?: string;
   constructor(init: ModelInit<Location>);
 }
 

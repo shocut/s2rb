@@ -1,4 +1,4 @@
-import { container, title } from "../common/jss/baseStyles.js";
+import { container, title, grayColor } from "../common/jss/baseStyles.js";
 const sellerProfileStyle = {
   container: {
     zIndex: "12",
@@ -50,6 +50,21 @@ const sellerProfileStyle = {
   sliderContainer: {
     width: "500px",
     height: "100px",
+  },
+  input: {
+    color: grayColor[13],
+    borderRadius: "5px",
+    borderColor: grayColor[11],
+    "&,&::placeholder": {
+      fontSize: "1.1 em",
+      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+      fontWeight: "400",
+      lineHeight: "2",
+      opacity: "1",
+    },
+    "&::placeholder": {
+      color: grayColor[12],
+    },
   },
 };
 export default sellerProfileStyle;

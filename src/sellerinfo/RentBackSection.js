@@ -24,13 +24,13 @@ import Button from "../common/components/Button.js";
 import styles from "./sellerProfileStyle.js";
 
 const useStyles = makeStyles(styles);
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="down" ref={ref} {...props} />;
+});
 
 export default function RentBackSection(sliderRefContainer) {
   const history = useHistory();
   const [classicModal, setClassicModal] = React.useState(false);
-  const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="down" ref={ref} {...props} />;
-  });
   const [value, setValue] = React.useState(
     localStorage.getItem("s2rb_rentBackPeriod")
   );

@@ -49,8 +49,8 @@ export default function SellerProfile(props) {
   };
 
   const onLogout = async () => {
-    await Auth.signOut();
     localStorage.clear();
+    await Auth.signOut();
   };
 
   useEffect(() => {

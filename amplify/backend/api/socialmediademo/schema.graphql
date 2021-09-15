@@ -28,6 +28,7 @@ type Location {
   postalCode: String!
   postalCodeSuffix: String
   formattedAddress: String
+  status: String
 }
 
 type SellerRealEstateProfile @model @auth(rules: [{allow: public}, {allow: private}, {allow: owner, operations: [create, update, delete]}]) {

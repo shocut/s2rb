@@ -33,8 +33,8 @@ import styles from "./dashboardStyle.js";
 
 const useStyles = makeStyles(styles);
 
+/* eslint-disable */
 export default function SDashboard(props) {
-  console.log(props);
   const [currentUser, setCurrentUser] = useState(
     localStorage.getItem("currentUser")
   );
@@ -69,8 +69,9 @@ export default function SDashboard(props) {
   const dashboardRoutes = [];
 
   const onLogout = async () => {
-    await Auth.signOut();
+    console.log("in log out - clearing localstorage");
     localStorage.clear();
+    await Auth.signOut();
     checkLoginState();
   };
 

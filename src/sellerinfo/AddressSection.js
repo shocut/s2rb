@@ -10,19 +10,34 @@ import GridItem from "../common/components/GridItem.js";
 import Button from "../common/components/Button.js";
 import styles from "./sellerProfileStyle.js";
 import Slider from "@material-ui/core/Slider";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
+import Slide from "@material-ui/core/Slide";
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="down" ref={ref} {...props} />;
+});
 const useStyles = makeStyles(styles);
 
 export default function AddressSection(sliderRefContainer) {
   const classes = useStyles();
   var addressText = "";
   const s2rb_house_location = localStorage.getItem("s2rb_house_location");
+  const [classicModal, setClassicModal] = React.useState(false);
+
   const [bedrooms, setBedrooms] = useState(
     localStorage.getItem("s2rb_bedrooms")
   );
   const [bathrooms, setBathrooms] = useState(
     localStorage.getItem("s2rb_bathrooms")
   );
+
+  const closeDialog = () => {
+    setClassicModal(false);
+  };
 
   if (s2rb_house_location) {
     try {
@@ -31,6 +46,10 @@ export default function AddressSection(sliderRefContainer) {
       console.log("No saved address!");
     }
   }
+
+  const addressTyped = () => {
+    localStorage.removeItem("s2rb_house_location");
+  };
 
   const bathroomsChanged = (event, newValue) => {
     console.log(newValue);
@@ -61,7 +80,6 @@ export default function AddressSection(sliderRefContainer) {
           postalCodeSuffix: addrParts[7].long_name,
           formattedAddress: place.formatted_address,
         });
-        //console.log(homeLocation);
         localStorage.setItem(
           "s2rb_house_location",
           JSON.stringify(homeLocation)
@@ -119,7 +137,10 @@ export default function AddressSection(sliderRefContainer) {
   ];
 
   const moveNext = function () {
-    //sliderRef.current.slickNext();
+    if (!localStorage.getItem("s2rb_house_location")) {
+      setClassicModal(true);
+      return false;
+    }
     var carousalRef = sliderRefContainer.sliderRef.current;
     carousalRef.next();
   };
@@ -140,14 +161,15 @@ export default function AddressSection(sliderRefContainer) {
         </GridItem>
         <GridItem lg={12}>
           <Autocomplete
-            className={classes.label}
+            className={classes.input}
             apiKey="AIzaSyClKdZsG7s-7cURlYikEozYu3lUN_8oHV0"
             style={{ width: "90%" }}
+            onChange={addressTyped}
             onPlaceSelected={(place) => {
               storeLocation(place);
             }}
             options={{
-              types: ["geocode", "establishment"],
+              types: ["address"],
               componentRestrictions: { country: "us" },
             }}
             defaultValue={addressText}
@@ -201,6 +223,36 @@ export default function AddressSection(sliderRefContainer) {
           </Button>
         </GridItem>
       </GridContainer>
+      <Dialog
+        classes={{
+          root: classes.center,
+          paper: classes.modal,
+        }}
+        open={classicModal}
+        keepMounted
+        TransitionComponent={Transition}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle
+          id="alert-dialog-slide-title"
+          disableTypography
+          className={classes.modalHeader}
+        >
+          <h4 className={classes.modalTitle}>House Address Input</h4>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            Please enter a valid address. You can pick from the addresses
+            suggested as you type in the address input.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions className={classes.modalFooter}>
+          <Button color="success" onClick={closeDialog}>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
