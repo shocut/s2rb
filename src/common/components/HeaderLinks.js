@@ -53,7 +53,11 @@ const useStyles = makeStyles(styles);
 
 export default function HeaderLinks(props) {
   const shareUrl = "https://www.s2rb.com";
-  const shareTitle = "Check out this Sell to Rent Back (S2RB) platform.";
+  const shareTitle = "Check out Sell to Rent Back (S2RB) that is solving your housing needs post foreclosure.";
+  const summary = "Sell to Rent Back (S2RB) helps home owners stay " +
+                "in their home when facing foreclosure. " +
+                "Learn more at https://www.s2rb.com";
+  const socialTags = ['s2rb', 'sell2rent'];
   const { onLogout, dropdownHoverColor, ...rest } = props;
   const classes = useStyles();
   const currentUser = localStorage.getItem("currentUser");
@@ -111,24 +115,28 @@ export default function HeaderLinks(props) {
           buttonIcon={ShareIcon}
           dropdownList={[
             <Tooltip
-              id="sb-twitter"
+              id="sb-facebook"
               title="Share on Facebook"
               placement={window.innerWidth > 959 ? "top" : "left"}
               classes={{ tooltip: classes.tooltip }}
             >
-              <FacebookShareButton url={shareUrl} quote={shareTitle}>
+             <div>
+              <FacebookShareButton url={shareUrl} quote={shareTitle} hashtag={socialTags}>
                 <FacebookIcon size={32} round />
               </FacebookShareButton>
+             </div>
             </Tooltip>,
             <Tooltip
-              id="sb-twitter"
+              id="sb-linkedin"
               title="Share on LinkedIn"
               placement={window.innerWidth > 959 ? "top" : "left"}
               classes={{ tooltip: classes.tooltip }}
             >
-              <LinkedinShareButton url={shareUrl} quote={shareTitle}>
+             <div>
+              <LinkedinShareButton url={shareUrl}>
                 <LinkedinIcon size={32} round />
               </LinkedinShareButton>
+             </div>
             </Tooltip>,
             <Tooltip
               id="sb-twitter"
@@ -136,31 +144,14 @@ export default function HeaderLinks(props) {
               placement={window.innerWidth > 959 ? "top" : "left"}
               classes={{ tooltip: classes.tooltip }}
             >
-              <TwitterShareButton url={shareUrl} quote={shareTitle}>
+              <div>
+                <TwitterShareButton url={shareUrl} title={shareTitle} hashtags={socialTags}>
                 <TwitterIcon size={32} round />
-              </TwitterShareButton>
+                </TwitterShareButton>
+              </div>
             </Tooltip>,
-            <Tooltip
-              id="sb-twitter"
-              title="Share on Pinterest"
-              placement={window.innerWidth > 959 ? "top" : "left"}
-              classes={{ tooltip: classes.tooltip }}
-            >
-              <PinterestShareButton url={shareUrl} quote={shareTitle}>
-                <PinterestIcon size={32} round />
-              </PinterestShareButton>
-            </Tooltip>,
-            <Tooltip
-              id="sb-twitter"
-              title="Share via Email"
-              placement={window.innerWidth > 959 ? "top" : "left"}
-              classes={{ tooltip: classes.tooltip }}
-            >
-              <EmailShareButton url={shareUrl} quote={shareTitle}>
-                <EmailIcon size={32} round />
-              </EmailShareButton>
-            </Tooltip>,
-          ]}
+            // TODO:Add pintrest once we have a sharing image ready of size 735x1102.
+            ]}
         />
       </ListItem>
     </List>
