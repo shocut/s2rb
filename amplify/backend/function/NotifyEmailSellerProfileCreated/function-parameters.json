@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "storage": {
+      "s2rbSellerAttachments": [
+        "read"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

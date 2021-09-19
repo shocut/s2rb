@@ -36,20 +36,32 @@
     }
   },
   "function": {
-    "S3Trigger223c98ea": {
-      "service": "Lambda",
-      "providerPlugin": "awscloudformation",
-      "build": true
-    },
-    "S3Trigger881fe7d5": {
-      "service": "Lambda",
-      "providerPlugin": "awscloudformation",
-      "build": true
-    },
     "S3Trigger055ac222": {
       "service": "Lambda",
       "providerPlugin": "awscloudformation",
       "build": true
+    },
+    "NotifyEmailSellerProfileCreated": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "socialmediademo",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
+        },
+        {
+          "category": "storage",
+          "resourceName": "s2rbSellerAttachments",
+          "attributes": [
+            "BucketName"
+          ]
+        }
+      ]
     }
   },
   "storage": {
