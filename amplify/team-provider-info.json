@@ -1,14 +1,14 @@
 {
-  "devp": {
+  "beta": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-socialmediademo-devp-203005-authRole",
-      "UnauthRoleArn": "arn:aws:iam::872659693886:role/amplify-socialmediademo-devp-203005-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::872659693886:role/amplify-socialmediademo-devp-203005-authRole",
+      "AuthRoleName": "amplify-s2rb-beta-81149-authRole",
+      "UnauthRoleArn": "arn:aws:iam::872659693886:role/amplify-s2rb-beta-81149-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::872659693886:role/amplify-s2rb-beta-81149-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-socialmediademo-devp-203005-deployment",
-      "UnauthRoleName": "amplify-socialmediademo-devp-203005-unauthRole",
-      "StackName": "amplify-socialmediademo-devp-203005",
-      "StackId": "arn:aws:cloudformation:us-east-1:872659693886:stack/amplify-socialmediademo-devp-203005/15ed0f50-f6f5-11eb-b873-0e2a8c6e8545",
+      "DeploymentBucketName": "amplify-s2rb-beta-81149-deployment",
+      "UnauthRoleName": "amplify-s2rb-beta-81149-unauthRole",
+      "StackName": "amplify-s2rb-beta-81149",
+      "StackId": "arn:aws:cloudformation:us-east-1:872659693886:stack/amplify-s2rb-beta-81149/efdf3d30-1a0b-11ec-8e01-0e76bac974a5",
       "AmplifyAppId": "d1v9799vjsrg6v"
     },
     "categories": {
@@ -17,49 +17,41 @@
       },
       "function": {
         "S3Trigger055ac222": {
-          "deploymentBucketName": "amplify-socialmediademo-devp-203005-deployment",
+          "deploymentBucketName": "amplify-s2rb-beta-81149-deployment",
           "s3Key": "amplify-builds/S3Trigger055ac222-4d6a7444615139672b66-build.zip"
         },
         "NotifyEmailSellerProfileCreated": {
-          "deploymentBucketName": "amplify-socialmediademo-devp-203005-deployment",
-          "s3Key": "amplify-builds/NotifyEmailSellerProfileCreated-456b6132577a59683178-build.zip"
+          "deploymentBucketName": "amplify-s2rb-beta-81149-deployment",
+          "s3Key": "amplify-builds/NotifyEmailSellerProfileCreated-48724d57494748315a2b-build.zip"
         }
       }
     }
   },
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-socialmediademo-dev-144551-authRole",
-      "UnauthRoleArn": "arn:aws:iam::691460774223:role/amplify-socialmediademo-dev-144551-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::691460774223:role/amplify-socialmediademo-dev-144551-authRole",
+      "AuthRoleName": "amplify-s2rb-dev-90947-authRole",
+      "UnauthRoleArn": "arn:aws:iam::872659693886:role/amplify-s2rb-dev-90947-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::872659693886:role/amplify-s2rb-dev-90947-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-socialmediademo-dev-144551-deployment",
-      "UnauthRoleName": "amplify-socialmediademo-dev-144551-unauthRole",
-      "StackName": "amplify-socialmediademo-dev-144551",
-      "StackId": "arn:aws:cloudformation:us-east-1:691460774223:stack/amplify-socialmediademo-dev-144551/b4da9ce0-df6c-11eb-9476-0ee12c5d9039",
-      "AmplifyAppId": "d1wy4wywmb7wut"
+      "DeploymentBucketName": "amplify-s2rb-dev-90947-deployment",
+      "UnauthRoleName": "amplify-s2rb-dev-90947-unauthRole",
+      "StackName": "amplify-s2rb-dev-90947",
+      "StackId": "arn:aws:cloudformation:us-east-1:872659693886:stack/amplify-s2rb-dev-90947/08526b50-1a14-11ec-918a-0ea0b50378a5",
+      "AmplifyAppId": "d1v9799vjsrg6v"
     },
     "categories": {
       "auth": {
         "socialmediademo0881b347": {}
-      }
-    }
-  },
-  "final": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-socialmediademo-final-210720-authRole",
-      "UnauthRoleArn": "arn:aws:iam::691460774223:role/amplify-socialmediademo-final-210720-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::691460774223:role/amplify-socialmediademo-final-210720-authRole",
-      "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-socialmediademo-final-210720-deployment",
-      "UnauthRoleName": "amplify-socialmediademo-final-210720-unauthRole",
-      "StackName": "amplify-socialmediademo-final-210720",
-      "StackId": "arn:aws:cloudformation:us-east-1:691460774223:stack/amplify-socialmediademo-final-210720/be2abce0-dfa2-11eb-b9cf-0eb57e33ee85",
-      "AmplifyAppId": "d1wy4wywmb7wut"
-    },
-    "categories": {
-      "auth": {
-        "socialmediademo0881b347": {}
+      },
+      "function": {
+        "S3Trigger055ac222": {
+          "deploymentBucketName": "amplify-s2rb-dev-90947-deployment",
+          "s3Key": "amplify-builds/S3Trigger055ac222-4d6a7444615139672b66-build.zip"
+        },
+        "NotifyEmailSellerProfileCreated": {
+          "deploymentBucketName": "amplify-s2rb-dev-90947-deployment",
+          "s3Key": "amplify-builds/NotifyEmailSellerProfileCreated-48724d57494748315a2b-build.zip"
+        }
       }
     }
   }

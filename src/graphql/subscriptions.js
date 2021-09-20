@@ -1,6 +1,60 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateInvestorInterest = /* GraphQL */ `
+  subscription OnCreateInvestorInterest {
+    onCreateInvestorInterest {
+      id
+      name
+      email
+      phone
+      investmentRange
+      financing
+      message
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateInvestorInterest = /* GraphQL */ `
+  subscription OnUpdateInvestorInterest {
+    onUpdateInvestorInterest {
+      id
+      name
+      email
+      phone
+      investmentRange
+      financing
+      message
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteInvestorInterest = /* GraphQL */ `
+  subscription OnDeleteInvestorInterest {
+    onDeleteInvestorInterest {
+      id
+      name
+      email
+      phone
+      investmentRange
+      financing
+      message
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateSellerRealEstateProfile = /* GraphQL */ `
   subscription OnCreateSellerRealEstateProfile {
     onCreateSellerRealEstateProfile {
@@ -21,6 +75,7 @@ export const onCreateSellerRealEstateProfile = /* GraphQL */ `
         postalCode
         postalCodeSuffix
         formattedAddress
+        status
       }
       sellerReference
       rentBackPeriod
@@ -61,6 +116,7 @@ export const onUpdateSellerRealEstateProfile = /* GraphQL */ `
         postalCode
         postalCodeSuffix
         formattedAddress
+        status
       }
       sellerReference
       rentBackPeriod
@@ -101,6 +157,7 @@ export const onDeleteSellerRealEstateProfile = /* GraphQL */ `
         postalCode
         postalCodeSuffix
         formattedAddress
+        status
       }
       sellerReference
       rentBackPeriod
