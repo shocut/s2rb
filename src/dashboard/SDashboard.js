@@ -58,7 +58,6 @@ export default function SDashboard(props) {
   var tabRefPath = location.pathname.substring(
     location.pathname.lastIndexOf("/") + 1
   );
-  console.log("tabRefPath: " + tabRefPath);
   if (tabRefPath) {
     //if (tabRefPath == "r") tabRef = 1; -- some potential for async errors
     if (tabRefPath == "d") tabRef = 2;
@@ -78,6 +77,10 @@ export default function SDashboard(props) {
   const checkLoginState = async () => {
     try {
       const currentUser = await Auth.currentAuthenticatedUser();
+      const groups =
+        user.signInUserSession.accessToken.payload["cognito:groups"];
+      console.log(JSON.stringify(groups));
+      console.log(groups.includes("admin"));
       if (currentUser) {
         setCurrentUser(currentUser);
       }

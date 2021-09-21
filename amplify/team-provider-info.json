@@ -46,11 +46,11 @@
       "function": {
         "S3Trigger055ac222": {
           "deploymentBucketName": "amplify-s2rb-dev-90947-deployment",
-          "s3Key": "amplify-builds/S3Trigger055ac222-4d6a7444615139672b66-build.zip"
+          "s3Key": "amplify-builds/S3Trigger055ac222-4c68417733526d386b63-build.zip"
         },
-        "NotifyEmailSellerProfileCreated": {
+        "SellerProfileTrigger": {
           "deploymentBucketName": "amplify-s2rb-dev-90947-deployment",
-          "s3Key": "amplify-builds/NotifyEmailSellerProfileCreated-48724d57494748315a2b-build.zip"
+          "s3Key": "amplify-builds/SellerProfileTrigger-53424f586953715a4f52-build.zip"
         }
       }
     }

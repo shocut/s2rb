@@ -1,8 +1,45 @@
+enum FeeType {
+  PERCENTAGE
+  FLAT
+}
+
+enum ReferralType {
+  BUYER
+  SELLER
+}
+
+type Referral @model @auth(rules: [{allow: public}]) @key(name: "bySellerRealEstateProfile", fields: ["sellerrealestateprofileID"]) {
+  id: ID!
+  feeBasis: FeeType
+  token: String
+  clientType: String
+  listingPriceEstimate: Float
+  clientReason: String
+  feeType: String
+  feeValue: String
+  referralType: ReferralType
+  buyerReferenceID: String
+  sellerrealestateprofileID: ID
+  senderSignedDate: AWSDate
+  receiverSignedDate: AWSDate
+}
+
+type Agent @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  officeName: String
+  address: Location
+  email: AWSEmail
+  primaryPhone: AWSPhone
+  cellPhone: AWSPhone
+  faxNumber: AWSPhone
+}
+
 type InvestorInterest @model @auth(rules: [{allow: public}]) {
   id: ID!
   name: String
-  email: String
-  phone: String
+  email: AWSEmail
+  phone: AWSPhone
   investmentRange: String
   financing: String
   message: String
@@ -13,6 +50,7 @@ type Attachment {
   category: String
   fileURL: String
   status: String
+  description: String
 }
 
 type Location {
@@ -42,5 +80,6 @@ type SellerRealEstateProfile @model @auth(rules: [{allow: public}, {allow: priva
   bedrooms: String
   bathrooms: String
   attachments: [Attachment]
+  Referrals: [Referral] @connection(keyName: "bySellerRealEstateProfile", fields: ["id"])
 }
  

@@ -36,8 +36,9 @@ function App(props) {
   const classes = useStyles();
 
   const onLogout = async () => {
+    console.log("in log out - clearing localstorage");
+    localStorage.clear();
     await Auth.signOut();
-    localStorage.removeItem("currentUser");
     checkLoginState();
   };
 

@@ -23,10 +23,6 @@
     "apisocialmediademoGraphQLAPIEndpointOutput": {
       "Type": "String",
       "Default": "apisocialmediademoGraphQLAPIEndpointOutput"
-    },
-    "storages2rbSellerAttachmentsBucketName": {
-      "Type": "String",
-      "Default": "storages2rbSellerAttachmentsBucketName"
     }
   },
   "Conditions": {
@@ -59,12 +55,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "NotifyEmailSellerProfileCreated",
+            "SellerProfileTrigger",
             {
               "Fn::Join": [
                 "",
                 [
-                  "NotifyEmailSellerProfileCreated",
+                  "SellerProfileTrigger",
                   "-",
                   {
                     "Ref": "env"
@@ -81,9 +77,6 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
-            },
-            "STORAGE_S2RBSELLERATTACHMENTS_BUCKETNAME": {
-              "Ref": "storages2rbSellerAttachmentsBucketName"
             }
           }
         },
@@ -104,12 +97,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "socialmediademoLambdaRole23119670",
+            "s2rbLambdaRole550a7d7e",
             {
               "Fn::Join": [
                 "",
                 [
-                  "socialmediademoLambdaRole23119670",
+                  "s2rbLambdaRole550a7d7e",
                   "-",
                   {
                     "Ref": "env"
@@ -175,62 +168,6 @@
                   }
                 ]
               }
-            }
-          ]
-        }
-      }
-    },
-    "AmplifyResourcesPolicy": {
-      "DependsOn": [
-        "LambdaExecutionRole"
-      ],
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyName": "amplify-lambda-execution-policy",
-        "Roles": [
-          {
-            "Ref": "LambdaExecutionRole"
-          }
-        ],
-        "PolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Action": "s3:ListBucket",
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:s3:::",
-                      {
-                        "Ref": "storages2rbSellerAttachmentsBucketName"
-                      }
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "s3:GetObject"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:s3:::",
-                      {
-                        "Ref": "storages2rbSellerAttachmentsBucketName"
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
             }
           ]
         }
