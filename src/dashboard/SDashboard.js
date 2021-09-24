@@ -3,7 +3,6 @@ import { useLocation } from "react-router";
 
 import { useEffect, useState } from "react";
 import { Auth } from "aws-amplify";
-
 import Header from "../common/components/Header.js";
 import HeaderLinks from "../common/components/HeaderLinks.js";
 import { DataStore } from "aws-amplify";
@@ -77,12 +76,11 @@ export default function SDashboard(props) {
   const checkLoginState = async () => {
     try {
       const currentUser = await Auth.currentAuthenticatedUser();
-      const groups =
-        user.signInUserSession.accessToken.payload["cognito:groups"];
-      console.log(JSON.stringify(groups));
-      console.log(groups.includes("admin"));
       if (currentUser) {
         setCurrentUser(currentUser);
+      } else {
+        localStorage.clear();
+        setCurrentUser(null);
       }
     } catch (e) {
       setCurrentUser(null);
@@ -415,9 +413,9 @@ export default function SDashboard(props) {
                                   profile.
                                 </h4>
                                 <h5>
-                                  To unlock the next stage, please upload
-                                  documents showing mortgage and home-ownership
-                                  details.
+                                  To unlock the next stage, upload documents
+                                  showing mortgage and home-ownership details.
+                                  Please upload multiple home photos.
                                 </h5>
                                 <h5>
                                   All documents are uploaded, transimitted and

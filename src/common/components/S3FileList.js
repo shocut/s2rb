@@ -1,9 +1,5 @@
 /* eslint-disable prettier/prettier */
 import React from "react";
-import { useEffect, useState } from "react";
-
-import { Storage } from "aws-amplify";
-
 // used for making the prop types of this component
 import PropTypes from "prop-types";
 // @material-ui/core components
@@ -15,14 +11,12 @@ import CustomInput from "./CustomInput.js";
 import Button from "./Button.js";
 import GridContainer from "./GridContainer.js";
 import GridItem from "./GridItem.js";
-
 import styles from "../jss/customFileInputStyle.js";
 
 const useStyles = makeStyles(styles);
 
 export default function S3FileList(props) {
   const { attachments, deleteAttachment, ...rest } = props;
-  const [fileList, setFileList] = useState({});
   const classes = useStyles();
 
   const fileCatgMap = new Map();
@@ -48,8 +42,8 @@ export default function S3FileList(props) {
           (attachments.length === 0 && (
             <GridItem xs={12} sm={12} md={12} lg={12}>
               <h5>
-                Once you upload document, they will show-up in the section
-                below.
+                Please upload home photos and documents, uploaded documents will
+                show-up in the section below.
               </h5>
             </GridItem>
           ))}
@@ -88,34 +82,6 @@ export default function S3FileList(props) {
     );
   }
 
-  useEffect(() => {
-    var userObj = null;
-    var currentUser = localStorage.getItem("currentUser");
-    if (currentUser) {
-      userObj = JSON.parse(currentUser);
-    }
-    const loadFiles = async () => {
-      if (userObj) {
-        Storage.list("", { level: "private" })
-          .then((result) => updateFileList(result))
-          .catch((err) => console.log(err));
-      }
-    };
-    loadFiles();
-  }, []);
-
-  function updateFileList(result) {
-    setFileList(result);
-    console.log(fileList);
-
-    for (var i in fileList) {
-      console.log(fileList[i].key);
-      Storage.get(fileList[i].key, { level: "private" })
-        .then((result) => console.log(result))
-        .catch((err) => console.log(err));
-    }
-  }
-
   const { endButton, inputProps, formControlProps } = props;
   if (inputProps && inputProps.type && inputProps.type === "file") {
     inputProps.type = "text";
@@ -123,7 +89,7 @@ export default function S3FileList(props) {
 
   return (
     <GridContainer>
-      <S3FileRow xs={12} sm={12} md={12} lg={12} files={fileList} />
+      <S3FileRow xs={12} sm={12} md={12} lg={12} />
     </GridContainer>
   );
 }
