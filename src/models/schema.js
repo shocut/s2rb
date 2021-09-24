@@ -470,18 +470,16 @@ export const schema = {
                                 "allow": "public",
                                 "operations": [
                                     "create",
-                                    "update",
-                                    "delete",
-                                    "read"
+                                    "read",
+                                    "update"
                                 ]
                             },
                             {
                                 "allow": "private",
                                 "operations": [
                                     "create",
-                                    "update",
-                                    "delete",
-                                    "read"
+                                    "read",
+                                    "update"
                                 ]
                             },
                             {
@@ -491,7 +489,7 @@ export const schema = {
                                 "operations": [
                                     "create",
                                     "update",
-                                    "delete"
+                                    "read"
                                 ],
                                 "identityClaim": "cognito:username"
                             }
@@ -631,8 +629,8 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "fileURL": {
-                    "name": "fileURL",
+                "fileKey": {
+                    "name": "fileKey",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -655,5 +653,5 @@ export const schema = {
             }
         }
     },
-    "version": "0296ae20d043d5e2e7eec81cbf8119f9"
+    "version": "a52b76f752138fd6615e0ef5418d32a9"
 };

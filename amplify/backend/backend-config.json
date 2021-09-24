@@ -39,7 +39,8 @@
     "S3Trigger055ac222": {
       "service": "Lambda",
       "providerPlugin": "awscloudformation",
-      "build": true
+      "build": true,
+      "dependsOn": []
     },
     "SellerProfileTrigger": {
       "build": true,

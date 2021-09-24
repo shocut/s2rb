@@ -1,140 +1,98 @@
-/* Amplify Params - DO NOT EDIT
-ENV
-REGION
-STORAGE_S2RBSELLERATTACHMENTS_BUCKETNAME
-Amplify Params - DO NOT EDIT */
-
-"use strict";
-
+// dependencies
 const AWS = require("aws-sdk");
-const aws_region = "us-east-1";
-const senderAddress = "support@s2rb.com";
-const subject = "Created your S2RB real estate profile";
-const charset = "UTF-8";
-const appId = "a26086a12195450f9540c83b1fa73da3";
+const util = require("util");
+const sharp = require("sharp");
+const path = require("path");
 
-exports.handler = (event) => {
-  //eslint-disable-line
-  //console.log(JSON.stringify(event, null, 2));
-  event.Records.forEach((record) => {
-    //console.log(record.eventID);
-    console.log(record.eventName); //console.log('DynamoDB Record: %j', record.dynamodb); // Specify that you're using a shared credentials file. NOT NEEDED FOR LAMBDA - GETS VIA IAM ROLE!!! //var credentials = new AWS.SharedIniFileCredentials({profile: 'default'}); //AWS.config.credentials = credentials;
-    if (record.eventName == "INSERT") {
-      console.log("In insert record: %j", record.eventID); // The email body for recipients with non-HTML email clients.
+// get reference to S3 client
+const s3 = new AWS.S3();
 
-      var body_text = "Your S2RB real estate profile details:"; //var toAddress = record.dynamodb.NewImage.sellerReference.S;
-      var toAddress = "manyapradhan@gmail.com"; //SMS communication
+exports.handler = async (event, context, callback) => {
+  // Read options from the event parameter.
+  console.log(
+    "Reading options from event:\n",
+    util.inspect(event, { depth: 5 })
+  );
 
-      var originationNumber = "+18445384684";
-      var destinationNumber = "+17035989862";
-      var messageType = "TRANSACTIONAL";
+  const srcBucket = event.Records[0].s3.bucket.name;
+  // Object key may have spaces or unicode non-ASCII characters.
+  const srcKey = decodeURIComponent(
+    event.Records[0].s3.object.key.replace(/\+/g, " ")
+  );
 
-      var message =
-        "This message was sent from S2RB.com " +
-        "Your real estate profile was updated. Reply STOP to " +
-        "opt out.";
+  //return from here if secondary (recursive) invocation.
+  //Need to use a diffferent bucket or figure out the best way to handle this.
+  //proceed only if these are home photos
+  if (srcKey.indexOf("resized_") > -1 || srcKey.indexOf("home_photo_") == -1) {
+    console.log("Not a home photo or triggered on resized image!");
+    return;
+  }
 
-      // Specify the region.
-      AWS.config.update({ region: aws_region }); //Create a new Pinpoint object.
+  const dstBucket = srcBucket;
+  const dstKey =
+    path.dirname(srcKey) + "/" + "resized_" + path.basename(srcKey);
 
-      var pinpoint = new AWS.Pinpoint(); // Specify the parameters to pass to the API.
+  // Infer the image type from the file suffix.
+  const typeMatch = srcKey.match(/\.([^.]*)$/);
+  if (!typeMatch) {
+    console.log("Could not determine the image type..");
+    return;
+  }
 
-      var params = {
-        ApplicationId: appId,
-        MessageRequest: {
-          Addresses: {
-            [destinationNumber]: {
-              ChannelType: "SMS",
-            },
-          },
-          MessageConfiguration: {
-            SMSMessage: {
-              Body: message,
-              MessageType: messageType,
-              OriginationNumber: originationNumber,
-            },
-          },
-        },
-      };
+  // Check that the image type is supported
+  const imageType = typeMatch[1].toLowerCase();
+  if (imageType != "jpg" && imageType != "png") {
+    console.log(`Unsupported image type: ${imageType}`);
+    return;
+  }
 
-      console.log("Before sending SMS new"); //Try to send the message.
+  // Download the image from the S3 source bucket.
 
-      pinpoint.sendMessages(params, function (err, data) {
-        // If something goes wrong, print an error message.
-        if (err) {
-          console.log(err.message); // Otherwise, show the unique ID for the message.
-        } else {
-          console.log(
-            "Message sent! " +
-              data["MessageResponse"]["Result"][destinationNumber][
-                "StatusMessage"
-              ]
-          );
-        }
-      });
-      console.log("After sending SMS"); //  code to send email
-      var body_html = `<html>
-              <head></head>
-              <body>
-                <h3>Thank you for creating your S2RB real estate profile</h3>
-<br/>
-                <p>Our representatives will review and contact you with next steps. You can review and edit your profile at:
-                  <a href='https://s2rb.com/sdashboard/'>Your S2RB Dashboard</a>
-                 </p>
-              </body> 
-              </html>`; // Specify the parameters to pass to the API.
+  try {
+    const params = {
+      Bucket: srcBucket,
+      Key: srcKey,
+    };
+    var origimage = await s3.getObject(params).promise();
+  } catch (error) {
+    console.log(error);
+    return;
+  }
 
-      var params = {
-        ApplicationId: appId,
-        MessageRequest: {
-          Addresses: {
-            [toAddress]: {
-              ChannelType: "EMAIL",
-            },
-          },
-          MessageConfiguration: {
-            EmailMessage: {
-              FromAddress: senderAddress,
-              SimpleEmail: {
-                Subject: {
-                  Charset: charset,
-                  Data: subject,
-                },
-                HtmlPart: {
-                  Charset: charset,
-                  Data: body_html,
-                },
-                TextPart: {
-                  Charset: charset,
-                  Data: body_text,
-                },
-              },
-            },
-          },
-        },
-      };
+  // set thumbnail width. Resize will set the height automatically to maintain aspect ratio.
+  const width = 200;
 
-      console.log("Before sending email"); //console.log(JSON.stringify(params)); //Try to send the email.
-      try {
-        pinpoint.sendMessages(params, function (err, data) {
-          // If something goes wrong, print an error message.
-          console.log(err);
-          console.log(data);
+  // Use the sharp module to resize the image and save in a buffer.
+  try {
+    var buffer = await sharp(origimage.Body).resize(width).toBuffer();
+  } catch (error) {
+    console.log(error);
+    return;
+  }
 
-          if (err) {
-            console.log(err.message);
-          } else {
-            console.log(
-              "Email sent! Message ID: ",
-              data["MessageResponse"]["Result"][toAddress]["MessageId"]
-            );
-          }
-        });
-        console.log("After sending email");
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  });
-  return Promise.resolve("Successfully processed DynamoDB record");
+  // Upload the thumbnail image to the destination bucket
+  try {
+    const destparams = {
+      Bucket: dstBucket,
+      Key: dstKey,
+      Body: buffer,
+      ContentType: "image",
+    };
+
+    const putResult = await s3.putObject(destparams).promise();
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+
+  console.log(
+    "Successfully resized " +
+      srcBucket +
+      "/" +
+      srcKey +
+      " and uploaded to " +
+      dstBucket +
+      "/" +
+      dstKey
+  );
 };

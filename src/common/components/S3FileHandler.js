@@ -181,7 +181,8 @@ export default function S3FileHandler(props) {
         var userObj = JSON.parse(currentUser);
         userEmail = userObj.attributes.email;
       }
-      const result = await Storage.put(file.name, file, {
+      var s3FileName = fileCategory + "_" + file.name;
+      const result = await Storage.put(s3FileName, file, {
         level: "private",
         contentDisposition: "attachment",
         progressCallback(loadProgress) {
@@ -193,19 +194,20 @@ export default function S3FileHandler(props) {
               setFileObj(null);
               setConfirmUpload(false);
             }, 2000);
-
-            var attachment = new Attachment({
-              name: file.name,
-              category: fileCategory,
-              fileURL: file.name,
-              status: "active",
-            });
-            addAttachment(attachment);
           }
         },
         metadata: { fileCategory: fileCategory, userEmail: userEmail },
       });
-      console.log(result);
+      console.log(result, result.key);
+      if (result) {
+        var attachment = new Attachment({
+          name: file.name,
+          category: fileCategory,
+          fileKey: result.key,
+          status: "active",
+        });
+        addAttachment(attachment);
+      }
     } catch (error) {
       console.log("Error uploading file: ", error);
     }
@@ -272,7 +274,7 @@ export default function S3FileHandler(props) {
                   root: classes.selectMenuItem,
                   selected: classes.selectMenuItemSelected,
                 }}
-                value="Mortgage Statement"
+                value="mortgage_stmt"
               >
                 Mortgage Statement
               </MenuItem>
@@ -281,7 +283,7 @@ export default function S3FileHandler(props) {
                   root: classes.selectMenuItem,
                   selected: classes.selectMenuItemSelected,
                 }}
-                value="Identity Proof"
+                value="identity_proof"
               >
                 Identity Proof
               </MenuItem>
@@ -290,7 +292,7 @@ export default function S3FileHandler(props) {
                   root: classes.selectMenuItem,
                   selected: classes.selectMenuItemSelected,
                 }}
-                value="House Title"
+                value="title_proof"
               >
                 House Title
               </MenuItem>
@@ -299,7 +301,7 @@ export default function S3FileHandler(props) {
                   root: classes.selectMenuItem,
                   selected: classes.selectMenuItemSelected,
                 }}
-                value="Home Photographs"
+                value="home_photo"
               >
                 Home Photographs
               </MenuItem>
@@ -427,7 +429,7 @@ export default function S3FileHandler(props) {
           />
         </DialogContent>
         <DialogActions className={classes.modalFooter}>
-          <Button color="sucess" onClick={confirmedUploadFile}>
+          <Button color="success" onClick={confirmedUploadFile}>
             Upload File
           </Button>
           <Button color="info" onClick={closeDialog}>

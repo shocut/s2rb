@@ -36,10 +36,12 @@ function Signup(props) {
     try {
       const currentUser = await Auth.currentAuthenticatedUser();
       if (currentUser) {
+        /*
         const groups =
           currentUser.signInUserSession.accessToken.payload["cognito:groups"];
         console.log(JSON.stringify(groups));
         console.log(groups.includes("admin"));
+       */
 
         localStorage.setItem("currentUser", JSON.stringify(currentUser));
         history.push(nextPage);
@@ -130,7 +132,7 @@ function Signup(props) {
 }
 
 Signup.propTypes = {
-  location: PropTypes.string,
+  location: PropTypes.object,
 };
 
 export default Signup;

@@ -30,7 +30,7 @@ export declare class Location {
 export declare class Attachment {
   readonly name: string;
   readonly category?: string;
-  readonly fileURL?: string;
+  readonly fileKey?: string;
   readonly status?: string;
   readonly description?: string;
   constructor(init: ModelInit<Attachment>);

@@ -71,7 +71,10 @@
           "S3Key": {
             "Ref": "s3Key"
           }
-        }
+        },
+        "Layers": [
+          "arn:aws:lambda:us-east-1:872659693886:layer:sharp:1"
+        ]
       }
     },
     "LambdaExecutionRole": {

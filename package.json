@@ -23,6 +23,7 @@
     "react-scripts": "4.0.3",
     "react-share": "^4.4.0",
     "sass": "^1.37.5",
+    "sharp": "^0.29.1",
     "web-vitals": "^1.1.2"
   },
   "devDependencies": {

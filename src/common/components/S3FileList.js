@@ -25,9 +25,16 @@ export default function S3FileList(props) {
   const [fileList, setFileList] = useState({});
   const classes = useStyles();
 
+  const fileCatgMap = new Map();
+
+  fileCatgMap.set("mortgage_stmt", "Mortgage Statement");
+  fileCatgMap.set("identity_proof", "Identity Proof");
+  fileCatgMap.set("title_proof", "House Title");
+  fileCatgMap.set("home_photo", "Home Photographs");
+
   function S3FileRow() {
     function getValue(valObj) {
-      return valObj.category + ": " + valObj.name;
+      return fileCatgMap.get(valObj.category) + ": " + valObj.name;
     }
     // eslint-disable-next-line
     return (
@@ -62,7 +69,7 @@ export default function S3FileList(props) {
                       <Button
                         file-name={item.name}
                         file-catg={item.category}
-                        round="true"
+                        round={true}
                         color="warning"
                         justIcon="true"
                         onClick={deleteAttachment}
@@ -103,6 +110,9 @@ export default function S3FileList(props) {
 
     for (var i in fileList) {
       console.log(fileList[i].key);
+      Storage.get(fileList[i].key, { level: "private" })
+        .then((result) => console.log(result))
+        .catch((err) => console.log(err));
     }
   }
 
