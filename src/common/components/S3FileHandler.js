@@ -183,7 +183,8 @@ export default function S3FileHandler(props) {
       }
       var s3FileName = fileCategory + "_" + file.name;
       const result = await Storage.put(s3FileName, file, {
-        level: "private",
+        level: "protected",
+        identityId: userObj.username,
         contentDisposition: "attachment",
         progressCallback(loadProgress) {
           setProgress((loadProgress.loaded / loadProgress.total) * 100);

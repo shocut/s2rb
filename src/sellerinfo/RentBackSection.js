@@ -76,7 +76,7 @@ export default function RentBackSection(sliderRefContainer) {
 
   function getNewREProfile() {
     return new SellerRealEstateProfile({
-      sellerReference: userObj.attributes.email,
+      sellerReference: userObj.username,
       searchStage: localStorage.getItem("s2rb_search_stage"),
       houseType: localStorage.getItem("s2rb_house_type"),
       primaryHome: localStorage.getItem("s2rb_primary_home"),
@@ -84,6 +84,10 @@ export default function RentBackSection(sliderRefContainer) {
       address: homeAddressObj,
       bedrooms: localStorage.getItem("s2rb_bedrooms"),
       bathrooms: localStorage.getItem("s2rb_bathrooms"),
+      firstName: userObj.attributes.given_name,
+      lastName: userObj.attributes.family_name,
+      email: userObj.attributes.email,
+      phone: userObj.attributes.phone_number,
     });
   }
 

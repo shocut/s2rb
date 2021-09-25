@@ -92,12 +92,13 @@ export default function SDashboard(props) {
     var currentUser = localStorage.getItem("currentUser");
     if (currentUser) {
       userObj = JSON.parse(currentUser);
+      console.log(currentUser);
     }
     const loadREProfile = async () => {
       if (userObj) {
         setREProfile(
           await DataStore.query(SellerRealEstateProfile, (p) =>
-            p.sellerReference("eq", userObj.attributes.email)
+            p.sellerReference("eq", userObj.username)
           ),
           currentUser
         );
@@ -162,7 +163,6 @@ export default function SDashboard(props) {
         setAttachments(reProfile.attachments);
       }
 
-      console.log("attachments " + attachments);
       setStreetAddress(
         reProfile.address ? reProfile.address.formattedAddress : ""
       );

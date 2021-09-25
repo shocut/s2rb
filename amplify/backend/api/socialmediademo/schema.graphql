@@ -1,3 +1,18 @@
+enum RealEstateStatus {
+  NEW
+  DOCS_UPLOADED
+  DOCS_IN_REVIEW
+  DOCS_REVIEWED
+  REFERRAL_GENERATED
+  REFERRAL_DISPATCHED
+  REFERRAL_SIGNED
+  LISTING_AUTHORIZED
+  AGENT_INSPECTED
+  TITLE_CHECKED
+  UNDER_CONTRACT
+  SOLD
+}
+
 enum FeeType {
   PERCENTAGE
   FLAT
@@ -81,5 +96,10 @@ type SellerRealEstateProfile @model @auth(rules: [{allow: public, operations: [c
   bathrooms: String
   attachments: [Attachment]
   Referrals: [Referral] @connection(keyName: "bySellerRealEstateProfile", fields: ["id"])
+  status: RealEstateStatus
+  firstName: String
+  lastName: String
+  sellerPhone: AWSPhone
+  sellerEmail: AWSEmail
 }
  

@@ -438,6 +438,43 @@ export const schema = {
                         "associatedWith": "sellerrealestateprofileID"
                     }
                 },
+                "status": {
+                    "name": "status",
+                    "isArray": false,
+                    "type": {
+                        "enum": "RealEstateStatus"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "firstName": {
+                    "name": "firstName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "lastName": {
+                    "name": "lastName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "sellerPhone": {
+                    "name": "sellerPhone",
+                    "isArray": false,
+                    "type": "AWSPhone",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "sellerEmail": {
+                    "name": "sellerEmail",
+                    "isArray": false,
+                    "type": "AWSEmail",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -500,6 +537,23 @@ export const schema = {
         }
     },
     "enums": {
+        "RealEstateStatus": {
+            "name": "RealEstateStatus",
+            "values": [
+                "NEW",
+                "DOCS_UPLOADED",
+                "DOCS_IN_REVIEW",
+                "DOCS_REVIEWED",
+                "REFERRAL_GENERATED",
+                "REFERRAL_DISPATCHED",
+                "REFERRAL_SIGNED",
+                "LISTING_AUTHORIZED",
+                "AGENT_INSPECTED",
+                "TITLE_CHECKED",
+                "UNDER_CONTRACT",
+                "SOLD"
+            ]
+        },
         "FeeType": {
             "name": "FeeType",
             "values": [
@@ -653,5 +707,5 @@ export const schema = {
             }
         }
     },
-    "version": "a52b76f752138fd6615e0ef5418d32a9"
+    "version": "57658151c5fcc5a74a59a1c146ee062e"
 };
