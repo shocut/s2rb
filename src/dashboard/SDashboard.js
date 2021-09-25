@@ -3,7 +3,6 @@ import { useLocation } from "react-router";
 
 import { useEffect, useState } from "react";
 import { Auth } from "aws-amplify";
-
 import Header from "../common/components/Header.js";
 import HeaderLinks from "../common/components/HeaderLinks.js";
 import { DataStore } from "aws-amplify";
@@ -58,7 +57,6 @@ export default function SDashboard(props) {
   var tabRefPath = location.pathname.substring(
     location.pathname.lastIndexOf("/") + 1
   );
-  console.log("tabRefPath: " + tabRefPath);
   if (tabRefPath) {
     //if (tabRefPath == "r") tabRef = 1; -- some potential for async errors
     if (tabRefPath == "d") tabRef = 2;
@@ -80,6 +78,9 @@ export default function SDashboard(props) {
       const currentUser = await Auth.currentAuthenticatedUser();
       if (currentUser) {
         setCurrentUser(currentUser);
+      } else {
+        localStorage.clear();
+        setCurrentUser(null);
       }
     } catch (e) {
       setCurrentUser(null);
@@ -412,9 +413,9 @@ export default function SDashboard(props) {
                                   profile.
                                 </h4>
                                 <h5>
-                                  To unlock the next stage, please upload
-                                  documents showing mortgage and home-ownership
-                                  details.
+                                  To unlock the next stage, upload documents
+                                  showing mortgage and home-ownership details.
+                                  Please upload multiple home photos.
                                 </h5>
                                 <h5>
                                   All documents are uploaded, transimitted and

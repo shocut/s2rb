@@ -1,5 +1,38 @@
 {
-  "key1": "value1",
-  "key2": "value2",
-  "key3": "value3"
+  "Records": [
+    {
+      "eventVersion": "2.1",
+      "eventSource": "aws:s3",
+      "awsRegion": "us-east-1",
+      "eventTime": "2021-09-22T00:55:57.316Z",
+      "eventName": "ObjectCreated:Put",
+      "userIdentity": {
+        "principalId": "AWS:AROA4WLUSGE7MA5TDNTEO:CognitoIdentityCredentials"
+      },
+      "requestParameters": {
+        "sourceIPAddress": "74.96.170.217"
+      },
+      "responseElements": {
+        "x-amz-request-id": "NDY9NKHKF7DSMB9J",
+        "x-amz-id-2": "jJg5Sd7jS+ekBA/Q3o2Ivigbf9OV/lZkaZnfYaqtqkHK2+nvx1iGFzqLP1pUhqWy8ihTWSkyFCOXlHthVtRHAe/R9qRUn7ad"
+      },
+      "s3": {
+        "s3SchemaVersion": "1.0",
+        "configurationId": "4f9d465b-bd38-4276-9148-adbbc28b0244",
+        "bucket": {
+          "name": "s2rb-seller-attachments90947-dev",
+          "ownerIdentity": {
+            "principalId": "A3IVKF0GCEFZ68"
+          },
+          "arn": "arn:aws:s3:::s2rb-seller-attachments90947-dev"
+        },
+        "object": {
+          "key": "private/us-east-1%3Ae323daea-3dab-4176-a410-2bd0a7ba3b85/ddac5ccc-9eae-43a5-96b6-5f0941671907-Original.jpg",
+          "size": 164168,
+          "eTag": "3574683661c1918ffc245480082699ad",
+          "sequencer": "00614A7F231F3986E1"
+        }
+      }
+    }
+  ]
 }

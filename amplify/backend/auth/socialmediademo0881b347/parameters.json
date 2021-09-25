@@ -1,10 +1,10 @@
 {
     "identityPoolName": "socialmediademo0881b347_identitypool_0881b347",
-    "allowUnauthenticatedIdentities": true,
+    "allowUnauthenticatedIdentities": false,
     "resourceNameTruncated": "social0881b347",
     "userPoolName": "socialmediademo0881b347_userpool_0881b347",
     "autoVerifiedAttributes": [
-        "email"
+        "phone_number"
     ],
     "mfaConfiguration": "OPTIONAL",
     "mfaTypes": [
@@ -12,7 +12,7 @@
         "TOTP"
     ],
     "smsAuthenticationMessage": "Your S2RB code is {####}",
-    "smsVerificationMessage": "Your verification code is {####}",
+    "smsVerificationMessage": "Your S2RB verification code is {####}",
     "emailVerificationSubject": "Your S2RB verification code",
     "emailVerificationMessage": "Your S2RB verification code is {####}",
     "defaultPasswordPolicy": false,

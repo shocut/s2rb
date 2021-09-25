@@ -39,9 +39,10 @@
     "S3Trigger055ac222": {
       "service": "Lambda",
       "providerPlugin": "awscloudformation",
-      "build": true
+      "build": true,
+      "dependsOn": []
     },
-    "NotifyEmailSellerProfileCreated": {
+    "SellerProfileTrigger": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda",
@@ -52,13 +53,6 @@
           "attributes": [
             "GraphQLAPIIdOutput",
             "GraphQLAPIEndpointOutput"
-          ]
-        },
-        {
-          "category": "storage",
-          "resourceName": "s2rbSellerAttachments",
-          "attributes": [
-            "BucketName"
           ]
         }
       ]

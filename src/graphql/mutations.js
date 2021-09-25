@@ -1,6 +1,195 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createReferral = /* GraphQL */ `
+  mutation CreateReferral(
+    $input: CreateReferralInput!
+    $condition: ModelReferralConditionInput
+  ) {
+    createReferral(input: $input, condition: $condition) {
+      id
+      feeBasis
+      token
+      clientType
+      listingPriceEstimate
+      clientReason
+      feeType
+      feeValue
+      referralType
+      buyerReferenceID
+      sellerrealestateprofileID
+      senderSignedDate
+      receiverSignedDate
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateReferral = /* GraphQL */ `
+  mutation UpdateReferral(
+    $input: UpdateReferralInput!
+    $condition: ModelReferralConditionInput
+  ) {
+    updateReferral(input: $input, condition: $condition) {
+      id
+      feeBasis
+      token
+      clientType
+      listingPriceEstimate
+      clientReason
+      feeType
+      feeValue
+      referralType
+      buyerReferenceID
+      sellerrealestateprofileID
+      senderSignedDate
+      receiverSignedDate
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteReferral = /* GraphQL */ `
+  mutation DeleteReferral(
+    $input: DeleteReferralInput!
+    $condition: ModelReferralConditionInput
+  ) {
+    deleteReferral(input: $input, condition: $condition) {
+      id
+      feeBasis
+      token
+      clientType
+      listingPriceEstimate
+      clientReason
+      feeType
+      feeValue
+      referralType
+      buyerReferenceID
+      sellerrealestateprofileID
+      senderSignedDate
+      receiverSignedDate
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createAgent = /* GraphQL */ `
+  mutation CreateAgent(
+    $input: CreateAgentInput!
+    $condition: ModelAgentConditionInput
+  ) {
+    createAgent(input: $input, condition: $condition) {
+      id
+      name
+      officeName
+      address {
+        id
+        name
+        description
+        streetAddress
+        city
+        adminArea
+        stateProvinceOrRegion
+        country
+        countryCode
+        postalCode
+        postalCodeSuffix
+        formattedAddress
+        status
+      }
+      email
+      primaryPhone
+      cellPhone
+      faxNumber
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateAgent = /* GraphQL */ `
+  mutation UpdateAgent(
+    $input: UpdateAgentInput!
+    $condition: ModelAgentConditionInput
+  ) {
+    updateAgent(input: $input, condition: $condition) {
+      id
+      name
+      officeName
+      address {
+        id
+        name
+        description
+        streetAddress
+        city
+        adminArea
+        stateProvinceOrRegion
+        country
+        countryCode
+        postalCode
+        postalCodeSuffix
+        formattedAddress
+        status
+      }
+      email
+      primaryPhone
+      cellPhone
+      faxNumber
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteAgent = /* GraphQL */ `
+  mutation DeleteAgent(
+    $input: DeleteAgentInput!
+    $condition: ModelAgentConditionInput
+  ) {
+    deleteAgent(input: $input, condition: $condition) {
+      id
+      name
+      officeName
+      address {
+        id
+        name
+        description
+        streetAddress
+        city
+        adminArea
+        stateProvinceOrRegion
+        country
+        countryCode
+        postalCode
+        postalCodeSuffix
+        formattedAddress
+        status
+      }
+      email
+      primaryPhone
+      cellPhone
+      faxNumber
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createInvestorInterest = /* GraphQL */ `
   mutation CreateInvestorInterest(
     $input: CreateInvestorInterestInput!
@@ -96,14 +285,39 @@ export const createSellerRealEstateProfile = /* GraphQL */ `
       attachments {
         name
         category
-        fileURL
+        fileKey
         status
+        description
       }
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
+      Referrals {
+        items {
+          id
+          feeBasis
+          token
+          clientType
+          listingPriceEstimate
+          clientReason
+          feeType
+          feeValue
+          referralType
+          buyerReferenceID
+          sellerrealestateprofileID
+          senderSignedDate
+          receiverSignedDate
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
       owner
     }
   }
@@ -140,14 +354,39 @@ export const updateSellerRealEstateProfile = /* GraphQL */ `
       attachments {
         name
         category
-        fileURL
+        fileKey
         status
+        description
       }
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
+      Referrals {
+        items {
+          id
+          feeBasis
+          token
+          clientType
+          listingPriceEstimate
+          clientReason
+          feeType
+          feeValue
+          referralType
+          buyerReferenceID
+          sellerrealestateprofileID
+          senderSignedDate
+          receiverSignedDate
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
       owner
     }
   }
@@ -184,14 +423,39 @@ export const deleteSellerRealEstateProfile = /* GraphQL */ `
       attachments {
         name
         category
-        fileURL
+        fileKey
         status
+        description
       }
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
+      Referrals {
+        items {
+          id
+          feeBasis
+          token
+          clientType
+          listingPriceEstimate
+          clientReason
+          feeType
+          feeValue
+          referralType
+          buyerReferenceID
+          sellerrealestateprofileID
+          senderSignedDate
+          receiverSignedDate
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
       owner
     }
   }

@@ -158,6 +158,7 @@ Parameters:
   hostedUI:
     Type: String
             
+            
 Conditions:
   ShouldNotCreateEnvResources: !Equals [ !Ref env, NONE ]
   
@@ -221,12 +222,9 @@ Resources:
       
       AutoVerifiedAttributes:
       
-        - email
+        - phone_number
       
       
-      
-      EmailVerificationMessage: !Ref emailVerificationMessage
-      EmailVerificationSubject: !Ref emailVerificationSubject
       
       Policies:
         PasswordPolicy:

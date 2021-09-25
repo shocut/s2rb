@@ -1,13 +1,13 @@
 import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplify/datastore";
 
+export enum FeeType {
+  PERCENTAGE = "PERCENTAGE",
+  FLAT = "FLAT"
+}
 
-
-export declare class Attachment {
-  readonly name: string;
-  readonly category?: string;
-  readonly fileURL?: string;
-  readonly status?: string;
-  constructor(init: ModelInit<Attachment>);
+export enum ReferralType {
+  BUYER = "BUYER",
+  SELLER = "SELLER"
 }
 
 export declare class Location {
@@ -27,12 +27,64 @@ export declare class Location {
   constructor(init: ModelInit<Location>);
 }
 
+export declare class Attachment {
+  readonly name: string;
+  readonly category?: string;
+  readonly fileKey?: string;
+  readonly status?: string;
+  readonly description?: string;
+  constructor(init: ModelInit<Attachment>);
+}
+
+type ReferralMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
+type AgentMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
 type InvestorInterestMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
 type SellerRealEstateProfileMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
+export declare class Referral {
+  readonly id: string;
+  readonly feeBasis?: FeeType | keyof typeof FeeType;
+  readonly token?: string;
+  readonly clientType?: string;
+  readonly listingPriceEstimate?: number;
+  readonly clientReason?: string;
+  readonly feeType?: string;
+  readonly feeValue?: string;
+  readonly referralType?: ReferralType | keyof typeof ReferralType;
+  readonly buyerReferenceID?: string;
+  readonly sellerrealestateprofileID?: string;
+  readonly senderSignedDate?: string;
+  readonly receiverSignedDate?: string;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<Referral, ReferralMetaData>);
+  static copyOf(source: Referral, mutator: (draft: MutableModel<Referral, ReferralMetaData>) => MutableModel<Referral, ReferralMetaData> | void): Referral;
+}
+
+export declare class Agent {
+  readonly id: string;
+  readonly name?: string;
+  readonly officeName?: string;
+  readonly address?: Location;
+  readonly email?: string;
+  readonly primaryPhone?: string;
+  readonly cellPhone?: string;
+  readonly faxNumber?: string;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<Agent, AgentMetaData>);
+  static copyOf(source: Agent, mutator: (draft: MutableModel<Agent, AgentMetaData>) => MutableModel<Agent, AgentMetaData> | void): Agent;
 }
 
 export declare class InvestorInterest {
@@ -60,6 +112,7 @@ export declare class SellerRealEstateProfile {
   readonly bedrooms?: string;
   readonly bathrooms?: string;
   readonly attachments?: (Attachment | null)[];
+  readonly Referrals?: (Referral | null)[];
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<SellerRealEstateProfile, SellerRealEstateProfileMetaData>);
