@@ -64,7 +64,7 @@ exports.handler = async (event, context, callback) => {
 
   // Use the sharp module to resize the image and save in a buffer.
   try {
-    var buffer = await sharp(origimage.Body).resize(width).toBuffer();
+    var buffer = await sharp(origimage.Body).rotate().resize(width).toBuffer();
   } catch (error) {
     console.log(error);
     return;
