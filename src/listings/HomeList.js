@@ -193,7 +193,7 @@ export default function HomeList() {
             <CardBody plain>
               <h3 className={classes.cardTitle}>Home Listings</h3>
               <Table
-                tableHead={["", "Details", "", "", "", ""]}
+                tableHead={["", "", "", "", "", ""]}
                 tableData={homeRows}
                 tableShopping
                 customHeadCellClasses={[
