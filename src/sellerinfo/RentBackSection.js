@@ -88,6 +88,7 @@ export default function RentBackSection(sliderRefContainer) {
       lastName: userObj.attributes.family_name,
       email: userObj.attributes.email,
       phone: userObj.attributes.phone_number,
+      status: "NEW",
     });
   }
 

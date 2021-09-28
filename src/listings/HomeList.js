@@ -1,6 +1,8 @@
 /* eslint-disable */
 
 import React from "react";
+import ReactDOM from "react-dom";
+
 import { useEffect, useState } from "react";
 import { Storage } from "aws-amplify";
 import { Auth } from "aws-amplify";
@@ -10,7 +12,7 @@ import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { DataStore } from "aws-amplify";
-import { SellerRealEstateProfile } from "../models";
+import { SellerRealEstateProfile, RealEstateStatus } from "../models";
 
 // @material-ui/icons
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
@@ -24,12 +26,25 @@ import Button from "../common/components/Button.js";
 import Card from "../common/components/Card.js";
 import CardBody from "../common/components/CardBody.js";
 
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
+import Slide from "@material-ui/core/Slide";
+import GridContainer from "../common/components/GridContainer.js";
+import GridItem from "../common/components/GridItem.js";
+import NavPills from "../common/components/NavPills.js";
+
 import listingStyle from "./listingStyle.js";
+import { getSourceMapRange } from "typescript";
 
 const useStyles = makeStyles(listingStyle);
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="left" ref={ref} {...props} />;
+});
 
 export default function HomeList() {
-  const [, updateState] = React.useState();
   const classes = useStyles();
   const dashboardRoutes = [];
   const [reProfiles, setREProfiles] = useState([]);
@@ -40,6 +55,12 @@ export default function HomeList() {
   const [currentUser, setCurrentUser] = useState(
     localStorage.getItem("currentUser")
   );
+  const [showViewDocuments, setShowViewDocuments] = useState(false);
+  const [reProfileAttchMap, setREProfileAttchMap] = useState(new Map());
+  const [currrentAttachments, setCurrrentAttachments] = useState([]);
+  const [currrentSellerRef, setCurrrentSellerRef] = useState("");
+  const [currentDocURL, setCurrentDocURL] = useState("");
+  const [reProfileId, setReProfileId] = useState("");
 
   const onLogout = async () => {
     console.log("in log out - clearing localstorage");
@@ -71,6 +92,7 @@ export default function HomeList() {
     if (currentUser) {
       userObj = JSON.parse(currentUser);
     }
+
     const loadREProfiles = async () => {
       try {
         var reProfiles = await DataStore.query(SellerRealEstateProfile, (p) =>
@@ -81,10 +103,10 @@ export default function HomeList() {
               .status("eq", "DOCS_REVIEWED")
           )
         );
-        var thumbnails = await getHomeImages(reProfiles);
-        var tableData = genTableData(reProfiles);
+        var thumbNailArray = getHomeImages(reProfiles);
+        var tableData = genTableData(reProfiles, thumbNailArray);
 
-        setThumbNails(thumbnails);
+        setThumbNails(thumbNailArray);
         setHomeRows(tableData);
 
         setRepaintCount(repaintCount + "1");
@@ -96,18 +118,109 @@ export default function HomeList() {
     loadREProfiles();
   }, []);
 
-  function genTableData(reProfiles) {
+  function genTableData(reProfiles, thumbNailArray) {
     var tableData = [];
     reProfiles.forEach((element, index) => {
-      tableData.push(homeListRow(index, element));
+      tableData.push(homeListRow(index, element, thumbNailArray));
+      reProfileAttchMap.set(element.sellerReference, element.attachments);
     });
     return tableData;
   }
 
-  function homeListRow(index, item) {
+  const closeDialog = () => {
+    setShowViewDocuments(false);
+  };
+
+  const reviewDocs = (evt) => {
+    var sellerReference = evt.currentTarget.getAttribute("seller_reference");
+    var reProfileId = evt.currentTarget.getAttribute("re_profile_id");
+    var attchArray = reProfileAttchMap.get(sellerReference);
+    setCurrrentAttachments(attchArray);
+    setCurrrentSellerRef(sellerReference);
+    setReProfileId(reProfileId);
+    setShowViewDocuments(true);
+    addAttachmentLinks(sellerReference, attchArray);
+  };
+
+  const onDocClick = (evt) => {
+    var fileKey = evt.currentTarget.getAttribute("file_key");
+    var sellerReference = evt.currentTarget.getAttribute("seller_reference");
+    getDocumentURL(sellerReference, fileKey);
+  };
+
+  async function getDocumentURL(sellerReference, fileKey) {
+    var docURL = "";
+    try {
+      Storage.get(fileKey, {
+        level: "protected",
+        identityId: sellerReference,
+      }).then((result) => {
+        setCurrentDocURL(result);
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const addAttachmentLinks = (sellerReference, attachments) => {
+    var docLinks = [];
+    var docMap = new Map();
+    if (!sellerReference || !attachments) {
+      sellerReference = currrentSellerRef;
+      attachments = currrentAttachments;
+      console.log(sellerReference, attachments);
+    }
+    //initialize document categories
+    docMap.set("mortgage_stmt", []);
+    docMap.set("title_proof", []);
+    docMap.set("identity_proof", []);
+    docMap.set("home_photo", []);
+
+    if (attachments && attachments.length > 0) {
+      attachments.forEach((attch) => {
+        //console.log("Current index: ", index, result);
+        var attchNode = React.createElement(
+          "p",
+          {
+            onClick: onDocClick,
+            file_key: attch.fileKey,
+            seller_reference: sellerReference,
+            className: classes.docButton,
+          },
+          attch.name
+        );
+        var docArray = docMap.get(attch.category);
+        if (docArray) docArray.push(attchNode);
+      });
+
+      for (let [key, arrayValue] of docMap) {
+        console.log("key", key);
+        //if (arrayValue.length > 0)
+        var domEle = document.getElementById(key);
+        if (domEle) {
+          if (arrayValue && arrayValue.length > 0) {
+            ReactDOM.render(arrayValue, domEle);
+          } else {
+            ReactDOM.render(React.createElement("p", {}, "N/A"), domEle);
+          }
+        } else {
+          console.log("key not found", key);
+        }
+      }
+      //add iframe - could do this statically...
+      const iframeElement = React.createElement("iframe", {
+        src: "",
+        id: "docIframe",
+        height: 600,
+        width: 800,
+      });
+    }
+  };
+
+  function homeListRow(index, item, thumbNailArray) {
     return [
       <div className={classes.imgContainer} key={1}>
-        {thumbNails[index]}
+        {thumbNailArray[index]}
       </div>,
       <span key={1}>
         <a href="#home" className={classes.tdNameAnchor}>
@@ -118,12 +231,21 @@ export default function HomeList() {
           {item.bedrooms} beds, {item.bathrooms} baths
           <br />
           {item.address.formattedAddress}
+          <br />
+          Status: {item.status},{" "}
+          {new Date(item.updatedAt).toLocaleString("en-US")}
         </small>
       </span>,
       <span key={1}>
         <small className={classes.tdNumberSmall}></small>
       </span>,
-      <Button size="sm" color="warning">
+      <Button
+        size="sm"
+        color="warning"
+        seller_reference={item.sellerReference}
+        re_profile_id={item.id}
+        onClick={reviewDocs}
+      >
         Review Documents
       </Button>,
       <Button size="sm" color="success">
@@ -132,14 +254,14 @@ export default function HomeList() {
     ];
   }
 
-  async function getHomeImages(reProfiles) {
+  function getHomeImages(reProfileArray) {
     //get the first home image to use as a thumbnail and then skip the rest
     //do this for all seller profiles which have attachments
     var thumbNailArray = [];
-    reProfiles.forEach((element, index) => {
+    reProfileArray.forEach((element, index) => {
       if (element.attachments && element.attachments.length > 0) {
         element.attachments.some((attch) => {
-          //console.log("attch.category: ", attch.category);
+          //console.log("attch.category: ", attch.category );
           if (attch.category == "home_photo") {
             //console.log(attch.fileKey);
             Storage.get("resized_" + attch.fileKey, {
@@ -155,7 +277,6 @@ export default function HomeList() {
                 thumbNailArray.push(imgNode);
               })
               .catch((err) => console.log(err));
-
             return true; //exit the some loop after finding first home photo
           }
         });
@@ -171,6 +292,30 @@ export default function HomeList() {
     });
     return thumbNailArray;
     //forceUpdate(true);
+  }
+
+  const markDocsReviewed = async () => {
+    console.log("in saveToDataStore");
+    try {
+      updateREProfileStatus(
+        await DataStore.query(SellerRealEstateProfile, reProfileId)
+      );
+    } catch (e) {
+      console.log(e);
+      setShowViewDocuments(false);
+    }
+  };
+
+  function updateREProfileStatus(originalREObj) {
+    console.log("in updateREProfileStatus: ");
+    setShowViewDocuments(false);
+    if (originalREObj) {
+      DataStore.save(
+        SellerRealEstateProfile.copyOf(originalREObj, (updated) => {
+          updated.status = RealEstateStatus.DOCS_REVIEWED;
+        })
+      );
+    }
   }
 
   return (
@@ -219,6 +364,74 @@ export default function HomeList() {
           </Card>
         </div>
       </div>
+
+      <Dialog
+        classes={{
+          root: classes.center,
+          paper: classes.modal,
+        }}
+        open={showViewDocuments}
+        fullWidth={true}
+        maxWidth={"md"}
+        keepMounted
+        TransitionComponent={Transition}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle
+          id="alert-dialog-slide-title"
+          className={classes.modalHeader}
+        >
+          <h4 className={classes.modalTitle}>Review Seller Documents</h4>
+        </DialogTitle>
+        <DialogContent>
+          <table width="100%">
+            <tr valign="top">
+              <td width="35%" className={classes.tableCell}>
+                <b>Mortgage Statements</b>
+              </td>
+              <td className={classes.tableCell}>
+                <div id="mortgage_stmt">N/A</div>
+              </td>
+            </tr>
+            <tr valign="top">
+              <td className={classes.tableCell}>
+                <b>Title Proof</b>
+              </td>
+              <td className={classes.tableCell}>
+                <div id="title_proof">N/A</div>
+              </td>
+            </tr>
+            <tr valign="top">
+              <td className={classes.tableCell}>
+                <b>Identity Proof</b>
+              </td>
+              <td className={classes.tableCell}>
+                <div id="identity_proof">N/A</div>
+              </td>
+            </tr>
+            <tr valign="top">
+              <td className={classes.tableCell}>
+                <b>Home Photos</b>
+              </td>
+              <td className={classes.tableCell}>
+                <div id="home_photo">N/A</div>
+              </td>
+            </tr>
+          </table>
+        </DialogContent>
+        <DialogActions className={classes.modalFooter}>
+          <div style={{ visibility: "hidden" }}>
+            <iframe width="1" height="1" src={currentDocURL}></iframe>
+          </div>
+          <Button color="success" onClick={markDocsReviewed}>
+            Mark All Documents as Verified and Accepted
+          </Button>
+          <Button color="info" onClick={closeDialog}>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

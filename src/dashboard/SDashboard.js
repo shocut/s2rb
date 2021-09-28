@@ -7,7 +7,7 @@ import Header from "../common/components/Header.js";
 import HeaderLinks from "../common/components/HeaderLinks.js";
 import { DataStore } from "aws-amplify";
 
-import { SellerRealEstateProfile } from "../models";
+import { SellerRealEstateProfile, RealEstateStatus } from "../models";
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -144,6 +144,7 @@ export default function SDashboard(props) {
       DataStore.save(
         SellerRealEstateProfile.copyOf(originalREObj, (updated) => {
           updated.attachments = newAttachments;
+          updated.status = RealEstateStatus.DOCS_UPLOADED;
         })
       );
     }
