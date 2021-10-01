@@ -14,6 +14,7 @@ import Signup from "./common/components/Signup";
 import SellerProfile from "./sellerinfo/SellerProfile.js";
 import SDashboard from "./dashboard/SDashboard";
 import HomeList from "./listings/HomeList";
+import Referral from "./referral/Referral";
 
 import reportWebVitals from "./reportWebVitals";
 
@@ -35,6 +36,8 @@ ReactDOM.render(
       <Route path="/sdashboard" component={SDashboard} />
       <Route path="/app" component={App} />
       <Route path="/listings" component={HomeList} />
+      <Route path="/referral" component={Referral} />
+
       <Route path="/" component={CommingSoon} />
     </Switch>
   </Router>,

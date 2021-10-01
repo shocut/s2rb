@@ -263,7 +263,6 @@ export default function HomeList() {
   function setHomeThumbnails(reProfileArray) {
     //get the first home image to use as a thumbnail and then skip the rest
     //do this for all seller profiles which have attachments
-    var thumbNailArray = [];
     reProfileArray.forEach((element, index) => {
       if (element.attachments && element.attachments.length > 0) {
         element.attachments.some((attch) => {
@@ -293,17 +292,8 @@ export default function HomeList() {
             return true; //exit the some loop after finding first home photo
           }
         });
-      } else {
-        thumbNailArray.push(
-          <HomeOutlinedIcon
-            fontSize="inherit"
-            color="inherit"
-            className={classes.thumbNail}
-          />
-        );
       }
     });
-    return thumbNailArray;
     //forceUpdate(true);
   }
 
