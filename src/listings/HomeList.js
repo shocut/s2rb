@@ -103,12 +103,9 @@ export default function HomeList() {
               .status("eq", "DOCS_REVIEWED")
           )
         );
-        var thumbNailArray = getHomeImages(reProfiles);
-        var tableData = genTableData(reProfiles, thumbNailArray);
-
-        setThumbNails(thumbNailArray);
+        var tableData = genTableData(reProfiles);
         setHomeRows(tableData);
-
+        setHomeThumbnails(reProfiles);
         setRepaintCount(repaintCount + "1");
         console.log("repaint count: ", repaintCount);
       } catch (e) {
@@ -118,10 +115,10 @@ export default function HomeList() {
     loadREProfiles();
   }, []);
 
-  function genTableData(reProfiles, thumbNailArray) {
+  function genTableData(reProfiles) {
     var tableData = [];
     reProfiles.forEach((element, index) => {
-      tableData.push(homeListRow(index, element, thumbNailArray));
+      tableData.push(homeListRow(index, element));
       reProfileAttchMap.set(element.sellerReference, element.attachments);
     });
     return tableData;
@@ -217,10 +214,14 @@ export default function HomeList() {
     }
   };
 
-  function homeListRow(index, item, thumbNailArray) {
+  function homeListRow(index, item) {
     return [
-      <div className={classes.imgContainer} key={1}>
-        {thumbNailArray[index]}
+      <div className={classes.imgContainer} key={1} id={item.id}>
+        <HomeOutlinedIcon
+          fontSize="inherit"
+          color="inherit"
+          className={classes.thumbNail}
+        />
       </div>,
       <span key={1}>
         <a href="#home" className={classes.tdNameAnchor}>
@@ -254,7 +255,7 @@ export default function HomeList() {
     ];
   }
 
-  function getHomeImages(reProfileArray) {
+  function setHomeThumbnails(reProfileArray) {
     //get the first home image to use as a thumbnail and then skip the rest
     //do this for all seller profiles which have attachments
     var thumbNailArray = [];
@@ -274,7 +275,14 @@ export default function HomeList() {
                   src: result,
                   width: "200",
                 });
-                thumbNailArray.push(imgNode);
+                var domEle = document.getElementById(element.id);
+                if (domEle) {
+                  if (result) {
+                    ReactDOM.render(imgNode, domEle);
+                  }
+                } else {
+                  console.log("Seller ref not found", element.id);
+                }
               })
               .catch((err) => console.log(err));
             return true; //exit the some loop after finding first home photo

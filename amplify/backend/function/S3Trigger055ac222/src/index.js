@@ -41,7 +41,7 @@ exports.handler = async (event, context, callback) => {
 
   // Check that the image type is supported
   const imageType = typeMatch[1].toLowerCase();
-  if (imageType != "jpg" && imageType != "png") {
+  if (imageType != "jpg" && imageType != "jpeg" && imageType != "png") {
     console.log(`Unsupported image type: ${imageType}`);
     return;
   }
