@@ -31,6 +31,7 @@ ReactDOM.render(
   <Router history={hist}>
     <Switch>
       <Route path="/home" component={App} />
+      <Route path="/signin" component={Signup} />
       <Route path="/signup" component={Signup} />
       <Route path="/reprofile" component={SellerProfile} />
       <Route path="/sdashboard" component={SDashboard} />
