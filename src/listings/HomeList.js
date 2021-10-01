@@ -4,6 +4,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+
 import { Storage } from "aws-amplify";
 import { Auth } from "aws-amplify";
 
@@ -46,10 +48,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function HomeList() {
   const classes = useStyles();
+  const history = useHistory();
+
   const dashboardRoutes = [];
-  const [reProfiles, setREProfiles] = useState([]);
-  const [thumbNails, setThumbNails] = useState([]);
-  const [repaintCount, setRepaintCount] = useState("1");
   const forceUpdate = React.useCallback(() => updateState({}), []);
   const [homeRows, setHomeRows] = useState([]);
   const [currentUser, setCurrentUser] = useState(
@@ -72,21 +73,27 @@ export default function HomeList() {
   const checkLoginState = async () => {
     try {
       const currentUser = await Auth.currentAuthenticatedUser();
-      /*
-      const groups =
-        user.signInUserSession.accessToken.payload["cognito:groups"];
-      console.log(JSON.stringify(groups));
-      console.log(groups.includes("admin"));
-      */
       if (currentUser) {
         setCurrentUser(currentUser);
+        const groups =
+          currentUser.signInUserSession.accessToken.payload["cognito:groups"];
+        console.log("groups", groups);
+        if (
+          !groups ||
+          (!groups.includes("admin") && !groups.includes("operator"))
+        ) {
+          console.log("not for you");
+          var nextPage = "/sdashboard";
+          history.push(nextPage);
+        }
       }
     } catch (e) {
+      localStorage.removeItem("currentUser");
       setCurrentUser(null);
     }
   };
-
   useEffect(() => {
+    checkLoginState();
     var userObj = null;
     var currentUser = localStorage.getItem("currentUser");
     if (currentUser) {
@@ -106,8 +113,6 @@ export default function HomeList() {
         var tableData = genTableData(reProfiles);
         setHomeRows(tableData);
         setHomeThumbnails(reProfiles);
-        setRepaintCount(repaintCount + "1");
-        console.log("repaint count: ", repaintCount);
       } catch (e) {
         console.log(e);
       }

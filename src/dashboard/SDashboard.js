@@ -92,7 +92,6 @@ export default function SDashboard(props) {
     var currentUser = localStorage.getItem("currentUser");
     if (currentUser) {
       userObj = JSON.parse(currentUser);
-      console.log(currentUser);
     }
     const loadREProfile = async () => {
       if (userObj) {
