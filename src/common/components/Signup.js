@@ -11,6 +11,9 @@ import { useHistory } from "react-router-dom";
 import {
   AmplifySignUp,
   AmplifyAuthenticator,
+  AmplifyConfirmSignUp,
+  AmplifyForgotPassword,
+  AmplifyConfirmSignIn,
   AmplifySignIn,
   AmplifyAuthContainer,
 } from "@aws-amplify/ui-react";
@@ -132,9 +135,22 @@ function Signup(props) {
               <AmplifySignIn
                 slot="sign-in"
                 usernameAlias="email"
-                headerText="Sign In to S2RB"
+                headerText="Sign In to your S2RB account"
               />
+              <AmplifyConfirmSignUp
+                headerText="Please enter your email and the verification code sent to your phone:"
+                slot="confirm-sign-up"
+                usernameAlias="email"
+              ></AmplifyConfirmSignUp>
+              <AmplifyConfirmSignIn
+                headerText="Please enter the verification code sent to your phone:"
+                slot="confirm-sign-in"
+              ></AmplifyConfirmSignIn>
             </AmplifyAuthenticator>
+            <AmplifyForgotPassword
+              headerText="Please enter your S2RB email:"
+              slot="forgot-password"
+            ></AmplifyForgotPassword>
           </AmplifyAuthContainer>
         </div>
       </div>
