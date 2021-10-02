@@ -46,7 +46,7 @@
       "function": {
         "S3Trigger055ac222": {
           "deploymentBucketName": "amplify-s2rb-dev-90947-deployment",
-          "s3Key": "amplify-builds/S3Trigger055ac222-47497642716952555566-build.zip"
+          "s3Key": "amplify-builds/S3Trigger055ac222-4935747938445737717a-build.zip"
         },
         "SellerProfileTrigger": {
           "deploymentBucketName": "amplify-s2rb-dev-90947-deployment",
