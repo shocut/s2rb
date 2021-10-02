@@ -438,6 +438,15 @@ export const schema = {
                         "associatedWith": "sellerrealestateprofileID"
                     }
                 },
+                "status": {
+                    "name": "status",
+                    "isArray": false,
+                    "type": {
+                        "enum": "RealEstateStatus"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -500,6 +509,23 @@ export const schema = {
         }
     },
     "enums": {
+        "RealEstateStatus": {
+            "name": "RealEstateStatus",
+            "values": [
+                "NEW",
+                "DOCS_UPLOADED",
+                "DOCS_IN_REVIEW",
+                "DOCS_REVIEWED",
+                "REFERRAL_GENERATED",
+                "REFERRAL_DISPATCHED",
+                "REFERRAL_SIGNED",
+                "LISTING_AUTHORIZED",
+                "AGENT_INSPECTED",
+                "TITLE_CHECKED",
+                "UNDER_CONTRACT",
+                "SOLD"
+            ]
+        },
         "FeeType": {
             "name": "FeeType",
             "values": [
@@ -653,5 +679,5 @@ export const schema = {
             }
         }
     },
-    "version": "a52b76f752138fd6615e0ef5418d32a9"
+    "version": "8518b58cece444285532641728bd875a"
 };
