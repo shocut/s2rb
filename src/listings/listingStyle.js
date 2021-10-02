@@ -66,13 +66,15 @@ const styles = {
     position: "relative",
   },
   imgContainer: {
-    width: "120px",
-    maxHeight: "160px",
+    width: "150px",
+    maxHeight: "200px",
     overflow: "hidden",
     display: "block",
     "& img": {
       width: "100%",
     },
+    fontSize: "7em",
+    color: "#E5E4E2",
   },
   description: {
     maxWidth: "150px",
@@ -84,6 +86,7 @@ const styles = {
   },
   tdNameAnchor: {
     color: grayColor[1],
+    fontSize: "1em",
   },
   tdNameSmall: {
     color: grayColor[0],
@@ -124,6 +127,21 @@ const styles = {
     borderRadius: "6px",
     boxShadow:
       "0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2)",
+  },
+  thumbNail: {
+    width: "120px",
+    height: "120px",
+  },
+  docButton: {
+    cursor: "pointer",
+    padding: "5px",
+    borderRadius: "6px",
+    boxShadow:
+      "0 8px 12px 1px rgba(0, 0, 0, 0.14), 0 3px 15px 2px rgba(0, 0, 0, 0.12), 0 4px 5px -2px rgba(0, 0, 0, 0.2)",
+  },
+  tableCell: {
+    borderTop: "1px solid " + grayColor[6],
+    padding: "5px",
   },
 };
 

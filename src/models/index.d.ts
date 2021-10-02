@@ -129,6 +129,10 @@ export declare class SellerRealEstateProfile {
   readonly attachments?: (Attachment | null)[];
   readonly Referrals?: (Referral | null)[];
   readonly status?: RealEstateStatus | keyof typeof RealEstateStatus;
+  readonly firstName?: string;
+  readonly lastName?: string;
+  readonly sellerPhone?: string;
+  readonly sellerEmail?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<SellerRealEstateProfile, SellerRealEstateProfileMetaData>);

@@ -13,7 +13,8 @@ import App from "./App";
 import Signup from "./common/components/Signup";
 import SellerProfile from "./sellerinfo/SellerProfile.js";
 import SDashboard from "./dashboard/SDashboard";
-import Listings from "./listings/Listings";
+import HomeList from "./listings/HomeList";
+import Referral from "./referral/Referral";
 
 import reportWebVitals from "./reportWebVitals";
 
@@ -34,7 +35,9 @@ ReactDOM.render(
       <Route path="/reprofile" component={SellerProfile} />
       <Route path="/sdashboard" component={SDashboard} />
       <Route path="/app" component={App} />
-      <Route path="/listings" component={Listings} />
+      <Route path="/listings" component={HomeList} />
+      <Route path="/referral" component={Referral} />
+
       <Route path="/" component={CommingSoon} />
     </Switch>
   </Router>,

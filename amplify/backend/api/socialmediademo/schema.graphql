@@ -97,5 +97,9 @@ type SellerRealEstateProfile @model @auth(rules: [{allow: public, operations: [c
   attachments: [Attachment]
   Referrals: [Referral] @connection(keyName: "bySellerRealEstateProfile", fields: ["id"])
   status: RealEstateStatus
+  firstName: String
+  lastName: String
+  sellerPhone: AWSPhone
+  sellerEmail: AWSEmail
 }
  

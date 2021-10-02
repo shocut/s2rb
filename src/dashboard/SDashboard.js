@@ -7,7 +7,7 @@ import Header from "../common/components/Header.js";
 import HeaderLinks from "../common/components/HeaderLinks.js";
 import { DataStore } from "aws-amplify";
 
-import { SellerRealEstateProfile } from "../models";
+import { SellerRealEstateProfile, RealEstateStatus } from "../models";
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -97,7 +97,7 @@ export default function SDashboard(props) {
       if (userObj) {
         setREProfile(
           await DataStore.query(SellerRealEstateProfile, (p) =>
-            p.sellerReference("eq", userObj.attributes.email)
+            p.sellerReference("eq", userObj.username)
           ),
           currentUser
         );
@@ -143,6 +143,7 @@ export default function SDashboard(props) {
       DataStore.save(
         SellerRealEstateProfile.copyOf(originalREObj, (updated) => {
           updated.attachments = newAttachments;
+          updated.status = RealEstateStatus.DOCS_UPLOADED;
         })
       );
     }
@@ -162,7 +163,6 @@ export default function SDashboard(props) {
         setAttachments(reProfile.attachments);
       }
 
-      console.log("attachments " + attachments);
       setStreetAddress(
         reProfile.address ? reProfile.address.formattedAddress : ""
       );

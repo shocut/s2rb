@@ -447,6 +447,34 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "firstName": {
+                    "name": "firstName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "lastName": {
+                    "name": "lastName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "sellerPhone": {
+                    "name": "sellerPhone",
+                    "isArray": false,
+                    "type": "AWSPhone",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "sellerEmail": {
+                    "name": "sellerEmail",
+                    "isArray": false,
+                    "type": "AWSEmail",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -679,5 +707,5 @@ export const schema = {
             }
         }
     },
-    "version": "8518b58cece444285532641728bd875a"
+    "version": "57658151c5fcc5a74a59a1c146ee062e"
 };

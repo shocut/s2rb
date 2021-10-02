@@ -65,7 +65,7 @@ export default function SellerProfile(props) {
       if (userObj) {
         setREProfile(
           await DataStore.query(SellerRealEstateProfile, (p) =>
-            p.sellerReference("eq", userObj.attributes.email)
+            p.sellerReference("eq", userObj.username)
           ),
           currentUser
         );

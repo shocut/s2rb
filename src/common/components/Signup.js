@@ -115,6 +115,10 @@ function Signup(props) {
                     type: "phone_number",
                     label: " Phone ",
                     placeholder: "phone number",
+                    inputProps: {
+                      required: true,
+                      autocomplete: "phone_number",
+                    },
                   },
                 ]}
               />
