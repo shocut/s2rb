@@ -187,7 +187,7 @@ export default function S3FileHandler(props) {
         contentDisposition: "attachment",
         progressCallback(loadProgress) {
           setProgress((loadProgress.loaded / loadProgress.total) * 100);
-          if (loadProgress.total - loadProgress.total < 1) {
+          if (loadProgress.total - loadProgress.loaded < 1) {
             setFileName("");
             setTimeout(() => {
               setIsVisible("false");

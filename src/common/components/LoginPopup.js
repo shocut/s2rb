@@ -1,5 +1,5 @@
 import { AmplifyAuthenticator, AmplifySignUp } from '@aws-amplify/ui-react'
-
+// Probably unused component.
 function LoginPopup({onAuthStateChange, onCancel}) {
     return <div className="authenticator">
         <button className="close-login" onClick={onCancel}>Cancel login</button>
