@@ -444,7 +444,6 @@ export default function SDashboard(props) {
                                         round: true,
                                         color: "success",
                                         justIcon: true,
-                                        fileButton: true,
                                       },
                                       icon: <AttachFile />,
                                     }}

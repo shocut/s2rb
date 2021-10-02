@@ -38,8 +38,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function S3FileHandler(props) {
-  const { attachments, maxFileSize, setAndSaveAttachments, ...rest } = props;
-
+  const { attachments, maxFileSize, setAndSaveAttachments, id, endButton, startButton, inputProps, formControlProps, multiple, ...rest} =
+    props;
   const [fileName, setFileName] = useState("");
   const [fileCategory, setFileCategory] = useState("");
   const [catgError, setCatgError] = useState(false);
@@ -214,8 +214,6 @@ export default function S3FileHandler(props) {
     }
   }
 
-  const { id, endButton, startButton, inputProps, formControlProps, multiple } =
-    props;
   const classes = useStyles();
   if (inputProps && inputProps.type && inputProps.type === "file") {
     inputProps.type = "text";
@@ -261,7 +259,7 @@ export default function S3FileHandler(props) {
                 name: "catgSelect",
                 id: "catgSelectId",
               }}
-            >
+              >
               <MenuItem
                 disabled
                 classes={{
@@ -326,12 +324,12 @@ export default function S3FileHandler(props) {
                   ...formControlProps,
                 }}
                 inputProps={{
-                  ...inputProps,
                   onClick: onFocus,
                   error: catgError,
                   value: fileName,
                   endAdornment: buttonEnd,
                   startAdornment: buttonStart,
+                  ...inputProps
                 }}
               />
             </div>
@@ -382,9 +380,9 @@ export default function S3FileHandler(props) {
           id="alert-dialog-slide-title"
           className={classes.modalHeader}
         >
-          <h4 className={classes.modalTitle}>
+          <div className={classes.modalTitle}>
             Remove this document attachment?
-          </h4>
+          </div>
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
@@ -415,7 +413,7 @@ export default function S3FileHandler(props) {
           id="alert-dialog-slide-title"
           className={classes.modalHeader}
         >
-          <h4 className={classes.modalTitle}>Upload Attachment</h4>
+          <div className={classes.modalTitle}>Upload Attachment</div>
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
