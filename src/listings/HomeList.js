@@ -209,13 +209,6 @@ export default function HomeList() {
           console.log("key not found", key);
         }
       }
-      //add iframe - could do this statically...
-      const iframeElement = React.createElement("iframe", {
-        src: "",
-        id: "docIframe",
-        height: 600,
-        width: 800,
-      });
     }
   };
 

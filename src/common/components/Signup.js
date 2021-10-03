@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-
 import queryString from "query-string";
 import { Auth } from "aws-amplify";
 import { AuthState } from "@aws-amplify/ui-components";
@@ -11,7 +10,6 @@ import { useHistory } from "react-router-dom";
 import {
   AmplifySignUp,
   AmplifyAuthenticator,
-  AmplifyConfirmSignUp,
   AmplifyForgotPassword,
   AmplifyConfirmSignIn,
   AmplifySignIn,
@@ -65,6 +63,22 @@ function Signup(props) {
     }
   }
 
+  /*
+  onAuthUIStateChange((nextAuthState, authData) => {
+    console.log("authData", authData);
+
+    if (nextAuthState === AuthState.SignedIn) {
+      console.log("user successfully signed in!");
+      console.log("user data: ", authData);
+    }
+    if (!authData) {
+      console.log("user is not signed in...");
+    } else {
+      setUsername(authData.username);
+    }
+  });
+*/
+
   return (
     <div>
       <div
@@ -116,7 +130,7 @@ function Signup(props) {
                   },
                   {
                     type: "phone_number",
-                    label: " Phone ",
+                    label: " Mobile Phone (for secure SMS verification code)",
                     placeholder: "phone number",
                     inputProps: {
                       required: true,
@@ -130,11 +144,6 @@ function Signup(props) {
                 usernameAlias="email"
                 headerText="Sign In to your S2RB account"
               />
-              <AmplifyConfirmSignUp
-                headerText="Please enter your email and the verification code sent to your phone:"
-                slot="confirm-sign-up"
-                usernameAlias="email"
-              ></AmplifyConfirmSignUp>
               <AmplifyConfirmSignIn
                 headerText="Please enter the verification code sent to your phone:"
                 slot="confirm-sign-in"
