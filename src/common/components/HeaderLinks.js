@@ -89,12 +89,12 @@ export default function HeaderLinks(props) {
             }}
             buttonIcon={PersonIcon}
             dropdownList={[
-              <Link to="/sdashboard" className={classes.dropdownLink}>
+              <Link to="/app/sdashboard" className={classes.dropdownLink}>
                 <DashboardIcon className={classes.dropdownIcons} />
                 Dashboard
               </Link>,
               <Link
-                to="/sdashboard"
+                to="/app/sdashboard"
                 className={classes.dropdownLink}
                 onClick={onLogout}
               >

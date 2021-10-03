@@ -83,7 +83,7 @@ export default function HomeList() {
           (!groups.includes("admin") && !groups.includes("operator"))
         ) {
           console.log("not for you");
-          var nextPage = "/sdashboard";
+          var nextPage = "/app/sdashboard";
           history.push(nextPage);
         }
       }

@@ -34,7 +34,6 @@ function App(props) {
   );
   const { ...rest } = props;
   const classes = useStyles();
-
   const onLogout = async () => {
     console.log("in log out - clearing localstorage");
     localStorage.clear();
@@ -47,6 +46,8 @@ function App(props) {
       const currentUser = await Auth.currentAuthenticatedUser();
       if (currentUser) {
         setCurrentUser(currentUser);
+      } else {
+        setCurrentUser(null);
       }
     } catch (e) {
       setCurrentUser(null);
@@ -110,5 +111,4 @@ function App(props) {
     </div>
   );
 }
-
 export default App;

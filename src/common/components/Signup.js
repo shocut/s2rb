@@ -26,7 +26,7 @@ function Signup(props) {
   const classes = useStyles();
   const history = useHistory();
   const queryValues = queryString.parse(props.location.search);
-  var nextPage = "/sdashboard";
+  var nextPage = "/app/sdashboard";
   if (queryValues.ref) {
     //need a better check to make sure we don't route to any page
     nextPage = queryValues.ref;
