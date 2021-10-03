@@ -38,9 +38,9 @@ const ReferralTableRow = ({ items }) => {
   const rows = items.map((item) => (
     <View style={styles.row}>
       <Text style={styles.cellLabel20}>{item.label1}</Text>
-      <Text style={styles.cellVal30}></Text>
+      <Text style={styles.cellVal30}>{item.val1}</Text>
       <Text style={styles.cellLabel20}>{item.label2}</Text>
-      <Text style={styles.cellVal30}></Text>
+      <Text style={styles.cellVal30}>{item.val2}</Text>
     </View>
   ));
   return <Fragment>{rows}</Fragment>;

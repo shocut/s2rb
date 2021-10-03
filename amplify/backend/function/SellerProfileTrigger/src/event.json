@@ -1,5 +1,77 @@
 {
-  "key1": "value1",
-  "key2": "value2",
-  "key3": "value3"
+  "Records": [
+    {
+      "eventID": "27989656173b94f62fe4837e2eed27e3",
+      "eventName": "INSERT",
+      "eventVersion": "1.1",
+      "eventSource": "aws:dynamodb",
+      "awsRegion": "us-east-1",
+      "dynamodb": {
+        "ApproximateCreationDateTime": 1631831447,
+        "Keys": {
+          "id": {
+            "S": "6c085dff-0d47-4332-95b3-676e93db66d6"
+          }
+        },
+        "NewImage": {
+          "rentBackPeriod": {
+            "S": "dolor esse amet enim incidi"
+          },
+          "attachments": {
+            "L": [
+              {
+                "NULL": true
+              }
+            ]
+          },
+          "searchStage": {
+            "S": "sunt sunt mollit"
+          },
+          "_lastChangedAt": {
+            "N": "1631831446586"
+          },
+          "primaryHome": {
+            "S": "ex aute officia ea e"
+          },
+          "__typename": {
+            "S": "SellerRealEstateProfile"
+          },
+          "houseType": {
+            "S": "tempor reprehend"
+          },
+          "firstName": {
+            "S": "Manish"
+          },
+          "lastName": {
+            "S": "Pradhan"
+          },
+          "sellerEmail": {
+            "S": "manyapradhan@gmail.com"
+          },
+          "bathrooms": {
+            "S": "consequat anim ul"
+          },
+          "bedrooms": {
+            "S": "anim laboris nostrud ullamco"
+          },
+          "createdAt": {
+            "S": "2021-09-16T22:30:46.563Z"
+          },
+          "id": {
+            "S": "6c085dff-0d47-4332-95b3-676e93db66d6"
+          },
+          "_version": {
+            "N": "1"
+          },
+          "updatedAt": {
+            "S": "2021-09-16T22:30:46.563Z"
+          }
+        },
+        "SequenceNumber": "166063000000000017291152420",
+        "SizeBytes": 454,
+        "StreamViewType": "NEW_AND_OLD_IMAGES"
+      },
+      "eventSourceARN": "arn:aws:dynamodb:us-east-1:872659693886:table/SellerRealEstateProfile-dg4eksp54bfjlczt3qyue3vlri-devp/stream/2021-08-13T00:07:14.011"
+    }
+  ]
 }
