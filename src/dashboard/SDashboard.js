@@ -155,7 +155,17 @@ export default function SDashboard(props) {
       var reProfile = reProfileList[0];
       localStorage.setItem("s2rb_re_profile_id", reProfile.id);
       set_s2rb_re_profile_id(reProfile.id);
-      setREProfileProgress(60);
+      if (
+        reProfile.status == RealEstateStatus.DOCS_UPLOADED ||
+        reProfile.status == RealEstateStatus.DOCS_IN_REVIEW
+      ) {
+        setREProfileProgress(80);
+      } else if (reProfile.status == RealEstateStatus.DOCS_REVIEWED) {
+        setREProfileProgress(100);
+      } else {
+        setREProfileProgress(60);
+      }
+
       setProfile(reProfile);
       if (!reProfile.attachments) {
         setAttachments([]);
