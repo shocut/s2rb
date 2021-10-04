@@ -147,7 +147,8 @@ referralTemplateData.set("clientSection", {
 referralTemplateData.set("agreementSection", {
   agreementSection: {
     refPercent: "30",
-    sellingSide: "U+2714",
+    //sellingSide: String.fromCharCode(parseInt(2714, 16)),
+    sellingSide: "X",
   },
 });
 

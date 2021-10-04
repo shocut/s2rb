@@ -102,10 +102,10 @@ const ReferralAgreementSection = ({ referral }) => (
       <ReferralSectionHeader headerText="Referral Agreement Details" />
     </View>
     <View style={styles.row}>
-      <Text style={styles.cellLabel35}>
+      <Text style={styles.cellLabel40}>
         By signing this form as the receiving agent,
       </Text>
-      <Text style={styles.cellVal30}>
+      <Text style={styles.cellVal25}>
         {referral.agentSection.items[0].val1}
       </Text>
       <Text style={styles.cellLabel35}>
