@@ -155,15 +155,15 @@ export default function SDashboard(props) {
       var reProfile = reProfileList[0];
       localStorage.setItem("s2rb_re_profile_id", reProfile.id);
       set_s2rb_re_profile_id(reProfile.id);
-      if (
+      if (reProfile.status == RealEstateStatus.NEW) {
+        setREProfileProgress(60);
+      } else if (
         reProfile.status == RealEstateStatus.DOCS_UPLOADED ||
         reProfile.status == RealEstateStatus.DOCS_IN_REVIEW
       ) {
         setREProfileProgress(80);
-      } else if (reProfile.status == RealEstateStatus.DOCS_REVIEWED) {
-        setREProfileProgress(100);
       } else {
-        setREProfileProgress(60);
+        setREProfileProgress(100);
       }
 
       setProfile(reProfile);
@@ -388,18 +388,36 @@ export default function SDashboard(props) {
                                 <GridItem xs={9}>
                                   {reProfile.rentBackPeriod}
                                 </GridItem>
-                                <GridItem xs={12}>
-                                  <div>
-                                    <br />
-                                    <Button
-                                      color="success"
-                                      href="/reprofile"
-                                      target="_self"
-                                    >
-                                      Edit
-                                    </Button>
-                                  </div>
-                                </GridItem>
+                                {(reProfile.status === RealEstateStatus.NEW ||
+                                  reProfile.status ===
+                                    RealEstateStatus.DOCS_UPLOADED) && (
+                                  <GridItem xs={12}>
+                                    <div>
+                                      <br />
+                                      <Button
+                                        color="success"
+                                        href="/reprofile"
+                                        target="_self"
+                                      >
+                                        Edit
+                                      </Button>
+                                    </div>
+                                  </GridItem>
+                                )}
+                                {reProfile.status != RealEstateStatus.NEW &&
+                                  reProfile.status !=
+                                    RealEstateStatus.DOCS_UPLOADED && (
+                                    <GridItem xs={12}>
+                                      <p>
+                                        <br />
+                                        <b>Please Note:&nbsp;</b> The status of
+                                        your real estate profile is "
+                                        {reProfile.status}". If you need to make
+                                        any changes to your submission please
+                                        write to support@s2rb.com with details.
+                                      </p>
+                                    </GridItem>
+                                  )}
                               </GridContainer>
                             </CardBody>
                           </Card>
@@ -439,6 +457,12 @@ export default function SDashboard(props) {
                                 <div>
                                   <S3FileHandler
                                     attachments={attachments}
+                                    allowDelete={
+                                      reProfile.status ===
+                                        RealEstateStatus.NEW ||
+                                      reProfile.status ===
+                                        RealEstateStatus.DOCS_UPLOADED
+                                    }
                                     setAndSaveAttachments={
                                       setAndSaveAttachments
                                     }

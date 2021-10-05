@@ -38,7 +38,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function S3FileHandler(props) {
-  const { attachments, maxFileSize, setAndSaveAttachments, ...rest } = props;
+  const {
+    attachments,
+    maxFileSize,
+    setAndSaveAttachments,
+    allowDelete,
+    ...rest
+  } = props;
 
   const [fileName, setFileName] = useState("");
   const [fileCategory, setFileCategory] = useState("");
@@ -347,6 +353,7 @@ export default function S3FileHandler(props) {
           <S3FileList
             attachments={attachments}
             deleteAttachment={deleteAttachment}
+            allowDelete={allowDelete}
             formControlProps={{
               fullWidth: true,
               disabled: true,
@@ -449,6 +456,7 @@ S3FileHandler.defaultProps = {
 S3FileHandler.propTypes = {
   attachments: PropTypes.array,
   setAndSaveAttachments: PropTypes.func,
+  allowDelete: PropTypes.bool,
   id: PropTypes.string,
   maxFileSize: PropTypes.number,
   endButton: PropTypes.object,
