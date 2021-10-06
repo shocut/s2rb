@@ -222,12 +222,11 @@ export default function HomeList() {
         />
       </div>,
       <span key={1}>
-        <a href="#home" className={classes.tdNameAnchor}>
-          {item.houseType}
-        </a>
-        <br />
+        <div className={classes.tdNameAnchor}>{item.houseType}</div>
         <small className={classes.tdNameSmall}>
           {item.bedrooms} beds, {item.bathrooms} baths
+          <br />
+          {item.firstName} {item.lastName}
           <br />
           {item.address.formattedAddress}
           <br />
