@@ -140,10 +140,14 @@ export default function SDashboard(props) {
     console.log("in saveREProfileAttachments: " + newAttachments);
     if (originalREObj) {
       //code for updating existing record
+
       DataStore.save(
         SellerRealEstateProfile.copyOf(originalREObj, (updated) => {
           updated.attachments = newAttachments;
-          updated.status = RealEstateStatus.DOCS_UPLOADED;
+          if (originalREObj.status == RealEstateStatus.NEW) {
+            //don't overwrite other statuses!!!
+            updated.status = RealEstateStatus.DOCS_UPLOADED;
+          }
         })
       );
     }
