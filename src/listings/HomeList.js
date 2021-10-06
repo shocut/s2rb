@@ -308,7 +308,12 @@ export default function HomeList() {
     if (originalREObj) {
       DataStore.save(
         SellerRealEstateProfile.copyOf(originalREObj, (updated) => {
-          updated.status = RealEstateStatus.DOCS_REVIEWED;
+          if (
+            originalREObj.status === RealEstateStatus.DOCS_UPLOADED ||
+            originalREObj.status === RealEstateStatus.DOCS_IN_REVIEW
+          ) {
+            updated.status = RealEstateStatus.DOCS_REVIEWED;
+          }
         })
       );
     }
