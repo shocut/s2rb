@@ -102,10 +102,12 @@ const ReferralAgreementSection = ({ referral }) => (
       <ReferralSectionHeader headerText="Referral Agreement Details" />
     </View>
     <View style={styles.row}>
-      <Text style={styles.cellLabel35}>
+      <Text style={styles.cellLabel40}>
         By signing this form as the receiving agent,
       </Text>
-      <Text style={styles.cellVal30}></Text>
+      <Text style={styles.cellVal25}>
+        {referral.agentSection.items[0].val1}
+      </Text>
       <Text style={styles.cellLabel35}>
         , agrees to have his/her broker-in-charge
       </Text>
@@ -114,7 +116,9 @@ const ReferralAgreementSection = ({ referral }) => (
       <Text style={styles.cellLabel30}>
         pay an agreed upon referral fee of:
       </Text>
-      <Text style={styles.cellVal5}></Text>
+      <Text style={styles.cellVal5}>
+        {referral.agreementSection.refPercent}
+      </Text>
       <Text style={styles.cellLabel}>% or $</Text>
       <Text style={styles.cellVal5}></Text>
       <Text style={styles.cellLabel50}>
@@ -123,7 +127,9 @@ const ReferralAgreementSection = ({ referral }) => (
     </View>
     <View style={styles.row}>
       <Text style={styles.cellLabel}>benefit of sending agent:</Text>
-      <Text style={styles.cellVal30}></Text>
+      <Text style={styles.cellVal30}>
+        {referral.agentSection.items[0].val2}
+      </Text>
     </View>
     <View style={styles.row}>
       <Text style={styles.cellLabel90}>
@@ -135,7 +141,9 @@ const ReferralAgreementSection = ({ referral }) => (
       <Text style={styles.cellLabel}>Listing side</Text>
       <Text style={styles.cellVal5}></Text>
       <Text style={styles.cellLabel}>Selling side</Text>
-      <Text style={styles.cellVal5}></Text>
+      <Text style={styles.cellVal5}>
+        {referral.agreementSection.sellingSide}
+      </Text>
       <Text style={styles.cellLabel20}>Other (please specify)</Text>
       <Text style={styles.cellVal40}></Text>
     </View>

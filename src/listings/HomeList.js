@@ -209,13 +209,6 @@ export default function HomeList() {
           console.log("key not found", key);
         }
       }
-      //add iframe - could do this statically...
-      const iframeElement = React.createElement("iframe", {
-        src: "",
-        id: "docIframe",
-        height: 600,
-        width: 800,
-      });
     }
   };
 
@@ -229,12 +222,11 @@ export default function HomeList() {
         />
       </div>,
       <span key={1}>
-        <a href="#home" className={classes.tdNameAnchor}>
-          {item.houseType}
-        </a>
-        <br />
+        <div className={classes.tdNameAnchor}>{item.houseType}</div>
         <small className={classes.tdNameSmall}>
           {item.bedrooms} beds, {item.bathrooms} baths
+          <br />
+          {item.firstName} {item.lastName}
           <br />
           {item.address.formattedAddress}
           <br />
@@ -315,7 +307,12 @@ export default function HomeList() {
     if (originalREObj) {
       DataStore.save(
         SellerRealEstateProfile.copyOf(originalREObj, (updated) => {
-          updated.status = RealEstateStatus.DOCS_REVIEWED;
+          if (
+            originalREObj.status === RealEstateStatus.DOCS_UPLOADED ||
+            originalREObj.status === RealEstateStatus.DOCS_IN_REVIEW
+          ) {
+            updated.status = RealEstateStatus.DOCS_REVIEWED;
+          }
         })
       );
     }

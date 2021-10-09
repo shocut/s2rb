@@ -32,10 +32,11 @@ Amplify.configure({
 ReactDOM.render(
   <Router history={hist}>
     <Switch>
-      <Route exact path="/home" component={App} history={hist} />
+      <Route path="/home" component={App} />
+      <Route path="/signin" component={Signup} />
       <Route path="/signup" component={Signup} />
       <Route exact path="/unauthorized" component={Unauthorized} />
-      <Route exact path="/app" component={App} history={hist} />
+      <Route exact path="/app" component={App} />
       <ProtectedRoute path="/app/reprofile" component={SellerProfile} />
       <ProtectedRoute exact path="/app/sdashboard" component={SDashboard} />
       <ProtectedRoute exact path="/app/listings" component={HomeList} />

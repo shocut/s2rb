@@ -140,10 +140,14 @@ export default function SDashboard(props) {
     console.log("in saveREProfileAttachments: " + newAttachments);
     if (originalREObj) {
       //code for updating existing record
+
       DataStore.save(
         SellerRealEstateProfile.copyOf(originalREObj, (updated) => {
           updated.attachments = newAttachments;
-          updated.status = RealEstateStatus.DOCS_UPLOADED;
+          if (originalREObj.status == RealEstateStatus.NEW) {
+            //don't overwrite other statuses!!!
+            updated.status = RealEstateStatus.DOCS_UPLOADED;
+          }
         })
       );
     }
@@ -155,7 +159,17 @@ export default function SDashboard(props) {
       var reProfile = reProfileList[0];
       localStorage.setItem("s2rb_re_profile_id", reProfile.id);
       set_s2rb_re_profile_id(reProfile.id);
-      setREProfileProgress(60);
+      if (reProfile.status == RealEstateStatus.NEW) {
+        setREProfileProgress(60);
+      } else if (
+        reProfile.status == RealEstateStatus.DOCS_UPLOADED ||
+        reProfile.status == RealEstateStatus.DOCS_IN_REVIEW
+      ) {
+        setREProfileProgress(80);
+      } else {
+        setREProfileProgress(100);
+      }
+
       setProfile(reProfile);
       if (!reProfile.attachments) {
         setAttachments([]);
@@ -198,7 +212,7 @@ export default function SDashboard(props) {
             <h4>
               <center>
                 Please{" "}
-                <a href="/signup?ref=/app/sdashboard" target="_self">
+                <a href="/signin?ref=/app/sdashboard" target="_self">
                   <b>sign-in</b>
                 </a>{" "}
                 to your S2RB account to view your dashboard. <br />
@@ -378,18 +392,36 @@ export default function SDashboard(props) {
                                 <GridItem xs={9}>
                                   {reProfile.rentBackPeriod}
                                 </GridItem>
-                                <GridItem xs={12}>
-                                  <div>
-                                    <br />
-                                    <Button
-                                      color="success"
-                                      href="/app/reprofile"
-                                      target="_self"
-                                    >
-                                      Edit
-                                    </Button>
-                                  </div>
-                                </GridItem>
+                                {(reProfile.status === RealEstateStatus.NEW ||
+                                  reProfile.status ===
+                                    RealEstateStatus.DOCS_UPLOADED) && (
+                                  <GridItem xs={12}>
+                                    <div>
+                                      <br />
+                                      <Button
+                                        color="success"
+                                        href="/app/reprofile"
+                                        target="_self"
+                                      >
+                                        Edit
+                                      </Button>
+                                    </div>
+                                  </GridItem>
+                                )}
+                                {reProfile.status != RealEstateStatus.NEW &&
+                                  reProfile.status !=
+                                    RealEstateStatus.DOCS_UPLOADED && (
+                                    <GridItem xs={12}>
+                                      <p>
+                                        <br />
+                                        <b>Please Note:&nbsp;</b> The status of
+                                        your real estate profile is "
+                                        {reProfile.status}". If you need to make
+                                        any changes to your submission please
+                                        write to support@s2rb.com with details.
+                                      </p>
+                                    </GridItem>
+                                  )}
                               </GridContainer>
                             </CardBody>
                           </Card>
@@ -429,6 +461,12 @@ export default function SDashboard(props) {
                                 <div>
                                   <S3FileHandler
                                     attachments={attachments}
+                                    allowDelete={
+                                      reProfile.status ===
+                                        RealEstateStatus.NEW ||
+                                      reProfile.status ===
+                                        RealEstateStatus.DOCS_UPLOADED
+                                    }
                                     setAndSaveAttachments={
                                       setAndSaveAttachments
                                     }
