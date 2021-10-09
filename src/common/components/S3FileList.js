@@ -69,6 +69,7 @@ export default function S3FileList(props) {
                         justIcon={true}
                         onClick={allowDelete ? deleteAttachment : null}
                         disabled={allowDelete ? false : true}
+                      >
                         {endButton.icon !== undefined ? endButton.icon : null}
                         {endButton.text !== undefined ? endButton.text : null}
                       </Button>
