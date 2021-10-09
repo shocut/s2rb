@@ -29,11 +29,12 @@ function Signup(props) {
   const history = useHistory();
   var currentAuthState = AuthState.SignIn;
   const queryValues = queryString.parse(props.location.search);
-  console.log("props.location.", props.location.pathname);
+
   if (props.location.pathname == "/signup") {
     currentAuthState = AuthState.SignUp;
   }
-  var nextPage = "/sdashboard";
+  var nextPage = "/app/sdashboard";
+
   if (queryValues.ref) {
     //need a better check to make sure we don't route to any page
     nextPage = queryValues.ref;

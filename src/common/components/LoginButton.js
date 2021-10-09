@@ -1,6 +1,7 @@
 import React from "react";
 
 import Button from "./Button.js";
+// TODO: Maybe delete this component
 
 function LoginButton({ onLogout, classes }) {
   const currentUser = localStorage.getItem("currentUser");

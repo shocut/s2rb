@@ -27,7 +27,7 @@ const useStyles = makeStyles(styles);
 export default function ProductSection() {
   const classes = useStyles();
   const signupURL = generatePath("/signup");
-  const sellerProfileURL = generatePath("/reprofile");
+  const sellerProfileURL = generatePath("/app/reprofile");
 
   return (
     <div className={classes.section} id="how-it-works">

@@ -6,7 +6,7 @@ import { AuthState } from "@aws-amplify/ui-components";
 //add fo save data models
 //import { DataStore } from 'aws-amplify';
 //import { Post } from './models'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
 
@@ -29,12 +29,9 @@ const dashboardRoutes = [];
 const useStyles = makeStyles(styles);
 
 function App(props) {
-  const [currentUser, setCurrentUser] = useState(
-    localStorage.getItem("currentUser")
-  );
+  const [currentUser, setCurrentUser] = useState(null);
   const { ...rest } = props;
   const classes = useStyles();
-
   const onLogout = async () => {
     console.log("in log out - clearing localstorage");
     localStorage.clear();
@@ -47,12 +44,18 @@ function App(props) {
       const currentUser = await Auth.currentAuthenticatedUser();
       if (currentUser) {
         setCurrentUser(currentUser);
+      } else {
+        setCurrentUser(null);
       }
     } catch (e) {
       setCurrentUser(null);
       console.log(currentUser);
     }
   };
+
+  useEffect(() => {
+    checkLoginState();
+  }, []);
 
   return (
     <div className="App">
@@ -110,5 +113,4 @@ function App(props) {
     </div>
   );
 }
-
 export default App;

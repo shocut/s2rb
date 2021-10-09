@@ -16,7 +16,8 @@ import styles from "../jss/customFileInputStyle.js";
 const useStyles = makeStyles(styles);
 
 export default function S3FileList(props) {
-  const { attachments, deleteAttachment, allowDelete, ...rest } = props;
+  const { attachments, deleteAttachment, allowDelete, endButton, inputProps, formControlProps, ...rest } = props;
+
   const classes = useStyles();
 
   const fileCatgMap = new Map();
@@ -65,7 +66,7 @@ export default function S3FileList(props) {
                         file-catg={item.category}
                         round={true}
                         color={allowDelete ? "warning" : "default"}
-                        justIcon="true"
+                        justIcon={true}
                         onClick={allowDelete ? deleteAttachment : null}
                         disabled={allowDelete ? false : true}
                       >
@@ -83,7 +84,6 @@ export default function S3FileList(props) {
     );
   }
 
-  const { endButton, inputProps, formControlProps } = props;
   if (inputProps && inputProps.type && inputProps.type === "file") {
     inputProps.type = "text";
   }

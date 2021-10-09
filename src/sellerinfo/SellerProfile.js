@@ -126,12 +126,12 @@ export default function SellerProfile(props) {
             <h4>
               <center>
                 Please{" "}
-                <a href="/signin?ref=reprofile" target="_self">
+                <a href="/signin?ref=/app/reprofile" target="_self">
                   <b>sign-in</b>
                 </a>{" "}
                 to your S2RB account to view your dashboard. <br />
                 If you have not yet registered, please{" "}
-                <a href="/signup?ref=sdashboard" target="_self">
+                <a href="/signup?ref=/app/sdashboard" target="_self">
                   <b>sign-up</b>
                 </a>{" "}
                 now for a free no obligation account.

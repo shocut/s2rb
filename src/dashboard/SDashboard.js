@@ -212,12 +212,12 @@ export default function SDashboard(props) {
             <h4>
               <center>
                 Please{" "}
-                <a href="/signin?ref=sdashboard" target="_self">
+                <a href="/signin?ref=/app/sdashboard" target="_self">
                   <b>sign-in</b>
                 </a>{" "}
                 to your S2RB account to view your dashboard. <br />
                 If you have not yet registered, please{" "}
-                <a href="/signup?ref=reprofile" target="_self">
+                <a href="/signup?ref=/app/reprofile" target="_self">
                   <b>sign-up</b>
                 </a>{" "}
                 now for a free no obligation account.
@@ -268,7 +268,7 @@ export default function SDashboard(props) {
                                   </h4>
                                   <h5>
                                     Please complete your&nbsp;
-                                    <a href="/reprofile" target="_self">
+                                    <a href="/app/reprofile" target="_self">
                                       <b>real-estate profile</b>
                                     </a>
                                     &nbsp; to unlock the next stage.
@@ -294,7 +294,7 @@ export default function SDashboard(props) {
                                     In order to start the investor matching
                                     process we need you to upload the property
                                     documents. Plase navigate to the{" "}
-                                    <a href="/sdashboard/d" target="_self">
+                                    <a href="/app/sdashboard/d" target="_self">
                                       Documents
                                     </a>{" "}
                                     tab to upload photos, statements and files.
@@ -333,7 +333,7 @@ export default function SDashboard(props) {
                                   </h4>
                                   <h5>
                                     Please complete your&nbsp;
-                                    <a href="/reprofile" target="_self">
+                                    <a href="/app/reprofile" target="_self">
                                       <b>real-estate profile</b>
                                     </a>
                                     &nbsp; to unlock the next stage.
@@ -400,7 +400,7 @@ export default function SDashboard(props) {
                                       <br />
                                       <Button
                                         color="success"
-                                        href="/reprofile"
+                                        href="/app/reprofile"
                                         target="_self"
                                       >
                                         Edit
@@ -482,7 +482,6 @@ export default function SDashboard(props) {
                                         round: true,
                                         color: "success",
                                         justIcon: true,
-                                        fileButton: true,
                                       },
                                       icon: <AttachFile />,
                                     }}

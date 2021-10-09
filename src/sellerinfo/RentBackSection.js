@@ -49,7 +49,7 @@ export default function RentBackSection(sliderRefContainer) {
 
   const closeDialog = () => {
     setClassicModal(false);
-    history.push("/sdashboard");
+    history.push("/app/sdashboard");
   };
 
   const handleChange = (event) => {

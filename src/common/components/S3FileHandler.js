@@ -38,11 +38,17 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function S3FileHandler(props) {
-  const {
+  const { 
     attachments,
     maxFileSize,
     setAndSaveAttachments,
     allowDelete,
+    id,
+    endButton,
+    startButton,
+    inputProps,
+    formControlProps,
+    multiple,
     ...rest
   } = props;
 
@@ -194,7 +200,7 @@ export default function S3FileHandler(props) {
         contentDisposition: "attachment",
         progressCallback(loadProgress) {
           setProgress((loadProgress.loaded / loadProgress.total) * 100);
-          if (loadProgress.total - loadProgress.total < 1) {
+          if (loadProgress.total - loadProgress.loaded < 1) {
             setFileName("");
             setTimeout(() => {
               setIsVisible("false");
@@ -220,8 +226,6 @@ export default function S3FileHandler(props) {
     }
   }
 
-  const { id, endButton, startButton, inputProps, formControlProps, multiple } =
-    props;
   const classes = useStyles();
   if (inputProps && inputProps.type && inputProps.type === "file") {
     inputProps.type = "text";
@@ -267,7 +271,7 @@ export default function S3FileHandler(props) {
                 name: "catgSelect",
                 id: "catgSelectId",
               }}
-            >
+              >
               <MenuItem
                 disabled
                 classes={{
@@ -332,12 +336,12 @@ export default function S3FileHandler(props) {
                   ...formControlProps,
                 }}
                 inputProps={{
-                  ...inputProps,
                   onClick: onFocus,
                   error: catgError,
                   value: fileName,
                   endAdornment: buttonEnd,
                   startAdornment: buttonStart,
+                  ...inputProps
                 }}
               />
             </div>
@@ -389,9 +393,9 @@ export default function S3FileHandler(props) {
           id="alert-dialog-slide-title"
           className={classes.modalHeader}
         >
-          <h4 className={classes.modalTitle}>
+          <div className={classes.modalTitle}>
             Remove this document attachment?
-          </h4>
+          </div>
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
@@ -422,7 +426,7 @@ export default function S3FileHandler(props) {
           id="alert-dialog-slide-title"
           className={classes.modalHeader}
         >
-          <h4 className={classes.modalTitle}>Upload Attachment</h4>
+          <div className={classes.modalTitle}>Upload Attachment</div>
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">

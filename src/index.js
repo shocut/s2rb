@@ -3,19 +3,20 @@ import ReactDOM from "react-dom";
 import Amplify, { AuthModeStrategyType } from "aws-amplify";
 import awsconfig from "./aws-exports";
 import { createBrowserHistory } from "history";
-import { Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import "./index.css";
 import "./common/scss/material.scss";
 
-import CommingSoon from "./CommingSoon";
-import App from "./App";
-import Signup from "./common/components/Signup";
 import SellerProfile from "./sellerinfo/SellerProfile.js";
 import SDashboard from "./dashboard/SDashboard";
 import HomeList from "./listings/HomeList";
 import Referral from "./referral/Referral";
-
+import CommingSoon from "./CommingSoon";
+import App from "./App";
+import Unauthorized from "./common/components/Unauthorized";
+import ProtectedRoute from "./common/components/ProtectedRoute";
+import Signup from "./common/components/Signup";
 import reportWebVitals from "./reportWebVitals";
 
 var hist = createBrowserHistory();
@@ -26,6 +27,7 @@ Amplify.configure({
     authModeStrategyType: AuthModeStrategyType.DEFAULT,
   },
 });
+//Amplify.Logger.LOG_LEVEL = "DEBUG";
 
 ReactDOM.render(
   <Router history={hist}>
@@ -33,12 +35,12 @@ ReactDOM.render(
       <Route path="/home" component={App} />
       <Route path="/signin" component={Signup} />
       <Route path="/signup" component={Signup} />
-      <Route path="/reprofile" component={SellerProfile} />
-      <Route path="/sdashboard" component={SDashboard} />
-      <Route path="/app" component={App} />
-      <Route path="/listings" component={HomeList} />
-      <Route path="/referral" component={Referral} />
-
+      <Route exact path="/unauthorized" component={Unauthorized} />
+      <Route exact path="/app" component={App} />
+      <ProtectedRoute path="/app/reprofile" component={SellerProfile} />
+      <ProtectedRoute exact path="/app/sdashboard" component={SDashboard} />
+      <ProtectedRoute exact path="/app/listings" component={HomeList} />
+      <ProtectedRoute exact path="/app/referral" component={Referral} />
       <Route path="/" component={CommingSoon} />
     </Switch>
   </Router>,
