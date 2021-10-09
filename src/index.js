@@ -27,8 +27,7 @@ Amplify.configure({
     authModeStrategyType: AuthModeStrategyType.DEFAULT,
   },
 });
-Amplify.Logger.LOG_LEVEL = "DEBUG";
-const currentUser = localStorage.getItem("currentUser");
+//Amplify.Logger.LOG_LEVEL = "DEBUG";
 
 ReactDOM.render(
   <Router history={hist}>
@@ -37,29 +36,10 @@ ReactDOM.render(
       <Route path="/signup" component={Signup} />
       <Route exact path="/unauthorized" component={Unauthorized} />
       <Route exact path="/app" component={App} history={hist} />
-      <ProtectedRoute
-        path="/app/reprofile"
-        currentUser={currentUser}
-        component={SellerProfile}
-      />
-      <ProtectedRoute
-        exact
-        path="/app/sdashboard"
-        currentUser={currentUser}
-        component={SDashboard}
-      />
-      <ProtectedRoute
-        exact
-        path="/app/listings"
-        currentUser={currentUser}
-        component={HomeList}
-      />
-      <ProtectedRoute
-        exact
-        currentUser={currentUser}
-        path="/app/referral"
-        component={Referral}
-      />
+      <ProtectedRoute path="/app/reprofile" component={SellerProfile} />
+      <ProtectedRoute exact path="/app/sdashboard" component={SDashboard} />
+      <ProtectedRoute exact path="/app/listings" component={HomeList} />
+      <ProtectedRoute exact path="/app/referral" component={Referral} />
       <Route path="/" component={CommingSoon} />
     </Switch>
   </Router>,
