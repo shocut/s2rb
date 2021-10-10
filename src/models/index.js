@@ -2,6 +2,14 @@
 import { initSchema } from '@aws-amplify/datastore';
 import { schema } from './schema';
 
+const ClientReason = {
+  "FORBEARANCE": "FORBEARANCE",
+  "FORECLOSURE": "FORECLOSURE",
+  "RETIREMENT": "RETIREMENT",
+  "MARKET": "MARKET",
+  "OTHER": "OTHER"
+};
+
 const RealEstateStatus = {
   "NEW": "NEW",
   "DOCS_UPLOADED": "DOCS_UPLOADED",
@@ -34,6 +42,7 @@ export {
   Agent,
   InvestorInterest,
   SellerRealEstateProfile,
+  ClientReason,
   RealEstateStatus,
   FeeType,
   ReferralType,

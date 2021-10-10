@@ -1,5 +1,13 @@
 import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplify/datastore";
 
+export enum ClientReason {
+  FORBEARANCE = "FORBEARANCE",
+  FORECLOSURE = "FORECLOSURE",
+  RETIREMENT = "RETIREMENT",
+  MARKET = "MARKET",
+  OTHER = "OTHER"
+}
+
 export enum RealEstateStatus {
   NEW = "NEW",
   DOCS_UPLOADED = "DOCS_UPLOADED",
@@ -69,18 +77,19 @@ type SellerRealEstateProfileMetaData = {
 
 export declare class Referral {
   readonly id: string;
-  readonly feeBasis?: FeeType | keyof typeof FeeType;
+  readonly feeBasis?: string;
   readonly token?: string;
   readonly clientType?: string;
   readonly listingPriceEstimate?: number;
-  readonly clientReason?: string;
-  readonly feeType?: string;
+  readonly clientReason?: ClientReason | keyof typeof ClientReason;
+  readonly feeType?: FeeType | keyof typeof FeeType;
   readonly feeValue?: string;
   readonly referralType?: ReferralType | keyof typeof ReferralType;
   readonly buyerReferenceID?: string;
   readonly sellerrealestateprofileID?: string;
   readonly senderSignedDate?: string;
   readonly receiverSignedDate?: string;
+  readonly referralNote?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Referral, ReferralMetaData>);

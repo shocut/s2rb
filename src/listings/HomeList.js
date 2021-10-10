@@ -1,9 +1,9 @@
 /* eslint-disable */
-
 import React from "react";
 import ReactDOM from "react-dom";
+import PropTypes from "prop-types";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
 
 import { Storage } from "aws-amplify";
@@ -14,11 +14,19 @@ import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { DataStore } from "aws-amplify";
-import { SellerRealEstateProfile, RealEstateStatus } from "../models";
+import {
+  SellerRealEstateProfile,
+  RealEstateStatus,
+  Referral,
+  FeeType,
+  ReferralType,
+  ClientReason,
+} from "../models";
 
 // @material-ui/icons
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
-
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
 // core components
 import Header from "../common/components/Header.js";
 import HeaderLinks from "../common/components/HeaderLinks.js";
@@ -36,10 +44,15 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Slide from "@material-ui/core/Slide";
 import GridContainer from "../common/components/GridContainer.js";
 import GridItem from "../common/components/GridItem.js";
-import NavPills from "../common/components/NavPills.js";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import TextField from "@material-ui/core/TextField";
+import MaskedInput from "react-text-mask";
+import NumberFormat from "react-number-format";
+import InputAdornment from "@material-ui/core/InputAdornment";
 
+import SnackbarContent from "../common/components/SnackbarContent.js";
 import listingStyle from "./listingStyle.js";
-import { getSourceMapRange } from "typescript";
 
 const useStyles = makeStyles(listingStyle);
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -47,21 +60,28 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function HomeList() {
+  const thisRef = useRef(null); // ref => { current: null }
+
   const classes = useStyles();
   const history = useHistory();
-
   const dashboardRoutes = [];
-  const forceUpdate = React.useCallback(() => updateState({}), []);
   const [homeRows, setHomeRows] = useState([]);
   const [currentUser, setCurrentUser] = useState(
     localStorage.getItem("currentUser")
   );
   const [showViewDocuments, setShowViewDocuments] = useState(false);
+  // eslint-disable-next-line
   const [reProfileAttchMap, setREProfileAttchMap] = useState(new Map());
-  const [currrentAttachments, setCurrrentAttachments] = useState([]);
-  const [currrentSellerRef, setCurrrentSellerRef] = useState("");
+  const [currentAttachments, setCurrentAttachments] = useState([]);
+  const [currentSellerRef, setCurrentSellerRef] = useState("");
+  const [currentProfileId, setCurrentProfileId] = useState("");
+  const [currentProfileState, setCurrentProfileState] = useState("");
   const [currentDocURL, setCurrentDocURL] = useState("");
-  const [reProfileId, setReProfileId] = useState("");
+  const [confirmModal, setConfirmModal] = useState(false);
+  const [refSaved, setRefSaved] = useState(false);
+  const [clientReason, setClientReason] = useState("");
+  const [referralNote, setReferralNote] = useState("");
+  const [listingPriceEstimate, setListingPriceEstimate] = useState("");
 
   const onLogout = async () => {
     console.log("in log out - clearing localstorage");
@@ -94,12 +114,6 @@ export default function HomeList() {
   };
   useEffect(() => {
     checkLoginState();
-    var userObj = null;
-    var currentUser = localStorage.getItem("currentUser");
-    if (currentUser) {
-      userObj = JSON.parse(currentUser);
-    }
-
     const loadREProfiles = async () => {
       try {
         var reProfiles = await DataStore.query(SellerRealEstateProfile, (p) =>
@@ -131,15 +145,16 @@ export default function HomeList() {
 
   const closeDialog = () => {
     setShowViewDocuments(false);
+    setConfirmModal(false);
   };
 
   const reviewDocs = (evt) => {
     var sellerReference = evt.currentTarget.getAttribute("seller_reference");
     var reProfileId = evt.currentTarget.getAttribute("re_profile_id");
     var attchArray = reProfileAttchMap.get(sellerReference);
-    setCurrrentAttachments(attchArray);
-    setCurrrentSellerRef(sellerReference);
-    setReProfileId(reProfileId);
+    setCurrentAttachments(attchArray);
+    setCurrentSellerRef(sellerReference);
+    setCurrentProfileId(reProfileId);
     setShowViewDocuments(true);
     addAttachmentLinks(sellerReference, attchArray);
   };
@@ -151,7 +166,6 @@ export default function HomeList() {
   };
 
   async function getDocumentURL(sellerReference, fileKey) {
-    var docURL = "";
     try {
       Storage.get(fileKey, {
         level: "protected",
@@ -165,11 +179,10 @@ export default function HomeList() {
   }
 
   const addAttachmentLinks = (sellerReference, attachments) => {
-    var docLinks = [];
     var docMap = new Map();
     if (!sellerReference || !attachments) {
-      sellerReference = currrentSellerRef;
-      attachments = currrentAttachments;
+      sellerReference = currentSellerRef;
+      attachments = currentAttachments;
       console.log(sellerReference, attachments);
     }
     //initialize document categories
@@ -237,6 +250,7 @@ export default function HomeList() {
       <span key={1}>
         <small className={classes.tdNumberSmall}></small>
       </span>,
+      // eslint-disable-next-line
       <Button
         size="sm"
         color="warning"
@@ -246,7 +260,14 @@ export default function HomeList() {
       >
         Review Documents
       </Button>,
-      <Button size="sm" color="success">
+      // eslint-disable-next-line
+      <Button
+        size="sm"
+        re_profile_id={item.id}
+        re_profile_state={item.address.stateProvinceOrRegion}
+        onClick={createReferralOnClick}
+        color="success"
+      >
         Initiate Referral
       </Button>,
     ];
@@ -255,7 +276,7 @@ export default function HomeList() {
   function setHomeThumbnails(reProfileArray) {
     //get the first home image to use as a thumbnail and then skip the rest
     //do this for all seller profiles which have attachments
-    reProfileArray.forEach((element, index) => {
+    reProfileArray.forEach((element) => {
       if (element.attachments && element.attachments.length > 0) {
         element.attachments.some((attch) => {
           //console.log("attch.category: ", attch.category );
@@ -293,7 +314,7 @@ export default function HomeList() {
     console.log("in saveToDataStore");
     try {
       updateREProfileStatus(
-        await DataStore.query(SellerRealEstateProfile, reProfileId)
+        await DataStore.query(SellerRealEstateProfile, currentProfileId)
       );
     } catch (e) {
       console.log(e);
@@ -317,6 +338,157 @@ export default function HomeList() {
       );
     }
   }
+
+  function generateUniqueReferralToken() {
+    // Two chat state + 8 char timestamp based str + 1-2 char random component + an added zero in case the randome is just 1 char
+    // can consider later if a shorter number will be better.
+    var uniqueId =
+      currentProfileState +
+      Date.now().toString(36).toUpperCase() +
+      Math.random().toString(36).substr(11).toUpperCase() +
+      "0000";
+    return uniqueId.substring(0, 12);
+  }
+
+  function getNewReferral(reProfileId) {
+    var newToken = generateUniqueReferralToken();
+    var numListingEst = listingPriceEstimate
+      .replace("$", "")
+      .replace(",", "")
+      .replace(" ", "");
+    var newRef = new Referral({
+      feeBasis: "SELLING_SIDE",
+      token: newToken,
+      clientType: ReferralType.SELLER,
+      listingPriceEstimate: parseFloat(numListingEst),
+      clientReason: clientReason,
+      feeType: FeeType.PERCENTAGE,
+      feeValue: "",
+      referralType: ReferralType.SELLER,
+      sellerrealestateprofileID: reProfileId,
+      status: "NEW",
+      referralNote: referralNote,
+    });
+
+    console.log("newRef", newRef);
+    return newRef;
+  }
+
+  const createReferralOnClick = (evt) => {
+    var reProfileId = evt.currentTarget.getAttribute("re_profile_id");
+    var reProfileState = evt.currentTarget.getAttribute("re_profile_state");
+
+    console.log(reProfileId);
+    setCurrentProfileId(reProfileId);
+    setCurrentProfileState(reProfileState);
+
+    setReferralNote("");
+    setListingPriceEstimate("");
+
+    setConfirmModal(true);
+  };
+
+  const createReferral = async () => {
+    console.log("createReferral currentProfileId", currentProfileId);
+    if (currentUser) {
+      saveReferral(null, currentProfileId);
+    }
+  };
+
+  function saveReferral(originalReferral, reProfileId) {
+    (async () => {
+      try {
+        if (originalReferral) {
+          //code for updating existing record
+          var result = await DataStore.save(
+            Referral.copyOf(originalReferral, (updated) => {
+              updated.status = "NEW"; //placeholder status - update referral not implemented yet
+            })
+          );
+          console.log(result);
+        } else {
+          //new
+          var result = await DataStore.save(getNewReferral(reProfileId));
+          console.log(result);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    })();
+
+    setRefSaved(true);
+    setTimeout(() => {
+      setRefSaved(false);
+      closeDialog();
+    }, 3000);
+  }
+
+  const clientReasonChanged = (event) => {
+    setClientReason(event.target.value);
+  };
+
+  /* eslint-disable react/prefer-stateless-function */
+  function TextMaskCustom(props) {
+    const { inputRef, ...other } = props;
+
+    return (
+      <MaskedInput
+        {...other}
+        ref={inputRef}
+        mask={[
+          "(",
+          /[1-9]/,
+          /\d/,
+          /\d/,
+          ")",
+          " ",
+          /\d/,
+          /\d/,
+          /\d/,
+          "-",
+          /\d/,
+          /\d/,
+          /\d/,
+          /\d/,
+        ]}
+        placeholderChar={"\u2000"}
+        showMask
+      />
+    );
+  }
+
+  TextMaskCustom.propTypes = {
+    inputRef: PropTypes.func.isRequired,
+  };
+
+  function NumberFormatCustom(props) {
+    const { inputRef, onChange, ...other } = props;
+
+    return (
+      <NumberFormat
+        {...other}
+        getInputRef={inputRef}
+        onValueChange={(values) => {
+          onChange({
+            target: {
+              value: values.value,
+            },
+          });
+        }}
+        thousandSeparator
+        prefix="$"
+      />
+    );
+  }
+
+  NumberFormatCustom.propTypes = {
+    inputRef: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
+  };
+
+  const handleChange = (setFunction) => (event) => {
+    setFunction(event.target.value);
+  };
 
   return (
     <div>
@@ -431,6 +603,158 @@ export default function HomeList() {
             Close
           </Button>
         </DialogActions>
+      </Dialog>
+      <Dialog
+        classes={{
+          root: classes.center,
+          paper: classes.modal,
+        }}
+        open={confirmModal}
+        keepMounted
+        TransitionComponent={Transition}
+        onClose={closeDialog}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle
+          id="alert-dialog-slide-title"
+          className={classes.modalHeader}
+        >
+          <h4 className={classes.modalTitle}>Generate a new referral?</h4>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            Please add a referral details and confirm if you want to generate a
+            new referral for this real estate profile.
+          </DialogContentText>
+          <GridContainer>
+            <GridItem lg={12}>
+              <form>
+                <FormControl
+                  color="primary"
+                  fullWidth
+                  className={classes.selectFormControl}
+                >
+                  <InputLabel
+                    htmlFor="clientReasonId"
+                    className={classes.selectLabel}
+                  >
+                    Client selling reason / motivation
+                  </InputLabel>
+                  <Select
+                    color="primary"
+                    MenuProps={{
+                      className: classes.selectMenu,
+                    }}
+                    classes={{
+                      select: classes.select,
+                    }}
+                    value={clientReason}
+                    onChange={clientReasonChanged}
+                    inputProps={{
+                      name: "clientReason",
+                      id: "clientReasonId",
+                    }}
+                  >
+                    <MenuItem
+                      disabled
+                      classes={{
+                        root: classes.selectMenuItem,
+                      }}
+                    >
+                      Client Reason / Motivation
+                    </MenuItem>
+                    <MenuItem
+                      classes={{
+                        root: classes.selectMenuItem,
+                        selected: classes.selectMenuItemSelected,
+                      }}
+                      value={ClientReason.FORBEARANCE}
+                    >
+                      {ClientReason.FORBEARANCE}
+                    </MenuItem>
+                    <MenuItem
+                      classes={{
+                        root: classes.selectMenuItem,
+                        selected: classes.selectMenuItemSelected,
+                      }}
+                      value={ClientReason.FORECLOSURE}
+                    >
+                      {ClientReason.FORECLOSURE}
+                    </MenuItem>
+                    <MenuItem
+                      classes={{
+                        root: classes.selectMenuItem,
+                        selected: classes.selectMenuItemSelected,
+                      }}
+                      value={ClientReason.RETIREMENT}
+                    >
+                      {ClientReason.RETIREMENT}
+                    </MenuItem>
+                    <MenuItem
+                      classes={{
+                        root: classes.selectMenuItem,
+                        selected: classes.selectMenuItemSelected,
+                      }}
+                      value={ClientReason.MARKET}
+                    >
+                      {ClientReason.MARKET}
+                    </MenuItem>
+                    <MenuItem
+                      classes={{
+                        root: classes.selectMenuItem,
+                        selected: classes.selectMenuItemSelected,
+                      }}
+                      value={ClientReason.OTHER}
+                    >
+                      {ClientReason.OTHER}
+                    </MenuItem>
+                  </Select>
+                </FormControl>
+                <FormControl fullWidth={true} className={classes.formControl}>
+                  <TextField
+                    className={classes.input}
+                    label="Estimated Listing Price"
+                    value={listingPriceEstimate}
+                    onBlur={handleChange(setListingPriceEstimate)}
+                    id="listingPriceEstimate-input"
+                    InputProps={{
+                      inputComponent: NumberFormatCustom,
+                      required: true,
+                    }}
+                  />
+                </FormControl>
+                <FormControl fullWidth={true} className={classes.formControl}>
+                  <TextField
+                    className={classes.input}
+                    label="Referral Note"
+                    //value={referralNote}
+                    onBlur={handleChange(setReferralNote)}
+                    id="referralNote-input"
+                    InputProps={{
+                      required: true,
+                    }}
+                  />
+                </FormControl>
+                <div className={classes.textCenter}>
+                  <br />
+                  <GridItem lg={12} style={refSaved ? {} : { display: "none" }}>
+                    <SnackbarContent
+                      message={<span>Referral saved.</span>}
+                      color="success"
+                    />
+                  </GridItem>
+                  <Button color="warning" onClick={createReferral}>
+                    Create Referral
+                  </Button>
+                  <Button color="info" onClick={closeDialog}>
+                    Cancel
+                  </Button>
+                </div>
+              </form>
+            </GridItem>
+          </GridContainer>
+        </DialogContent>
       </Dialog>
     </div>
   );

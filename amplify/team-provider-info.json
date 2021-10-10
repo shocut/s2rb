@@ -50,21 +50,21 @@
         },
         "SellerProfileTrigger": {
           "deploymentBucketName": "amplify-s2rb-dev-90947-deployment",
-          "s3Key": "amplify-builds/SellerProfileTrigger-525866784c39565a3438-build.zip"
+          "s3Key": "amplify-builds/SellerProfileTrigger-795077496e446b615273-build.zip"
         }
       }
     }
   },
   "qa": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-s2rb-qa-185518-authRole",
-      "UnauthRoleArn": "arn:aws:iam::872659693886:role/amplify-s2rb-qa-185518-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::872659693886:role/amplify-s2rb-qa-185518-authRole",
+      "AuthRoleName": "amplify-s2rb-qa-152853-authRole",
+      "UnauthRoleArn": "arn:aws:iam::872659693886:role/amplify-s2rb-qa-152853-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::872659693886:role/amplify-s2rb-qa-152853-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-s2rb-qa-185518-deployment",
-      "UnauthRoleName": "amplify-s2rb-qa-185518-unauthRole",
-      "StackName": "amplify-s2rb-qa-185518",
-      "StackId": "arn:aws:cloudformation:us-east-1:872659693886:stack/amplify-s2rb-qa-185518/53552e80-1cc1-11ec-a474-12be7e533d09",
+      "DeploymentBucketName": "amplify-s2rb-qa-152853-deployment",
+      "UnauthRoleName": "amplify-s2rb-qa-152853-unauthRole",
+      "StackName": "amplify-s2rb-qa-152853",
+      "StackId": "arn:aws:cloudformation:us-east-1:872659693886:stack/amplify-s2rb-qa-152853/4e20ecf0-2a00-11ec-94df-0e964048dd17",
       "AmplifyAppId": "d1v9799vjsrg6v"
     },
     "categories": {
@@ -73,12 +73,12 @@
       },
       "function": {
         "S3Trigger055ac222": {
-          "deploymentBucketName": "amplify-s2rb-qa-185518-deployment",
-          "s3Key": "amplify-builds/S3Trigger055ac222-5a616556472f35663474-build.zip"
+          "deploymentBucketName": "amplify-s2rb-qa-152853-deployment",
+          "s3Key": "amplify-builds/S3Trigger055ac222-4935747938445737717a-build.zip"
         },
         "SellerProfileTrigger": {
-          "deploymentBucketName": "amplify-s2rb-qa-185518-deployment",
-          "s3Key": "amplify-builds/SellerProfileTrigger-53424f586953715a4f52-build.zip"
+          "deploymentBucketName": "amplify-s2rb-qa-152853-deployment",
+          "s3Key": "amplify-builds/SellerProfileTrigger-795077496e446b615273-build.zip"
         }
       }
     }

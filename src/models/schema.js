@@ -13,9 +13,7 @@ export const schema = {
                 "feeBasis": {
                     "name": "feeBasis",
                     "isArray": false,
-                    "type": {
-                        "enum": "FeeType"
-                    },
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -43,14 +41,18 @@ export const schema = {
                 "clientReason": {
                     "name": "clientReason",
                     "isArray": false,
-                    "type": "String",
+                    "type": {
+                        "enum": "ClientReason"
+                    },
                     "isRequired": false,
                     "attributes": []
                 },
                 "feeType": {
                     "name": "feeType",
                     "isArray": false,
-                    "type": "String",
+                    "type": {
+                        "enum": "FeeType"
+                    },
                     "isRequired": false,
                     "attributes": []
                 },
@@ -95,6 +97,13 @@ export const schema = {
                     "name": "receiverSignedDate",
                     "isArray": false,
                     "type": "AWSDate",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "referralNote": {
+                    "name": "referralNote",
+                    "isArray": false,
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -537,6 +546,16 @@ export const schema = {
         }
     },
     "enums": {
+        "ClientReason": {
+            "name": "ClientReason",
+            "values": [
+                "FORBEARANCE",
+                "FORECLOSURE",
+                "RETIREMENT",
+                "MARKET",
+                "OTHER"
+            ]
+        },
         "RealEstateStatus": {
             "name": "RealEstateStatus",
             "values": [
@@ -707,5 +726,5 @@ export const schema = {
             }
         }
     },
-    "version": "57658151c5fcc5a74a59a1c146ee062e"
+    "version": "2673822019ae7e576155cf4bb5406f41"
 };

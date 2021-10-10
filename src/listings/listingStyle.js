@@ -143,6 +143,40 @@ const styles = {
     borderTop: "1px solid " + grayColor[6],
     padding: "5px",
   },
+  selectLabel: {
+    fontSize: "14px",
+    color: grayColor[12],
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    lineHeight: "1.42857",
+  },
+  selectFormControl: {
+    paddingTop: "15px",
+    paddingBottom: "15px",
+    borderColor: grayColor[12],
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+  },
+  formControl: {
+    margin: "0 0 5px 0",
+    paddingTop: "10px",
+    position: "relative",
+    "& svg,& .fab,& .far,& .fal,& .fas,& .material-icons": {
+      color: grayColor[13],
+    },
+  },
+  input: {
+    color: grayColor[13],
+    height: "unset",
+    "&,&::placeholder": {
+      fontSize: "14px",
+      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+      fontWeight: "400",
+      lineHeight: "1.42857",
+      opacity: "1",
+    },
+    "&::placeholder": {
+      color: grayColor[12],
+    },
+  },
 };
 
 export default styles;
