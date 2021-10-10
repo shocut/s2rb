@@ -66,18 +66,48 @@ export default function AddressSection(sliderRefContainer) {
   const storeLocation = (place) => {
     if (place) {
       try {
-        var addrParts = place.address_components;
+        var result = place.address_components;
+        var addrMap = new Map();
+        for (var i = 0; i < result.length; ++i) {
+          if (result[i].types[0] == "street_number") {
+            addrMap.set("streetNumber", result[i].long_name);
+          }
+          if (result[i].types[0] == "route") {
+            addrMap.set("streetName", result[i].long_name);
+          }
+          if (result[i].types[0] == "locality") {
+            addrMap.set("city", result[i].long_name);
+          }
+          if (result[i].types[0] == "administrative_area_level_1") {
+            addrMap.set("stateProvinceOrRegion", result[i].short_name);
+          }
+          if (result[i].types[0] == "administrative_area_level_2") {
+            addrMap.set("adminArea", result[i].long_name);
+          }
+          if (result[i].types[0] == "country") {
+            addrMap.set("countryCode", result[i].short_name);
+            addrMap.set("country", result[i].long_name);
+          }
+          if (result[i].types[0] == "postal_code") {
+            addrMap.set("postalCode", result[i].long_name);
+          }
+          if (result[i].types[0] == "postal_code_suffix") {
+            addrMap.set("postalCodeSuffix", result[i].long_name);
+          }
+        }
+        console.log("addrMap", addrMap);
         var homeLocation = new Location({
           name: "Seller house address",
           description: "Address of house for S2RB consideration",
-          streetAddress: addrParts[0].long_name + " " + addrParts[1].long_name,
-          city: addrParts[2].long_name,
-          adminArea: addrParts[3].long_name,
-          stateProvinceOrRegion: addrParts[4].long_name,
-          country: addrParts[5].long_name,
-          countryCode: addrParts[5].short_name,
-          postalCode: addrParts[6].long_name,
-          postalCodeSuffix: addrParts[7].long_name,
+          streetAddress:
+            addrMap.get("streetNumber") + " " + addrMap.get("streetName"),
+          city: addrMap.get("city"),
+          adminArea: addrMap.get("adminArea"),
+          stateProvinceOrRegion: addrMap.get("stateProvinceOrRegion"),
+          country: addrMap.get("country"),
+          countryCode: addrMap.get("countryCode"),
+          postalCode: addrMap.get("postalCode"),
+          postalCodeSuffix: addrMap.get("postalCodeSuffix"),
           formattedAddress: place.formatted_address,
         });
         localStorage.setItem(
