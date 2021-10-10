@@ -33,7 +33,7 @@ const Unauthorized = () => {
               <h4>
                 <center>
                   Please{" "}
-                  <a href="/signup?ref=/app/sdashboard" target="_self">
+                  <a href="/signin?ref=/app/sdashboard" target="_self">
                     <b>sign-in</b>
                   </a>{" "}
                   to your S2RB account to view your dashboard. <br />

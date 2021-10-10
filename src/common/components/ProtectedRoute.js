@@ -19,6 +19,7 @@ const ProtectedRoute = ({ component: Component, location, ...rest }) => {
         }
       } catch (e) {
         setCurrentUser(null);
+        console.log(e);
       }
       setCheckingAuth(false);
     })();

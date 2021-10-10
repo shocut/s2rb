@@ -23,6 +23,7 @@ var hist = createBrowserHistory();
 
 Amplify.configure({
   ...awsconfig,
+  ssr: true,
   DataStore: {
     authModeStrategyType: AuthModeStrategyType.DEFAULT,
   },
@@ -37,7 +38,7 @@ ReactDOM.render(
       <Route path="/signup" component={Signup} />
       <Route exact path="/unauthorized" component={Unauthorized} />
       <Route exact path="/app" component={App} />
-      <ProtectedRoute path="/app/reprofile" component={SellerProfile} />
+      <ProtectedRoute exact path="/app/reprofile" component={SellerProfile} />
       <ProtectedRoute exact path="/app/sdashboard" component={SDashboard} />
       <ProtectedRoute exact path="/app/listings" component={HomeList} />
       <ProtectedRoute exact path="/app/referral" component={Referral} />

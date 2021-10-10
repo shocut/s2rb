@@ -93,22 +93,28 @@ export default function RentBackSection(sliderRefContainer) {
   }
 
   function saveREProfile(originalREObj) {
-    if (originalREObj) {
-      //code for updating existing record
-      DataStore.save(
-        SellerRealEstateProfile.copyOf(originalREObj, (updated) => {
-          updated.searchStage = localStorage.getItem("s2rb_search_stage");
-          updated.houseType = localStorage.getItem("s2rb_house_type");
-          updated.primaryHome = localStorage.getItem("s2rb_primary_home");
-          updated.rentBackPeriod = localStorage.getItem("s2rb_rentBackPeriod");
-          updated.address = homeAddressObj;
-          updated.bedrooms = localStorage.getItem("s2rb_bedrooms");
-          updated.bathrooms = localStorage.getItem("s2rb_bathrooms");
-        })
-      );
-    } else {
-      //new
-      DataStore.save(getNewREProfile());
+    try {
+      if (originalREObj) {
+        //code for updating existing record
+        DataStore.save(
+          SellerRealEstateProfile.copyOf(originalREObj, (updated) => {
+            updated.searchStage = localStorage.getItem("s2rb_search_stage");
+            updated.houseType = localStorage.getItem("s2rb_house_type");
+            updated.primaryHome = localStorage.getItem("s2rb_primary_home");
+            updated.rentBackPeriod = localStorage.getItem(
+              "s2rb_rentBackPeriod"
+            );
+            updated.address = homeAddressObj;
+            updated.bedrooms = localStorage.getItem("s2rb_bedrooms");
+            updated.bathrooms = localStorage.getItem("s2rb_bathrooms");
+          })
+        );
+      } else {
+        //new
+        DataStore.save(getNewREProfile());
+      }
+    } catch (e) {
+      console.log("saveREProfile", e);
     }
     setClassicModal(true);
   }

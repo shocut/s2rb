@@ -1,13 +1,10 @@
 import React from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
-import Amplify from "aws-amplify";
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { AuthState, onAuthUIStateChange } from "@aws-amplify/ui-components";
-import awsconfig from "../../aws-exports";
-Amplify.configure(awsconfig);
 
 // @material-ui/icons
 
