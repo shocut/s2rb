@@ -52,13 +52,11 @@ export default function AddressSection(sliderRefContainer) {
   };
 
   const bathroomsChanged = (event, newValue) => {
-    console.log(newValue);
     localStorage.setItem("s2rb_bathrooms", newValue);
     setBathrooms(newValue);
   };
 
   const bedroomsChanged = (event, newValue) => {
-    console.log(newValue);
     localStorage.setItem("s2rb_bedrooms", newValue);
     setBedrooms(newValue);
   };
@@ -95,7 +93,6 @@ export default function AddressSection(sliderRefContainer) {
             addrMap.set("postalCodeSuffix", result[i].long_name);
           }
         }
-        console.log("addrMap", addrMap);
         var homeLocation = new Location({
           name: "Seller house address",
           description: "Address of house for S2RB consideration",
