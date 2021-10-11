@@ -1,7 +1,6 @@
 /* eslint-disable */
 import React from "react";
 import ReactDOM from "react-dom";
-import PropTypes from "prop-types";
 
 import { useEffect, useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
@@ -51,6 +50,11 @@ import TextField from "@material-ui/core/TextField";
 import SnackbarContent from "../common/components/SnackbarContent.js";
 import listingStyle from "./listingStyle.js";
 
+import ReferralPDF from "../referral/ReferralPDF";
+import referralTemplateData from "../referral/ReferralTemplateData.js";
+import { pdf } from "@react-pdf/renderer";
+import { saveAs } from "file-saver";
+
 const useStyles = makeStyles(listingStyle);
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -79,9 +83,10 @@ export default function HomeList() {
   const [clientReason, setClientReason] = useState("");
   const [referralNote, setReferralNote] = useState("");
   const [listingPriceEstimate, setListingPriceEstimate] = useState("");
+  const [loadingData, setLoadingData] = useState(false);
+  const [loadingCounter, setLoadingCounter] = useState(0);
 
   const onLogout = async () => {
-    console.log("in log out - clearing localstorage");
     localStorage.clear();
     await Auth.signOut();
     checkLoginState();
@@ -94,12 +99,10 @@ export default function HomeList() {
         setCurrentUser(currentUser);
         const groups =
           currentUser.signInUserSession.accessToken.payload["cognito:groups"];
-        console.log("groups", groups);
         if (
           !groups ||
           (!groups.includes("admin") && !groups.includes("operator"))
         ) {
-          console.log("not for you");
           var nextPage = "/app/sdashboard";
           history.push(nextPage);
         }
@@ -180,7 +183,6 @@ export default function HomeList() {
     if (!sellerReference || !attachments) {
       sellerReference = currentSellerRef;
       attachments = currentAttachments;
-      console.log(sellerReference, attachments);
     }
     //initialize document categories
     docMap.set("mortgage_stmt", []);
@@ -206,8 +208,6 @@ export default function HomeList() {
       });
 
       for (let [key, arrayValue] of docMap) {
-        console.log("key", key);
-        //if (arrayValue.length > 0)
         var domEle = document.getElementById(key);
         if (domEle) {
           if (arrayValue && arrayValue.length > 0) {
@@ -260,7 +260,7 @@ export default function HomeList() {
     ];
 
     // eslint-disable-next-line
-    if (item.status == RealEstateStatus.DOCS_REVIEWED) {
+    if (item.status != RealEstateStatus.REFERRAL_GENERATED) {
       listRowArray.push(
         <Button
           size="sm"
@@ -281,9 +281,9 @@ export default function HomeList() {
           re_profile_id={item.id}
           re_profile_state={item.address.stateProvinceOrRegion}
           onClick={downloadReferralPDF}
-          color="info"
+          color="primary"
         >
-          Download Referral PDF
+          Get Referral Form
         </Button>
       );
     }
@@ -328,7 +328,6 @@ export default function HomeList() {
   }
 
   async function updateREProfileStatusOnClick(evt) {
-    console.log("in updateREProfileStatus");
     var nextStatus = evt.currentTarget.getAttribute("next_status");
     updateREProfileStatus(nextStatus);
   }
@@ -346,7 +345,6 @@ export default function HomeList() {
   }
 
   function saveREProfileStatus(originalREObj, nextStatus) {
-    console.log("in saveREProfileStatus: ", nextStatus);
     setShowViewDocuments(false);
     if (originalREObj) {
       DataStore.save(
@@ -412,7 +410,6 @@ export default function HomeList() {
     var reProfileId = evt.currentTarget.getAttribute("re_profile_id");
     var reProfileState = evt.currentTarget.getAttribute("re_profile_state");
 
-    console.log(reProfileId);
     setCurrentProfileId(reProfileId);
     setCurrentProfileState(reProfileState);
 
@@ -422,12 +419,153 @@ export default function HomeList() {
     setConfirmModal(true);
   };
 
-  const downloadReferralPDF = async () => {
-    console.log("downloadReferralPDF: ", currentProfileId);
+  async function generatePDFDocument(documentData, fileName) {
+    const blob = await pdf(<ReferralPDF referral={documentData} />).toBlob();
+    //console.log(blob);
+    saveAs(blob, fileName);
+  }
+
+  async function downloadReferralPDF(evt) {
+    var reProfileId = evt.currentTarget.getAttribute("re_profile_id");
+    try {
+      //get the real estate profile and referral data from DB
+      setLoadingData(true);
+      DataStore.query(SellerRealEstateProfile, reProfileId).then(
+        (reProfile) => {
+          var realEstateProfile = reProfile;
+          DataStore.query(Referral, (p) =>
+            p.sellerRealEstateProfileID("eq", reProfileId)
+          ).then((refDataArray) => {
+            var referralData = null;
+            if (refDataArray && refDataArray.length > 0) {
+              referralData = refDataArray[0]; //for now take the first one!! Need to address multiple referrals if necessary in future...
+            }
+            setLoadingData(false);
+
+            setTimeout(function () {
+              try {
+                if (realEstateProfile && referralData) {
+                  var stateCode =
+                    realEstateProfile.address.stateProvinceOrRegion;
+
+                  var referralPDFTemplate = Object.assign(
+                    referralTemplateData.get("Header"),
+                    referralTemplateData.get(stateCode),
+                    referralTemplateData.get("clientSection"),
+                    referralTemplateData.get("agreementSection")
+                  );
+
+                  var strRefData = JSON.stringify(referralPDFTemplate);
+                  var dateUpdated = new Date(referralData.updatedAt);
+                  var dateStr = dateUpdated.toLocaleDateString();
+
+                  var tokenMap = {
+                    "{referral_num}": referralData.token,
+                    "{updatedAt}": dateStr,
+                    "{firstname}": reProfile.firstName,
+                    "{lastName}": reProfile.lastName,
+                    "{sellerPhone}": reProfile.sellerPhone,
+                    "{streetAddress}": reProfile.address.streetAddress,
+                    "{city}": reProfile.address.city,
+                    "{stateProvinceOrRegion}": stateCode,
+                    "{sellerEmail}": reProfile.sellerEmail,
+                    "{rentBackPeriod}": reProfile.rentBackPeriod,
+                    "{houseType}": reProfile.houseType,
+                    "{bedrooms}": reProfile.bedrooms,
+                    "{bathrooms}": reProfile.bathrooms,
+                  };
+                  strRefData = replaceAll(strRefData, tokenMap);
+                  var referralPDFData = JSON.parse(strRefData);
+
+                  if (referralPDFData) {
+                    //generate pdf blob
+                    generatePDFDocument(
+                      referralPDFData,
+                      "S2RB_Referral_" + referralData.token + ".pdf"
+                    );
+                  } else {
+                    alert(
+                      "There was an error generating the referral data for PDF"
+                    );
+                  }
+                }
+              } catch (e) {
+                console.log(e);
+              }
+            }, 1000);
+          });
+        }
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  function replaceAll(str, mapObj) {
+    var re = new RegExp(Object.keys(mapObj).join("|"), "gi");
+    return str.replace(re, function (matched) {
+      return mapObj[matched];
+    });
+  }
+
+  const mergeRefDataWithTemplate = (reProfile, referralData) => (event) => {
+    if (loadingData && loadingCounter < 5) {
+      setLoadingCounter(loadingCounter + 1);
+      setTimeout(mergeRefDataWithTemplate, 2000, reProfile, referralData);
+      console.log(loadingCounter);
+      return false;
+    }
+    setLoadingCounter(0);
+    setLoadingData(false);
+
+    try {
+      if (realEstateProfile && referralData) {
+        var stateCode = realEstateProfile.address.stateProvinceOrRegion;
+
+        var referralPDFTemplate = Object.assign(
+          referralTemplateData.get(stateCode),
+          referralTemplateData.get("clientSection"),
+          referralTemplateData.get("agreementSection")
+        );
+
+        var strRefData = JSON.stringify(referralPDFTemplate);
+
+        strRefData.replace("{referral_num}", referralData.token);
+        strRefData.replace(
+          "{updatedAt}",
+          Date(item.updatedAt).toLocaleDateString("en-US")
+        );
+        strRefData.replace("{firstname}", reProfile.firstName);
+        strRefData.replace("{lastName}", reProfile.lastName);
+        strRefData.replace("{sellerPhone}", reProfile.sellerPhone);
+        strRefData.replace("{streetAddress}", reProfile.address.streetAddress);
+        strRefData.replace("{city}", reProfile.address.city);
+        strRefData.replace("{stateProvinceOrRegion}", stateCode);
+        strRefData.replace("{sellerEmail}", reProfile.sellerEmail);
+        strRefData.replace("{rentBackPeriod}", reProfile.rentBackPeriod);
+        strRefData.replace("{houseType}", reProfile.houseType);
+        strRefData.replace("{bedrooms}", reProfile.bedrooms);
+        strRefData.replace("{bathrooms}", reProfile.bathrooms);
+
+        var referralPDFData = JSON.parse(strRefData);
+
+        if (referralPDFData) {
+          //generate pdf blob
+          generatePDFDocument(
+            referralPDFData,
+            "S2RB_Referral_" + referralData.token + ".pdf"
+          );
+        } else {
+          alert("There was an error generating the referral data for PDF");
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    return null;
   };
 
   async function createReferral(evt) {
-    console.log("createReferral currentProfileId", currentProfileId);
     var nextStatus = evt.currentTarget.getAttribute("next_status");
     if (currentUser) {
       saveReferral(null, currentProfileId);

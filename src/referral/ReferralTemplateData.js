@@ -2,7 +2,7 @@
 
 var referralTemplateData = new Map();
 
-referralTemplateData.set("VA", {
+referralTemplateData.set("Header", {
   id: "5df3180a09ea16dc4b95f910",
   referral_no: "{referral_num}",
   company: "S2RB",
@@ -10,6 +10,9 @@ referralTemplateData.set("VA", {
   phone: "+1 (844) 366-5081",
   address: "23113 Red Admiral Pl.",
   trans_date: "{updatedAt}",
+});
+
+var VAAgentSegment = {
   agentSection: {
     sectionTitle: "Receiving and Sending Agent Information",
     items: [
@@ -75,7 +78,81 @@ referralTemplateData.set("VA", {
       },
     ],
   },
-});
+};
+
+var WV_PA_MD_DC_AgentSegment = {
+  agentSection: {
+    sectionTitle: "Receiving and Sending Agent Information",
+    items: [
+      {
+        label1: "Receving Agent:",
+        label2: "Sending Agent:",
+        val1: "Andrew J. Reamer",
+        val2: "Andrew Norton",
+      },
+      {
+        label1: "Office Name:",
+        label2: "Office Name:",
+        val1: "RE/MAX Distinctive",
+        val2: "S2RB Brokerage",
+      },
+      {
+        label1: "Address:",
+        label2: "Address:",
+        val1: "1307 Dolley Madison Blvd",
+        val2: "23113 Red Admiral Pl.",
+      },
+      {
+        label1: "City:",
+        label2: "City:",
+        val1: "McLean",
+        val2: "Brambleton",
+      },
+      {
+        label1: "State/Prov, Zip/PC:",
+        label2: "State/Prov, Zip/PC:",
+        val1: "VA, 22101",
+        val2: "VA, 20148",
+      },
+      {
+        label1: "Country:",
+        label2: "Country:",
+        val1: "USA",
+        val2: "USA",
+      },
+      {
+        label1: "E-mail:",
+        label2: "E-mail:",
+        val1: "AReamer@remax.net",
+        val2: "support@s2rb.com",
+      },
+      {
+        label1: "Primary Phone:",
+        label2: "Primary Phone:",
+        val1: "(202) 953-6537",
+        val2: "(844) 366-5081",
+      },
+      {
+        label1: "Cell Phone:",
+        label2: "Cell Phone:",
+        val1: "(202) 953-6537",
+        val2: "(844) 366-5081",
+      },
+      {
+        label1: "Fax Number:",
+        label2: "Fax Number:",
+        val1: "",
+        val2: "",
+      },
+    ],
+  },
+};
+
+referralTemplateData.set("VA", VAAgentSegment);
+referralTemplateData.set("DC", WV_PA_MD_DC_AgentSegment);
+referralTemplateData.set("WV", WV_PA_MD_DC_AgentSegment);
+referralTemplateData.set("PA", WV_PA_MD_DC_AgentSegment);
+referralTemplateData.set("MD", WV_PA_MD_DC_AgentSegment);
 
 referralTemplateData.set("clientSection", {
   clientSection: {
