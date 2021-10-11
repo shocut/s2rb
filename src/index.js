@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Amplify, { AuthModeStrategyType } from "aws-amplify";
+import Amplify, { DataStore, AuthModeStrategyType } from "aws-amplify";
 import awsconfig from "./aws-exports";
 import { createBrowserHistory } from "history";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -23,11 +23,15 @@ var hist = createBrowserHistory();
 
 Amplify.configure({
   ...awsconfig,
-  ssr: true,
   DataStore: {
-    authModeStrategyType: AuthModeStrategyType.DEFAULT,
+    authModeStrategyType: AuthModeStrategyType.MULTI_AUTH,
   },
 });
+
+DataStore.configure({
+  syncPageSize: 100,
+});
+
 //Amplify.Logger.LOG_LEVEL = "DEBUG";
 
 ReactDOM.render(

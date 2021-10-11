@@ -41,18 +41,14 @@ export const schema = {
                 "clientReason": {
                     "name": "clientReason",
                     "isArray": false,
-                    "type": {
-                        "enum": "ClientReason"
-                    },
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
                 "feeType": {
                     "name": "feeType",
                     "isArray": false,
-                    "type": {
-                        "enum": "FeeType"
-                    },
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -66,9 +62,7 @@ export const schema = {
                 "referralType": {
                     "name": "referralType",
                     "isArray": false,
-                    "type": {
-                        "enum": "ReferralType"
-                    },
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -76,13 +70,6 @@ export const schema = {
                     "name": "buyerReferenceID",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "sellerrealestateprofileID": {
-                    "name": "sellerrealestateprofileID",
-                    "isArray": false,
-                    "type": "ID",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -102,6 +89,13 @@ export const schema = {
                 },
                 "referralNote": {
                     "name": "referralNote",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "sellerRealEstateProfileID": {
+                    "name": "sellerRealEstateProfileID",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -130,15 +124,6 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "bySellerRealEstateProfile",
-                        "fields": [
-                            "sellerrealestateprofileID"
-                        ]
-                    }
                 },
                 {
                     "type": "auth",
@@ -433,20 +418,6 @@ export const schema = {
                     "attributes": [],
                     "isArrayNullable": true
                 },
-                "Referrals": {
-                    "name": "Referrals",
-                    "isArray": true,
-                    "type": {
-                        "model": "Referral"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "sellerrealestateprofileID"
-                    }
-                },
                 "status": {
                     "name": "status",
                     "isArray": false,
@@ -726,5 +697,5 @@ export const schema = {
             }
         }
     },
-    "version": "2673822019ae7e576155cf4bb5406f41"
+    "version": "693fb6d834b1b0601122e84c86d1a378"
 };

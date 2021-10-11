@@ -31,21 +31,21 @@ enum ReferralType {
   SELLER
 }
 
-type Referral @model @auth(rules: [{allow: public}]) @key(name: "bySellerRealEstateProfile", fields: ["sellerrealestateprofileID"]) {
+type Referral @model @auth(rules: [{allow: public}]) {
   id: ID!
   feeBasis: String
   token: String
   clientType: String
   listingPriceEstimate: Float
-  clientReason: ClientReason
-  feeType: FeeType
+  clientReason: String
+  feeType: String
   feeValue: String
-  referralType: ReferralType
+  referralType: String
   buyerReferenceID: String
-  sellerrealestateprofileID: ID
   senderSignedDate: AWSDate
   receiverSignedDate: AWSDate
   referralNote: String
+  sellerRealEstateProfileID: String
 }
 
 type Agent @model @auth(rules: [{allow: public}]) {
@@ -104,7 +104,6 @@ type SellerRealEstateProfile @model @auth(rules: [{allow: public, operations: [c
   bedrooms: String
   bathrooms: String
   attachments: [Attachment]
-  Referrals: [Referral] @connection(keyName: "bySellerRealEstateProfile", fields: ["id"])
   status: RealEstateStatus
   firstName: String
   lastName: String

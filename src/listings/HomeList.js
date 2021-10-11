@@ -47,9 +47,6 @@ import GridItem from "../common/components/GridItem.js";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import TextField from "@material-ui/core/TextField";
-import MaskedInput from "react-text-mask";
-import NumberFormat from "react-number-format";
-import InputAdornment from "@material-ui/core/InputAdornment";
 
 import SnackbarContent from "../common/components/SnackbarContent.js";
 import listingStyle from "./listingStyle.js";
@@ -119,9 +116,9 @@ export default function HomeList() {
         var reProfiles = await DataStore.query(SellerRealEstateProfile, (p) =>
           p.or((p) =>
             p
-              .status("eq", "DOCS_UPLOADED")
-              .status("eq", "DOCS_IN_REVIEW")
-              .status("eq", "DOCS_REVIEWED")
+              .status("eq", RealEstateStatus.DOCS_UPLOADED)
+              .status("eq", RealEstateStatus.DOCS_REVIEWED)
+              .status("eq", RealEstateStatus.REFERRAL_GENERATED)
           )
         );
         var tableData = genTableData(reProfiles);
@@ -226,7 +223,7 @@ export default function HomeList() {
   };
 
   function homeListRow(index, item) {
-    return [
+    var listRowArray = [
       <div className={classes.imgContainer} key={1} id={item.id}>
         <HomeOutlinedIcon
           fontSize="inherit"
@@ -260,17 +257,37 @@ export default function HomeList() {
       >
         Review Documents
       </Button>,
-      // eslint-disable-next-line
-      <Button
-        size="sm"
-        re_profile_id={item.id}
-        re_profile_state={item.address.stateProvinceOrRegion}
-        onClick={createReferralOnClick}
-        color="success"
-      >
-        Initiate Referral
-      </Button>,
     ];
+
+    // eslint-disable-next-line
+    if (item.status == RealEstateStatus.DOCS_REVIEWED) {
+      listRowArray.push(
+        <Button
+          size="sm"
+          re_profile_id={item.id}
+          re_profile_state={item.address.stateProvinceOrRegion}
+          onClick={createReferralOnClick}
+          color="success"
+        >
+          Initiate Referral
+        </Button>
+      );
+    }
+    // eslint-disable-next-line
+    if (item.status == RealEstateStatus.REFERRAL_GENERATED) {
+      listRowArray.push(
+        <Button
+          size="sm"
+          re_profile_id={item.id}
+          re_profile_state={item.address.stateProvinceOrRegion}
+          onClick={downloadReferralPDF}
+          color="info"
+        >
+          Download Referral PDF
+        </Button>
+      );
+    }
+    return listRowArray;
   }
 
   function setHomeThumbnails(reProfileArray) {
@@ -310,29 +327,46 @@ export default function HomeList() {
     //forceUpdate(true);
   }
 
-  const markDocsReviewed = async () => {
-    console.log("in saveToDataStore");
+  async function updateREProfileStatusOnClick(evt) {
+    console.log("in updateREProfileStatus");
+    var nextStatus = evt.currentTarget.getAttribute("next_status");
+    updateREProfileStatus(nextStatus);
+  }
+
+  async function updateREProfileStatus(nextStatus) {
     try {
-      updateREProfileStatus(
-        await DataStore.query(SellerRealEstateProfile, currentProfileId)
+      saveREProfileStatus(
+        await DataStore.query(SellerRealEstateProfile, currentProfileId),
+        nextStatus
       );
     } catch (e) {
       console.log(e);
       setShowViewDocuments(false);
     }
-  };
+  }
 
-  function updateREProfileStatus(originalREObj) {
-    console.log("in updateREProfileStatus: ");
+  function saveREProfileStatus(originalREObj, nextStatus) {
+    console.log("in saveREProfileStatus: ", nextStatus);
     setShowViewDocuments(false);
     if (originalREObj) {
       DataStore.save(
         SellerRealEstateProfile.copyOf(originalREObj, (updated) => {
-          if (
-            originalREObj.status === RealEstateStatus.DOCS_UPLOADED ||
-            originalREObj.status === RealEstateStatus.DOCS_IN_REVIEW
-          ) {
-            updated.status = RealEstateStatus.DOCS_REVIEWED;
+          if (nextStatus === RealEstateStatus.DOCS_REVIEWED) {
+            if (
+              originalREObj.status === RealEstateStatus.DOCS_UPLOADED ||
+              originalREObj.status === RealEstateStatus.DOCS_IN_REVIEW
+            ) {
+              updated.status = RealEstateStatus.DOCS_REVIEWED;
+            }
+          } else if (nextStatus === RealEstateStatus.REFERRAL_GENERATED) {
+            if (originalREObj.status === RealEstateStatus.DOCS_REVIEWED) {
+              updated.status = RealEstateStatus.REFERRAL_GENERATED;
+            } else {
+              console.log(
+                "Cannot update referral status: current status",
+                originalREObj.status
+              );
+            }
           }
         })
       );
@@ -356,6 +390,7 @@ export default function HomeList() {
       .replace("$", "")
       .replace(",", "")
       .replace(" ", "");
+
     var newRef = new Referral({
       feeBasis: "SELLING_SIDE",
       token: newToken,
@@ -365,9 +400,8 @@ export default function HomeList() {
       feeType: FeeType.PERCENTAGE,
       feeValue: "",
       referralType: ReferralType.SELLER,
-      sellerrealestateprofileID: reProfileId,
-      status: "NEW",
       referralNote: referralNote,
+      sellerRealEstateProfileID: reProfileId,
     });
 
     console.log("newRef", newRef);
@@ -388,28 +422,32 @@ export default function HomeList() {
     setConfirmModal(true);
   };
 
-  const createReferral = async () => {
+  const downloadReferralPDF = async () => {
+    console.log("downloadReferralPDF: ", currentProfileId);
+  };
+
+  async function createReferral(evt) {
     console.log("createReferral currentProfileId", currentProfileId);
+    var nextStatus = evt.currentTarget.getAttribute("next_status");
     if (currentUser) {
       saveReferral(null, currentProfileId);
+      updateREProfileStatus(nextStatus); //to referral generated
     }
-  };
+  }
 
   function saveReferral(originalReferral, reProfileId) {
     (async () => {
       try {
         if (originalReferral) {
           //code for updating existing record
-          var result = await DataStore.save(
+          await DataStore.save(
             Referral.copyOf(originalReferral, (updated) => {
               updated.status = "NEW"; //placeholder status - update referral not implemented yet
             })
           );
-          console.log(result);
         } else {
           //new
-          var result = await DataStore.save(getNewReferral(reProfileId));
-          console.log(result);
+          await DataStore.save(getNewReferral(reProfileId));
         }
       } catch (e) {
         console.log(e);
@@ -422,69 +460,6 @@ export default function HomeList() {
       closeDialog();
     }, 3000);
   }
-
-  const clientReasonChanged = (event) => {
-    setClientReason(event.target.value);
-  };
-
-  /* eslint-disable react/prefer-stateless-function */
-  function TextMaskCustom(props) {
-    const { inputRef, ...other } = props;
-
-    return (
-      <MaskedInput
-        {...other}
-        ref={inputRef}
-        mask={[
-          "(",
-          /[1-9]/,
-          /\d/,
-          /\d/,
-          ")",
-          " ",
-          /\d/,
-          /\d/,
-          /\d/,
-          "-",
-          /\d/,
-          /\d/,
-          /\d/,
-          /\d/,
-        ]}
-        placeholderChar={"\u2000"}
-        showMask
-      />
-    );
-  }
-
-  TextMaskCustom.propTypes = {
-    inputRef: PropTypes.func.isRequired,
-  };
-
-  function NumberFormatCustom(props) {
-    const { inputRef, onChange, ...other } = props;
-
-    return (
-      <NumberFormat
-        {...other}
-        getInputRef={inputRef}
-        onValueChange={(values) => {
-          onChange({
-            target: {
-              value: values.value,
-            },
-          });
-        }}
-        thousandSeparator
-        prefix="$"
-      />
-    );
-  }
-
-  NumberFormatCustom.propTypes = {
-    inputRef: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired,
-  };
 
   const handleChange = (setFunction) => (event) => {
     setFunction(event.target.value);
@@ -596,7 +571,11 @@ export default function HomeList() {
           <div style={{ visibility: "hidden" }}>
             <iframe width="1" height="1" src={currentDocURL}></iframe>
           </div>
-          <Button color="success" onClick={markDocsReviewed}>
+          <Button
+            color="success"
+            next_status={RealEstateStatus.DOCS_REVIEWED}
+            onClick={updateREProfileStatusOnClick}
+          >
             Mark All Documents as Verified and Accepted
           </Button>
           <Button color="info" onClick={closeDialog}>
@@ -631,6 +610,7 @@ export default function HomeList() {
             <GridItem lg={12}>
               <form>
                 <FormControl
+                  required
                   color="primary"
                   fullWidth
                   className={classes.selectFormControl}
@@ -650,7 +630,7 @@ export default function HomeList() {
                       select: classes.select,
                     }}
                     value={clientReason}
-                    onChange={clientReasonChanged}
+                    onChange={handleChange(setClientReason)}
                     inputProps={{
                       name: "clientReason",
                       id: "clientReasonId",
@@ -713,15 +693,13 @@ export default function HomeList() {
                 </FormControl>
                 <FormControl fullWidth={true} className={classes.formControl}>
                   <TextField
+                    required
                     className={classes.input}
                     label="Estimated Listing Price"
-                    value={listingPriceEstimate}
+                    //value={listingPriceEstimate}
                     onBlur={handleChange(setListingPriceEstimate)}
                     id="listingPriceEstimate-input"
-                    InputProps={{
-                      inputComponent: NumberFormatCustom,
-                      required: true,
-                    }}
+                    type="number"
                   />
                 </FormControl>
                 <FormControl fullWidth={true} className={classes.formControl}>
@@ -731,9 +709,6 @@ export default function HomeList() {
                     //value={referralNote}
                     onBlur={handleChange(setReferralNote)}
                     id="referralNote-input"
-                    InputProps={{
-                      required: true,
-                    }}
                   />
                 </FormControl>
                 <div className={classes.textCenter}>
@@ -744,7 +719,11 @@ export default function HomeList() {
                       color="success"
                     />
                   </GridItem>
-                  <Button color="warning" onClick={createReferral}>
+                  <Button
+                    color="warning"
+                    onClick={createReferral}
+                    next_status={RealEstateStatus.REFERRAL_GENERATED}
+                  >
                     Create Referral
                   </Button>
                   <Button color="info" onClick={closeDialog}>

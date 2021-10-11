@@ -81,15 +81,15 @@ export declare class Referral {
   readonly token?: string;
   readonly clientType?: string;
   readonly listingPriceEstimate?: number;
-  readonly clientReason?: ClientReason | keyof typeof ClientReason;
-  readonly feeType?: FeeType | keyof typeof FeeType;
+  readonly clientReason?: string;
+  readonly feeType?: string;
   readonly feeValue?: string;
-  readonly referralType?: ReferralType | keyof typeof ReferralType;
+  readonly referralType?: string;
   readonly buyerReferenceID?: string;
-  readonly sellerrealestateprofileID?: string;
   readonly senderSignedDate?: string;
   readonly receiverSignedDate?: string;
   readonly referralNote?: string;
+  readonly sellerRealEstateProfileID?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Referral, ReferralMetaData>);
@@ -136,7 +136,6 @@ export declare class SellerRealEstateProfile {
   readonly bedrooms?: string;
   readonly bathrooms?: string;
   readonly attachments?: (Attachment | null)[];
-  readonly Referrals?: (Referral | null)[];
   readonly status?: RealEstateStatus | keyof typeof RealEstateStatus;
   readonly firstName?: string;
   readonly lastName?: string;
