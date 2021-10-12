@@ -86,8 +86,8 @@ export default function RentBackSection(sliderRefContainer) {
       bathrooms: localStorage.getItem("s2rb_bathrooms"),
       firstName: userObj.attributes.given_name,
       lastName: userObj.attributes.family_name,
-      email: userObj.attributes.email,
-      phone: userObj.attributes.phone_number,
+      sellerEmail: userObj.attributes.email,
+      sellerPhone: userObj.attributes.phone_number,
       status: "NEW",
     });
   }
