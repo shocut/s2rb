@@ -24,7 +24,8 @@ exports.handler = (event) => {
       console.log("In insert record: %j", record.eventID); // The email body for recipients with non-HTML email clients.
 
       var body_text = "Your S2RB real estate profile details:"; //var toAddress = record.dynamodb.NewImage.sellerReference.S;
-      var toAddress = "manyapradhan@gmail.com"; //SMS communication
+      //var toAddress = "manyapradhan@gmail.com";
+      var toAddress = record.dynamodb.NewImage.sellerEmail.S;
 
       var originationNumber = "+18445384684";
       var destinationNumber = "+17035989862";

@@ -23,6 +23,7 @@ var hist = createBrowserHistory();
 
 Amplify.configure({
   ...awsconfig,
+  ssr: true,
   DataStore: {
     authModeStrategyType: AuthModeStrategyType.MULTI_AUTH,
   },
