@@ -191,7 +191,7 @@ referralTemplateData.set("clientSection", {
       {
         label1: "Additional Information:",
         label2: "Expected Rent Back:",
-        val1: "",
+        val1: "{referralNote}",
         val2: "{rentBackPeriod}",
       },
     ],
@@ -203,7 +203,7 @@ referralTemplateData.set("clientSection", {
         label1: "Client is a:",
         label2: "Estimated Price:",
         val1: "Seller",
-        val2: "N/A",
+        val2: "{listingPriceEstimate}",
       },
       {
         label1: "Home Style:",
@@ -214,7 +214,7 @@ referralTemplateData.set("clientSection", {
       {
         label1: "Reason for selling:",
         label2: "Bathrooms:",
-        val1: "",
+        val1: "{clientReason}",
         val2: "{bathrooms}",
       },
     ],

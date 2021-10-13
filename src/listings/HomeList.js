@@ -458,6 +458,12 @@ export default function HomeList() {
                   var strRefData = JSON.stringify(referralPDFTemplate);
                   var dateUpdated = new Date(referralData.updatedAt);
                   var dateStr = dateUpdated.toLocaleDateString();
+                  var estPriceStr =
+                    referralData.listingPriceEstimate.toLocaleString("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                      maximumFractionDigits: 0,
+                    });
 
                   var tokenMap = {
                     "{referral_num}": referralData.token,
@@ -473,6 +479,9 @@ export default function HomeList() {
                     "{houseType}": reProfile.houseType,
                     "{bedrooms}": reProfile.bedrooms,
                     "{bathrooms}": reProfile.bathrooms,
+                    "{listingPriceEstimate}": estPriceStr,
+                    "{clientReason}": referralData.clientReason,
+                    "{referralNote}": referralData.referralNote,
                   };
                   strRefData = replaceAll(strRefData, tokenMap);
                   var referralPDFData = JSON.parse(strRefData);
@@ -567,10 +576,8 @@ export default function HomeList() {
 
   async function createReferral(evt) {
     var nextStatus = evt.currentTarget.getAttribute("next_status");
-    if (currentUser) {
-      saveReferral(null, currentProfileId);
-      updateREProfileStatus(nextStatus); //to referral generated
-    }
+    saveReferral(null, currentProfileId);
+    updateREProfileStatus(nextStatus); //to referral generated
   }
 
   function saveReferral(originalReferral, reProfileId) {
@@ -596,7 +603,7 @@ export default function HomeList() {
     setTimeout(() => {
       setRefSaved(false);
       closeDialog();
-    }, 3000);
+    }, 2000);
   }
 
   const handleChange = (setFunction) => (event) => {
@@ -846,6 +853,7 @@ export default function HomeList() {
                     label="Referral Note"
                     //value={referralNote}
                     onBlur={handleChange(setReferralNote)}
+                    inputProps={{ maxLength: 30 }}
                     id="referralNote-input"
                   />
                 </FormControl>
