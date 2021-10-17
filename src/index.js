@@ -43,8 +43,8 @@ ReactDOM.render(
       <Route path="/signup" component={Signup} />
       <Route exact path="/unauthorized" component={Unauthorized} />
       <Route exact path="/app" component={App} />
-      <ProtectedRoute exact path="/app/reprofile" component={SellerProfile} />
-      <ProtectedRoute exact path="/app/sdashboard" component={SDashboard} />
+      <ProtectedRoute path="/app/reprofile" component={SellerProfile} />
+      <ProtectedRoute path="/app/sdashboard" component={SDashboard} />
       <ProtectedRoute exact path="/app/listings" component={HomeList} />
       <ProtectedRoute exact path="/app/referral" component={Referral} />
       <Route path="/" component={CommingSoon} />

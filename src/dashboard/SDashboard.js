@@ -217,7 +217,7 @@ export default function SDashboard(props) {
                 </a>{" "}
                 to your S2RB account to view your dashboard. <br />
                 If you have not yet registered, please{" "}
-                <a href="/signup?ref=/app/reprofile" target="_self">
+                <a href="/signup?ref=/app/sdashboard" target="_self">
                   <b>sign-up</b>
                 </a>{" "}
                 now for a free no obligation account.
