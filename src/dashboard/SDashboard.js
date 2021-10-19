@@ -21,14 +21,38 @@ import Button from "../common/components/Button.js";
 import S3FileHandler from "../common/components/S3FileHandler.js";
 
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
-import "./custom.css";
 
 import DescriptionIcon from "@material-ui/icons/Description";
 import StoreIcon from "@material-ui/icons/Store";
 import DonutLargeIcon from "@material-ui/icons/DonutLarge";
 import AttachFile from "@material-ui/icons/AttachFile";
 import styles from "./dashboardStyle.js";
+import Stepper from "@mui/material/Stepper";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
+import StepContent from "@mui/material/StepContent";
+import Typography from "@mui/material/Typography";
+
+import "react-circular-progressbar/dist/styles.css";
+import "./custom.css";
+
+const steps = [
+  {
+    label: "Signed-up (20%)",
+  },
+  {
+    label: "Profile Created (40%)",
+  },
+  {
+    label: "Documents Uploaded (60%)",
+  },
+  {
+    label: "Documents Verified (80%)",
+  },
+  {
+    label: "Realtor Connected (100%)",
+  },
+];
 
 const useStyles = makeStyles(styles);
 
@@ -41,7 +65,7 @@ export default function SDashboard(props) {
     localStorage.getItem("s2rb_re_profile_id")
   );
 
-  localStorage.setItem("s2rb_re_profile_progress", 30);
+  localStorage.setItem("s2rb_re_profile_progress", 20);
   const [reProfileProgress, setREProfileProgress] = useState(
     localStorage.getItem("s2rb_re_profile_progress")
   );
@@ -104,7 +128,7 @@ export default function SDashboard(props) {
       }
     };
     loadREProfile();
-  }, []);
+  }, [activeTab]);
 
   const setAndSaveAttachments = async (newAttachments) => {
     console.log("in setAndSaveAttachments");
@@ -125,6 +149,9 @@ export default function SDashboard(props) {
           await DataStore.query(SellerRealEstateProfile, reProfile.id),
           attchObj
         );
+        if (reProfileProgress < 60) {
+          setREProfileProgress(60); //only update if it was an earlier state
+        }
       }
     } catch (e) {
       console.log(e);
@@ -160,12 +187,12 @@ export default function SDashboard(props) {
       localStorage.setItem("s2rb_re_profile_id", reProfile.id);
       set_s2rb_re_profile_id(reProfile.id);
       if (reProfile.status == RealEstateStatus.NEW) {
-        setREProfileProgress(60);
+        setREProfileProgress(40);
       } else if (
         reProfile.status == RealEstateStatus.DOCS_UPLOADED ||
         reProfile.status == RealEstateStatus.DOCS_IN_REVIEW
       ) {
-        setREProfileProgress(80);
+        setREProfileProgress(60);
       } else {
         setREProfileProgress(100);
       }
@@ -229,7 +256,7 @@ export default function SDashboard(props) {
 
       {currentUser && (
         <GridContainer justify="center" className={classes.main}>
-          <GridItem xs={12} sm={12} md={9} lg={7}>
+          <GridItem xs={12} sm={12} md={11} lg={10}>
             <NavPills
               color="success"
               active={activeTab}
@@ -242,6 +269,24 @@ export default function SDashboard(props) {
                       <Card className={classes.dashCard}>
                         <CardBody>
                           <GridContainer>
+                            <GridItem xs={12} sm={12} md={12} lg={12}>
+                              <Stepper
+                                activeStep={reProfileProgress / 20}
+                                alternativeLabel
+                                className={classes.timeLineCtr}
+                              >
+                                {steps.map((step, index) => (
+                                  <Step key={step.label}>
+                                    <StepLabel>{step.label}</StepLabel>
+                                    <StepContent>
+                                      <Typography>
+                                        {step.description}
+                                      </Typography>
+                                    </StepContent>
+                                  </Step>
+                                ))}
+                              </Stepper>
+                            </GridItem>
                             <GridItem xs={12} sm={2} md={2} lg={2}>
                               <center>
                                 <div style={{ width: 100, height: 100 }}>

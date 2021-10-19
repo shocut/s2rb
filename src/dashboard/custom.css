@@ -11,3 +11,7 @@
 .CircularProgressbar .CircularProgressbar-path {
   stroke: #85c285;
 }
+
+.MuiStep-completed {
+  color: #85c285 !important;
+}
