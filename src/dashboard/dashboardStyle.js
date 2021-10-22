@@ -56,6 +56,7 @@ const timelineStyle = {
     minHeight: "200px",
   },
   timeLineCtr: {
+    marginTop: "10px",
     marginBottom: "20px",
     paddingBottom: "20px",
     borderBottom: "1px solid #E5E4E2",

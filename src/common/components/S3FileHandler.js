@@ -38,7 +38,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function S3FileHandler(props) {
-  const { 
+  const {
     attachments,
     maxFileSize,
     setAndSaveAttachments,
@@ -53,7 +53,7 @@ export default function S3FileHandler(props) {
   } = props;
 
   const [fileName, setFileName] = useState("");
-  const [fileCategory, setFileCategory] = useState("");
+  const [fileCategory, setFileCategory] = useState("home_photo");
   const [catgError, setCatgError] = useState(false);
   const [fileError, setFileError] = useState(
     "Please select a document type before attaching file."
@@ -89,6 +89,17 @@ export default function S3FileHandler(props) {
   const handleFileCategory = (event) => {
     setCatgError(false);
     setFileCategory(event.target.value);
+    var inputEle = document.getElementById("inputFile");
+    if (inputEle) {
+      if (event.target.value === "home_photo") {
+        inputEle.setAttribute(
+          "accept",
+          "image/png, image/gif, image/jpeg, , image/jpg"
+        );
+      } else {
+        inputEle.removeAttribute("accept");
+      }
+    }
   };
 
   // eslint-disable-next-line
@@ -271,42 +282,7 @@ export default function S3FileHandler(props) {
                 name: "catgSelect",
                 id: "catgSelectId",
               }}
-              >
-              <MenuItem
-                disabled
-                classes={{
-                  root: classes.selectMenuItem,
-                }}
-              >
-                Select Document Type
-              </MenuItem>
-              <MenuItem
-                classes={{
-                  root: classes.selectMenuItem,
-                  selected: classes.selectMenuItemSelected,
-                }}
-                value="mortgage_stmt"
-              >
-                Mortgage Statement
-              </MenuItem>
-              <MenuItem
-                classes={{
-                  root: classes.selectMenuItem,
-                  selected: classes.selectMenuItemSelected,
-                }}
-                value="identity_proof"
-              >
-                Identity Proof
-              </MenuItem>
-              <MenuItem
-                classes={{
-                  root: classes.selectMenuItem,
-                  selected: classes.selectMenuItemSelected,
-                }}
-                value="title_proof"
-              >
-                House Title
-              </MenuItem>
+            >
               <MenuItem
                 classes={{
                   root: classes.selectMenuItem,
@@ -315,6 +291,15 @@ export default function S3FileHandler(props) {
                 value="home_photo"
               >
                 Home Photographs
+              </MenuItem>
+              <MenuItem
+                classes={{
+                  root: classes.selectMenuItem,
+                  selected: classes.selectMenuItemSelected,
+                }}
+                value="mortgage_stmt"
+              >
+                Other Documents (e.g. Mortgage Statement)
               </MenuItem>
             </Select>
           </FormControl>
@@ -325,7 +310,9 @@ export default function S3FileHandler(props) {
               <input
                 type="file"
                 className={classes.inputFile}
+                id="inputFile"
                 multiple={multiple}
+                accept="image/png, image/gif, image/jpeg, , image/jpg"
                 ref={hiddenFile}
                 onChange={uploadFile}
               />
@@ -341,7 +328,7 @@ export default function S3FileHandler(props) {
                   value: fileName,
                   endAdornment: buttonEnd,
                   startAdornment: buttonStart,
-                  ...inputProps
+                  ...inputProps,
                 }}
               />
             </div>

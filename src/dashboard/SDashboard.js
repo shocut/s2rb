@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router";
+import PropTypes from "prop-types";
 
 import { useEffect, useState } from "react";
 import { Auth } from "aws-amplify";
@@ -19,10 +20,6 @@ import Card from "../common/components/Card.js";
 import CardBody from "../common/components/CardBody.js";
 import Button from "../common/components/Button.js";
 import S3FileHandler from "../common/components/S3FileHandler.js";
-
-import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-
-import DescriptionIcon from "@material-ui/icons/Description";
 import StoreIcon from "@material-ui/icons/Store";
 import DonutLargeIcon from "@material-ui/icons/DonutLarge";
 import AttachFile from "@material-ui/icons/AttachFile";
@@ -30,29 +27,149 @@ import styles from "./dashboardStyle.js";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
-import StepContent from "@mui/material/StepContent";
-import Typography from "@mui/material/Typography";
+
+import { styled } from "@mui/material/styles";
+import CameraEnhanceOutlinedIcon from "@mui/icons-material/CameraEnhanceOutlined";
+import Check from "@mui/icons-material/Check";
+import MapsHomeWorkOutlinedIcon from "@mui/icons-material/MapsHomeWorkOutlined";
+import FactCheckOutlinedIcon from "@mui/icons-material/FactCheckOutlined";
+import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
+import AttributionOutlinedIcon from "@mui/icons-material/AttributionOutlined";
 
 import "react-circular-progressbar/dist/styles.css";
 import "./custom.css";
 
-const steps = [
+const progressSteps = [
   {
-    label: "Signed-up (20%)",
+    label: "1. Sign-up",
   },
   {
-    label: "Profile Created (40%)",
+    label: "2. Create Profile",
   },
   {
-    label: "Documents Uploaded (60%)",
+    label: "3. Upload Photos",
   },
   {
-    label: "Documents Verified (80%)",
+    label: "4. S2RB Verification",
   },
   {
-    label: "Realtor Connected (100%)",
+    label: "5. Connect Agent",
   },
 ];
+
+/*  stepper code  */
+
+const QontoStepIconRoot = styled("div")(({ theme, ownerState }) => ({
+  color: theme.palette.mode === "dark" ? theme.palette.grey[700] : "#eaeaf0",
+  display: "flex",
+  height: 22,
+  alignItems: "center",
+  ...(ownerState.active && {
+    color: "#784af4",
+  }),
+  "& .QontoStepIcon-completedIcon": {
+    color: "#784af4",
+    zIndex: 1,
+    fontSize: 18,
+  },
+  "& .QontoStepIcon-circle": {
+    width: 8,
+    height: 8,
+    borderRadius: "50%",
+    backgroundColor: "currentColor",
+  },
+}));
+
+function QontoStepIcon(props) {
+  const { active, completed, className } = props;
+
+  return (
+    <QontoStepIconRoot ownerState={{ active }} className={className}>
+      {completed ? (
+        <Check className="QontoStepIcon-completedIcon" />
+      ) : (
+        <div className="QontoStepIcon-circle" />
+      )}
+    </QontoStepIconRoot>
+  );
+}
+
+QontoStepIcon.propTypes = {
+  /**
+   * Whether this step is active.
+   * @default false
+   */
+  active: PropTypes.bool,
+  className: PropTypes.string,
+  /**
+   * Mark the step as completed. Is passed to child components.
+   * @default false
+   */
+  completed: PropTypes.bool,
+};
+
+const ColorlibStepIconRoot = styled("div")(({ theme, ownerState }) => ({
+  backgroundColor:
+    theme.palette.mode === "dark" ? theme.palette.grey[700] : "#ccc",
+  zIndex: 1,
+  color: "#fff",
+  width: 40,
+  marginTop: "-5px",
+  height: 40,
+  display: "flex",
+  borderRadius: "50%",
+  justifyContent: "center",
+  alignItems: "center",
+  ...(ownerState.active && {
+    backgroundImage:
+      "linear-gradient( 136deg, #ffe600 0%, #ffb300 50%, #ffe600 100%)",
+    boxShadow: "0 4px 10px 0 rgba(0,0,0,.25)",
+  }),
+  ...(ownerState.completed && {
+    backgroundImage:
+      "linear-gradient( 136deg, #85c285 0%, #4b6e4b 50%, #85c285 100%)",
+  }),
+}));
+
+function ColorlibStepIcon(props) {
+  const { active, completed, className } = props;
+  const icons = {
+    1: <PersonAddOutlinedIcon />,
+    2: <MapsHomeWorkOutlinedIcon />,
+    3: <CameraEnhanceOutlinedIcon />,
+    4: <FactCheckOutlinedIcon />,
+    5: <AttributionOutlinedIcon />,
+  };
+
+  return (
+    <ColorlibStepIconRoot
+      ownerState={{ completed, active }}
+      className={className}
+    >
+      {icons[String(props.icon)]}
+    </ColorlibStepIconRoot>
+  );
+}
+
+ColorlibStepIcon.propTypes = {
+  /**
+   * Whether this step is active.
+   * @default false
+   */
+  active: PropTypes.bool,
+  className: PropTypes.string,
+  /**
+   * Mark the step as completed. Is passed to child components.
+   * @default false
+   */
+  completed: PropTypes.bool,
+  /**
+   * The label displayed in the step icon.
+   */
+  icon: PropTypes.node,
+};
+
+/* stepper end  */
 
 const useStyles = makeStyles(styles);
 
@@ -275,37 +392,20 @@ export default function SDashboard(props) {
                                 alternativeLabel
                                 className={classes.timeLineCtr}
                               >
-                                {steps.map((step, index) => (
+                                {progressSteps.map((step, index) => (
                                   <Step key={step.label}>
-                                    <StepLabel>{step.label}</StepLabel>
-                                    <StepContent>
-                                      <Typography>
-                                        {step.description}
-                                      </Typography>
-                                    </StepContent>
+                                    <StepLabel
+                                      StepIconComponent={ColorlibStepIcon}
+                                    >
+                                      {step.label}
+                                    </StepLabel>
                                   </Step>
                                 ))}
                               </Stepper>
                             </GridItem>
-                            <GridItem xs={12} sm={2} md={2} lg={2}>
-                              <center>
-                                <div style={{ width: 100, height: 100 }}>
-                                  <CircularProgressbar
-                                    value={reProfileProgress}
-                                    strokeWidth="18"
-                                    text={`${reProfileProgress}%`}
-                                    circleRatio={0.75}
-                                    strokeLinecap="butt"
-                                    styles={buildStyles({
-                                      rotation: 1 / 2 + 1 / 8,
-                                    })}
-                                  ></CircularProgressbar>
-                                  Progress
-                                </div>{" "}
-                              </center>
-                            </GridItem>
+
                             {!s2rb_re_profile_id && (
-                              <GridItem xs={12} sm={10} md={10} lg={10}>
+                              <GridItem xs={12} sm={12} md={12} lg={12}>
                                 <div>
                                   <h4 className={classes.subtitle}>
                                     Thank you for signing-up and creating a user
@@ -337,20 +437,20 @@ export default function SDashboard(props) {
                                   </h4>
                                   <h5 onClick={showDocumentTab}>
                                     In order to start the investor matching
-                                    process we need you to upload the property
-                                    documents. Plase navigate to the{" "}
+                                    process we need you to upload property
+                                    photos. Plase navigate to the{" "}
                                     <a href="/app/sdashboard/d" target="_self">
-                                      Documents
+                                      Photos
                                     </a>{" "}
-                                    tab to upload photos, statements and files.
+                                    tab to upload house photos.
                                   </h5>
                                   <h5>
-                                    All documents are uploaded, transimitted and
-                                    stored in encrypted format. The documents
-                                    are used to verify and validate
-                                    home-ownership and mortgage information. We
-                                    do not share these with any other users or
-                                    companies including potential investors.
+                                    All photos and documents are uploaded,
+                                    transimitted and stored in secure encrypted
+                                    format. Only house photos are required to
+                                    move forward but uploading documents such as
+                                    recent mortgage statement help expedite
+                                    verification process.
                                   </h5>
                                 </div>
                               </GridItem>
@@ -476,8 +576,8 @@ export default function SDashboard(props) {
                   ),
                 },
                 {
-                  tabButton: "Documents",
-                  tabIcon: DescriptionIcon,
+                  tabButton: "Photos",
+                  tabIcon: CameraEnhanceOutlinedIcon,
                   tabContent: (
                     <span>
                       <Card className={classes.dashCard}>
@@ -490,19 +590,19 @@ export default function SDashboard(props) {
                                   profile.
                                 </h4>
                                 <h5>
-                                  To unlock the next stage, upload documents
-                                  showing mortgage and home-ownership details.
-                                  Please upload multiple home photos.
+                                  To move forward to the next stage, please
+                                  upload house photos. You can upload multiple
+                                  photos.
                                 </h5>
                                 <h5>
-                                  All documents are uploaded, transimitted and
-                                  stored in encrypted format. The documents are
-                                  used to verify and validate home-ownership and
-                                  mortgage information. We do not share these
-                                  with any other users or companies including
-                                  potential investors.
+                                  All photos and documents are uploaded,
+                                  transimitted and stored in secure encrypted
+                                  format. Only house photos are required to move
+                                  forward but uploading documents such as recent
+                                  mortgage statement help expedite verification
+                                  process.
                                 </h5>
-
+                                <p>&nbsp;</p>
                                 <div>
                                   <S3FileHandler
                                     attachments={attachments}
