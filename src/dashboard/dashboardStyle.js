@@ -61,6 +61,10 @@ const timelineStyle = {
     paddingBottom: "20px",
     borderBottom: "1px solid #E5E4E2",
   },
+  statusNote: {
+    fontWeight: "500",
+    color: "#4D5656",
+  },
 };
 
 export default timelineStyle;
