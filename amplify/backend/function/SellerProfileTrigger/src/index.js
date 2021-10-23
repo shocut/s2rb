@@ -108,7 +108,6 @@ exports.handler = (event) => {
                  <p>
                    <small>
                     To keep receiving emails from us, please add <b>support@s2rb.com</b> to your contacts. 
-                    If you have any questions, email us at <a href="mailto:support@s2rb.com">support@s2rb.com</a>.
                    <small>
                  </p>
               </body> 
