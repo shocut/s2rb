@@ -505,7 +505,7 @@ export default function SDashboard(props) {
                                       <a href="#" onClick={showConfirmDone}>
                                         <b>
                                           Done with estate profile and uploading
-                                          photos?{" "}
+                                          photos{" "}
                                           <Button
                                             round={true}
                                             onClick={showConfirmDone}
@@ -513,7 +513,7 @@ export default function SDashboard(props) {
                                             justIcon={true}
                                             size="sm"
                                           >
-                                            <Check />
+                                            ?
                                           </Button>
                                         </b>
                                       </a>
@@ -717,7 +717,7 @@ export default function SDashboard(props) {
                                       <a href="#" onClick={showConfirmDone}>
                                         <b>
                                           Done with estate profile and uploading
-                                          photos?{" "}
+                                          photos{" "}
                                           <Button
                                             round={true}
                                             onClick={showConfirmDone}
@@ -725,7 +725,7 @@ export default function SDashboard(props) {
                                             justIcon={true}
                                             size="sm"
                                           >
-                                            <Check />
+                                            ?
                                           </Button>
                                         </b>
                                       </a>

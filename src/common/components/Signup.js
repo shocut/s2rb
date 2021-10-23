@@ -25,7 +25,7 @@ function Signup(props) {
   const history = useHistory();
   var currentAuthState = AuthState.SignIn;
   const queryValues = queryString.parse(props.location.search);
-
+  console.log(props.location.pathname);
   if (props.location.pathname == "/signup") {
     currentAuthState = AuthState.SignUp;
   }

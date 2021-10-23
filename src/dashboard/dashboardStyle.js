@@ -1,4 +1,4 @@
-import { container, title } from "../common/jss/baseStyles.js";
+import { container, title, primaryColor } from "../common/jss/baseStyles.js";
 
 const timelineStyle = {
   container: {
@@ -63,7 +63,7 @@ const timelineStyle = {
   },
   statusNote: {
     fontWeight: "500",
-    color: "#4D5656",
+    color: primaryColor[1],
   },
 };
 
