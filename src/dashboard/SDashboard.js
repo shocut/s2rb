@@ -808,7 +808,7 @@ export default function SDashboard(props) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            Please confirm if you want us to begin reviewing the information.
+            Please confirm if you want S2RB to begin reviewing the information.
             You can continue to add photos and documents during the review
             process.
           </DialogContentText>
