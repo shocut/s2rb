@@ -35,7 +35,7 @@ exports.handler = async (event, context, callback) => {
   // Infer the image type from the file suffix.
   const typeMatch = srcKey.match(/\.([^.]*)$/);
   if (!typeMatch) {
-    console.log("Could not determine the image type..");
+    console.log("Could not determine the image type.");
     return;
   }
 

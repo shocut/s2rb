@@ -8,7 +8,7 @@
           "defaultAuthentication": {
             "authenticationType": "API_KEY",
             "apiKeyConfig": {
-              "apiKeyExpirationDays": 30,
+              "apiKeyExpirationDays": 365,
               "description": "api key description"
             }
           },
@@ -50,10 +50,7 @@
         {
           "category": "api",
           "resourceName": "socialmediademo",
-          "attributes": [
-            "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput"
-          ]
+          "attributes": ["GraphQLAPIIdOutput", "GraphQLAPIEndpointOutput"]
         }
       ]
     }
@@ -66,11 +63,7 @@
         {
           "category": "function",
           "resourceName": "S3Trigger055ac222",
-          "attributes": [
-            "Name",
-            "Arn",
-            "LambdaExecutionRole"
-          ]
+          "attributes": ["Name", "Arn", "LambdaExecutionRole"]
         }
       ]
     }

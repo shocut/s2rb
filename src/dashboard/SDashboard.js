@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router";
+import PropTypes from "prop-types";
 
 import { useEffect, useState } from "react";
 import { Auth } from "aws-amplify";
@@ -19,16 +20,166 @@ import Card from "../common/components/Card.js";
 import CardBody from "../common/components/CardBody.js";
 import Button from "../common/components/Button.js";
 import S3FileHandler from "../common/components/S3FileHandler.js";
-
-import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
-import "./custom.css";
-
-import DescriptionIcon from "@material-ui/icons/Description";
 import StoreIcon from "@material-ui/icons/Store";
 import DonutLargeIcon from "@material-ui/icons/DonutLarge";
 import AttachFile from "@material-ui/icons/AttachFile";
 import styles from "./dashboardStyle.js";
+import Stepper from "@mui/material/Stepper";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
+
+import { styled } from "@mui/material/styles";
+import CameraEnhanceOutlinedIcon from "@mui/icons-material/CameraEnhanceOutlined";
+import Check from "@mui/icons-material/Check";
+import MapsHomeWorkOutlinedIcon from "@mui/icons-material/MapsHomeWorkOutlined";
+import FactCheckOutlinedIcon from "@mui/icons-material/FactCheckOutlined";
+import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
+import AttributionOutlinedIcon from "@mui/icons-material/AttributionOutlined";
+
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
+import Slide from "@material-ui/core/Slide";
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="left" ref={ref} {...props} />;
+});
+
+import "react-circular-progressbar/dist/styles.css";
+import "./custom.css";
+
+const progressSteps = [
+  {
+    label: "1. Sign-up",
+  },
+  {
+    label: "2. Create Profile",
+  },
+  {
+    label: "3. Upload Photos",
+  },
+  {
+    label: "4. S2RB Review",
+  },
+  {
+    label: "5. Connect Agent",
+  },
+];
+
+/*  stepper code  */
+
+const QontoStepIconRoot = styled("div")(({ theme, ownerState }) => ({
+  color: theme.palette.mode === "dark" ? theme.palette.grey[700] : "#eaeaf0",
+  display: "flex",
+  height: 22,
+  alignItems: "center",
+  ...(ownerState.active && {
+    color: "#784af4",
+  }),
+  "& .QontoStepIcon-completedIcon": {
+    color: "#784af4",
+    zIndex: 1,
+    fontSize: 18,
+  },
+  "& .QontoStepIcon-circle": {
+    width: 8,
+    height: 8,
+    borderRadius: "50%",
+    backgroundColor: "currentColor",
+  },
+}));
+
+function QontoStepIcon(props) {
+  const { active, completed, className } = props;
+
+  return (
+    <QontoStepIconRoot ownerState={{ active }} className={className}>
+      {completed ? (
+        <Check className="QontoStepIcon-completedIcon" />
+      ) : (
+        <div className="QontoStepIcon-circle" />
+      )}
+    </QontoStepIconRoot>
+  );
+}
+
+QontoStepIcon.propTypes = {
+  /**
+   * Whether this step is active.
+   * @default false
+   */
+  active: PropTypes.bool,
+  className: PropTypes.string,
+  /**
+   * Mark the step as completed. Is passed to child components.
+   * @default false
+   */
+  completed: PropTypes.bool,
+};
+
+const ColorlibStepIconRoot = styled("div")(({ theme, ownerState }) => ({
+  backgroundColor:
+    theme.palette.mode === "dark" ? theme.palette.grey[700] : "#ccc",
+  zIndex: 1,
+  color: "#fff",
+  width: 40,
+  marginTop: "-5px",
+  height: 40,
+  display: "flex",
+  borderRadius: "50%",
+  justifyContent: "center",
+  alignItems: "center",
+  ...(ownerState.active && {
+    backgroundImage:
+      "linear-gradient( 136deg, #ffe600 0%, #ffb300 50%, #ffe600 100%)",
+    boxShadow: "0 4px 10px 0 rgba(0,0,0,.25)",
+  }),
+  ...(ownerState.completed && {
+    backgroundImage:
+      "linear-gradient( 136deg, #85c285 0%, #4b6e4b 50%, #85c285 100%)",
+  }),
+}));
+
+function ColorlibStepIcon(props) {
+  const { active, completed, className } = props;
+  const icons = {
+    1: <PersonAddOutlinedIcon />,
+    2: <MapsHomeWorkOutlinedIcon />,
+    3: <CameraEnhanceOutlinedIcon />,
+    4: <FactCheckOutlinedIcon />,
+    5: <AttributionOutlinedIcon />,
+  };
+
+  return (
+    <ColorlibStepIconRoot
+      ownerState={{ completed, active }}
+      className={className}
+    >
+      {icons[String(props.icon)]}
+    </ColorlibStepIconRoot>
+  );
+}
+
+ColorlibStepIcon.propTypes = {
+  /**
+   * Whether this step is active.
+   * @default false
+   */
+  active: PropTypes.bool,
+  className: PropTypes.string,
+  /**
+   * Mark the step as completed. Is passed to child components.
+   * @default false
+   */
+  completed: PropTypes.bool,
+  /**
+   * The label displayed in the step icon.
+   */
+  icon: PropTypes.node,
+};
+
+/* stepper end  */
 
 const useStyles = makeStyles(styles);
 
@@ -41,7 +192,7 @@ export default function SDashboard(props) {
     localStorage.getItem("s2rb_re_profile_id")
   );
 
-  localStorage.setItem("s2rb_re_profile_progress", 30);
+  localStorage.setItem("s2rb_re_profile_progress", 20);
   const [reProfileProgress, setREProfileProgress] = useState(
     localStorage.getItem("s2rb_re_profile_progress")
   );
@@ -49,6 +200,8 @@ export default function SDashboard(props) {
   const [reProfile, setProfile] = useState({});
   const [streetAddress, setStreetAddress] = useState({});
   const [attachments, setAttachments] = useState([]);
+  const [confirmDone, setConfirmDone] = useState(false);
+  const [currentREStatus, setCurrentREStatus] = useState("");
 
   //default active tab - this is not ideal TODO: need to optimize flow when dashboard is already loaded!
   /* eslint-disable */
@@ -104,7 +257,7 @@ export default function SDashboard(props) {
       }
     };
     loadREProfile();
-  }, []);
+  }, [currentREStatus]);
 
   const setAndSaveAttachments = async (newAttachments) => {
     console.log("in setAndSaveAttachments");
@@ -125,6 +278,9 @@ export default function SDashboard(props) {
           await DataStore.query(SellerRealEstateProfile, reProfile.id),
           attchObj
         );
+        if (reProfileProgress < 60) {
+          setREProfileProgress(60); //only update if it was an earlier state
+        }
       }
     } catch (e) {
       console.log(e);
@@ -147,6 +303,7 @@ export default function SDashboard(props) {
           if (originalREObj.status == RealEstateStatus.NEW) {
             //don't overwrite other statuses!!!
             updated.status = RealEstateStatus.DOCS_UPLOADED;
+            setCurrentREStatus(RealEstateStatus.DOCS_UPLOADED);
           }
         })
       );
@@ -160,12 +317,12 @@ export default function SDashboard(props) {
       localStorage.setItem("s2rb_re_profile_id", reProfile.id);
       set_s2rb_re_profile_id(reProfile.id);
       if (reProfile.status == RealEstateStatus.NEW) {
-        setREProfileProgress(60);
+        setREProfileProgress(40);
       } else if (
         reProfile.status == RealEstateStatus.DOCS_UPLOADED ||
         reProfile.status == RealEstateStatus.DOCS_IN_REVIEW
       ) {
-        setREProfileProgress(80);
+        setREProfileProgress(60);
       } else {
         setREProfileProgress(100);
       }
@@ -187,6 +344,45 @@ export default function SDashboard(props) {
       set_s2rb_re_profile_id(null);
     }
   };
+
+  const showConfirmDone = () => {
+    setConfirmDone(true);
+  };
+
+  const closeDialog = () => {
+    setConfirmDone(false);
+  };
+
+  const confirmMoveForward = () => {
+    setConfirmDone(false);
+    updateREProfileStatus(RealEstateStatus.DOCS_IN_REVIEW);
+  };
+
+  async function updateREProfileStatus(nextStatus) {
+    try {
+      saveREProfileStatus(
+        await DataStore.query(SellerRealEstateProfile, s2rb_re_profile_id),
+        nextStatus
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  function saveREProfileStatus(originalREObj, nextStatus) {
+    if (originalREObj) {
+      DataStore.save(
+        SellerRealEstateProfile.copyOf(originalREObj, (updated) => {
+          if (nextStatus === RealEstateStatus.DOCS_IN_REVIEW) {
+            if (originalREObj.status === RealEstateStatus.DOCS_UPLOADED) {
+              updated.status = RealEstateStatus.DOCS_IN_REVIEW;
+            }
+          }
+        })
+      );
+      setCurrentREStatus(nextStatus);
+    }
+  }
 
   return (
     <div>
@@ -217,7 +413,7 @@ export default function SDashboard(props) {
                 </a>{" "}
                 to your S2RB account to view your dashboard. <br />
                 If you have not yet registered, please{" "}
-                <a href="/signup?ref=/app/reprofile" target="_self">
+                <a href="/signup?ref=/app/sdashboard" target="_self">
                   <b>sign-up</b>
                 </a>{" "}
                 now for a free no obligation account.
@@ -226,10 +422,9 @@ export default function SDashboard(props) {
           </GridItem>
         </GridContainer>
       )}
-
       {currentUser && (
         <GridContainer justify="center" className={classes.main}>
-          <GridItem xs={12} sm={12} md={9} lg={7}>
+          <GridItem xs={12} sm={12} md={11} lg={10}>
             <NavPills
               color="success"
               active={activeTab}
@@ -242,42 +437,44 @@ export default function SDashboard(props) {
                       <Card className={classes.dashCard}>
                         <CardBody>
                           <GridContainer>
-                            <GridItem xs={12} sm={2} md={2} lg={2}>
-                              <center>
-                                <div style={{ width: 100, height: 100 }}>
-                                  <CircularProgressbar
-                                    value={reProfileProgress}
-                                    strokeWidth="18"
-                                    text={`${reProfileProgress}%`}
-                                    circleRatio={0.75}
-                                    strokeLinecap="butt"
-                                    styles={buildStyles({
-                                      rotation: 1 / 2 + 1 / 8,
-                                    })}
-                                  ></CircularProgressbar>
-                                  Progress
-                                </div>{" "}
-                              </center>
+                            <GridItem xs={12} sm={12} md={12} lg={12}>
+                              <Stepper
+                                activeStep={reProfileProgress / 20}
+                                alternativeLabel
+                                className={classes.timeLineCtr}
+                              >
+                                {progressSteps.map((step, index) => (
+                                  <Step key={step.label}>
+                                    <StepLabel
+                                      StepIconComponent={ColorlibStepIcon}
+                                    >
+                                      {step.label}
+                                    </StepLabel>
+                                  </Step>
+                                ))}
+                              </Stepper>
                             </GridItem>
+
                             {!s2rb_re_profile_id && (
-                              <GridItem xs={12} sm={10} md={10} lg={10}>
+                              <GridItem xs={12} sm={12} md={12} lg={12}>
                                 <div>
                                   <h4 className={classes.subtitle}>
-                                    Thank you for signing-up and creating a user
-                                    profile.
+                                    Thank you for signing-up!
                                   </h4>
                                   <h5>
-                                    Please complete your&nbsp;
+                                    {" "}
+                                    Please create your{" "}
                                     <a href="/app/reprofile" target="_self">
-                                      <b>real-estate profile</b>
+                                      <b>real-estate profile </b>
                                     </a>
-                                    &nbsp; to unlock the next stage.
+                                    next to move forward.
                                   </h5>
                                   <h5>
                                     Completing that information does NOT
                                     initiate any application process or credit
                                     checks. It simply helps you begin the
-                                    process for matching investors who may be
+                                    process to consult with a licensed real
+                                    estate agent and match investors who may be
                                     interested in your property.
                                   </h5>
                                 </div>
@@ -292,21 +489,48 @@ export default function SDashboard(props) {
                                   </h4>
                                   <h5 onClick={showDocumentTab}>
                                     In order to start the investor matching
-                                    process we need you to upload the property
-                                    documents. Plase navigate to the{" "}
+                                    process we need you to upload property
+                                    photos. Plase navigate to the{" "}
                                     <a href="/app/sdashboard/d" target="_self">
-                                      Documents
+                                      Photos
                                     </a>{" "}
-                                    tab to upload photos, statements and files.
+                                    tab to upload house photos. All photos and
+                                    documents are uploaded, transimitted and
+                                    stored in secure encrypted format.
                                   </h5>
-                                  <h5>
-                                    All documents are uploaded, transimitted and
-                                    stored in encrypted format. The documents
-                                    are used to verify and validate
-                                    home-ownership and mortgage information. We
-                                    do not share these with any other users or
-                                    companies including potential investors.
-                                  </h5>
+
+                                  {reProfile.status ===
+                                    RealEstateStatus.DOCS_UPLOADED && (
+                                    <p>
+                                      <a href="#" onClick={showConfirmDone}>
+                                        <b>
+                                          Done with estate profile and uploading
+                                          photos?{" "}
+                                          <Button
+                                            round={true}
+                                            onClick={showConfirmDone}
+                                            color="primary"
+                                            justIcon={true}
+                                            size="sm"
+                                          >
+                                            <Check />
+                                          </Button>
+                                        </b>
+                                      </a>
+                                    </p>
+                                  )}
+
+                                  {reProfile.status ===
+                                    RealEstateStatus.DOCS_IN_REVIEW && (
+                                    <h5 className={classes.statusNote}>
+                                      <i>
+                                        <b>Note:</b> S2RB is in the process of
+                                        reviewing your real estate profile, you
+                                        may continue to add photos and documents
+                                        during this time.
+                                      </i>
+                                    </h5>
+                                  )}
                                 </div>
                               </GridItem>
                             )}
@@ -328,24 +552,25 @@ export default function SDashboard(props) {
                               <GridItem xs={12} sm={12} md={12} lg={12}>
                                 <div>
                                   <h4 className={classes.subtitle}>
-                                    Thank you for signing-up and creating a user
-                                    profile.
+                                    Thank you for signing-up!
                                   </h4>
                                   <h5>
-                                    Please complete your&nbsp;
+                                    {" "}
+                                    Please create your{" "}
                                     <a href="/app/reprofile" target="_self">
-                                      <b>real-estate profile</b>
+                                      <b>real-estate profile </b>
                                     </a>
-                                    &nbsp; to unlock the next stage.
+                                    next to move forward.
                                   </h5>
                                   <h5>
                                     Completing that information does NOT
                                     initiate any application process or credit
                                     checks. It simply helps you begin the
-                                    process for matching investors who may be
+                                    process to consult with a licensed real
+                                    estate agent and match investors who may be
                                     interested in your property.
                                   </h5>
-                                </div>
+                                </div>{" "}
                               </GridItem>
                             </GridContainer>
                           </CardBody>
@@ -431,64 +656,125 @@ export default function SDashboard(props) {
                   ),
                 },
                 {
-                  tabButton: "Documents",
-                  tabIcon: DescriptionIcon,
+                  tabButton: "Photos",
+                  tabIcon: CameraEnhanceOutlinedIcon,
                   tabContent: (
                     <span>
                       <Card className={classes.dashCard}>
                         <CardBody>
                           <GridContainer>
-                            <GridItem xs={12} sm={12} md={12} lg={12}>
-                              <div>
-                                <h4 className={classes.subtitle}>
-                                  Thank you for updating your real estate
-                                  profile.
-                                </h4>
-                                <h5>
-                                  To unlock the next stage, upload documents
-                                  showing mortgage and home-ownership details.
-                                  Please upload multiple home photos.
-                                </h5>
-                                <h5>
-                                  All documents are uploaded, transimitted and
-                                  stored in encrypted format. The documents are
-                                  used to verify and validate home-ownership and
-                                  mortgage information. We do not share these
-                                  with any other users or companies including
-                                  potential investors.
-                                </h5>
-
+                            {!s2rb_re_profile_id && (
+                              <GridItem xs={12} sm={12} md={12} lg={12}>
                                 <div>
-                                  <S3FileHandler
-                                    attachments={attachments}
-                                    allowDelete={
-                                      reProfile.status ===
-                                        RealEstateStatus.NEW ||
-                                      reProfile.status ===
-                                        RealEstateStatus.DOCS_UPLOADED
-                                    }
-                                    setAndSaveAttachments={
-                                      setAndSaveAttachments
-                                    }
-                                    formControlProps={{
-                                      fullWidth: true,
-                                    }}
-                                    inputProps={{
-                                      placeholder: "Select a file to upload.",
-                                    }}
-                                    maxFileSize={10000000}
-                                    endButton={{
-                                      buttonProps: {
-                                        round: true,
-                                        color: "success",
-                                        justIcon: true,
-                                      },
-                                      icon: <AttachFile />,
-                                    }}
-                                  />
+                                  <h4 className={classes.subtitle}>
+                                    Thank you for signing-up!
+                                  </h4>
+                                  <h5>
+                                    {" "}
+                                    Please create your{" "}
+                                    <a href="/app/reprofile" target="_self">
+                                      <b>real-estate profile </b>
+                                    </a>
+                                    next to move forward.
+                                  </h5>
+                                  <h5>
+                                    Completing that information does NOT
+                                    initiate any application process or credit
+                                    checks. It simply helps you begin the
+                                    process to consult with a licensed real
+                                    estate agent and match investors who may be
+                                    interested in your property.
+                                  </h5>
                                 </div>
-                              </div>
-                            </GridItem>
+                              </GridItem>
+                            )}
+                            {s2rb_re_profile_id && (
+                              <GridItem xs={12} sm={12} md={12} lg={12}>
+                                <div>
+                                  <h4 className={classes.subtitle}>
+                                    Please upload your house photos.
+                                  </h4>
+                                  <h5>
+                                    All photos and documents are uploaded,
+                                    transimitted and stored in secure encrypted
+                                    format. Only house photos are required to
+                                    move forward but uploading documents such as
+                                    recent mortgage statement help expedite the
+                                    review.
+                                  </h5>
+                                  <h5>
+                                    Once your profile is complete you can
+                                    initiate the next step to begin data
+                                    verification. Then S2RB will introduce a
+                                    licensed real estate agent to help you with
+                                    matching investors who may be interested in
+                                    your property.
+                                  </h5>
+
+                                  {reProfile.status ===
+                                    RealEstateStatus.DOCS_UPLOADED && (
+                                    <p>
+                                      <a href="#" onClick={showConfirmDone}>
+                                        <b>
+                                          Done with estate profile and uploading
+                                          photos?{" "}
+                                          <Button
+                                            round={true}
+                                            onClick={showConfirmDone}
+                                            color="primary"
+                                            justIcon={true}
+                                            size="sm"
+                                          >
+                                            <Check />
+                                          </Button>
+                                        </b>
+                                      </a>
+                                    </p>
+                                  )}
+
+                                  {reProfile.status ===
+                                    RealEstateStatus.DOCS_IN_REVIEW && (
+                                    <h5 className={classes.statusNote}>
+                                      <i>
+                                        <b>Note:</b> S2RB is in the process of
+                                        reviewing your real estate profile, you
+                                        may continue to add photos and documents
+                                        during this time.
+                                      </i>
+                                    </h5>
+                                  )}
+                                  <div>
+                                    <S3FileHandler
+                                      attachments={attachments}
+                                      allowDelete={
+                                        reProfile.status ===
+                                          RealEstateStatus.NEW ||
+                                        reProfile.status ===
+                                          RealEstateStatus.DOCS_UPLOADED
+                                      }
+                                      setAndSaveAttachments={
+                                        setAndSaveAttachments
+                                      }
+                                      formControlProps={{
+                                        fullWidth: true,
+                                      }}
+                                      inputProps={{
+                                        placeholder: "Select a file to upload.",
+                                      }}
+                                      maxFileSize={10000000}
+                                      endButton={{
+                                        buttonProps: {
+                                          round: true,
+                                          color: "success",
+                                          justIcon: true,
+                                        },
+                                        icon: <AttachFile />,
+                                      }}
+                                    />
+                                  </div>
+                                </div>
+                              </GridItem>
+                            )}
                           </GridContainer>
                         </CardBody>
                       </Card>
@@ -500,6 +786,42 @@ export default function SDashboard(props) {
           </GridItem>
         </GridContainer>
       )}
+
+      <Dialog
+        classes={{
+          root: classes.center,
+          paper: classes.modal,
+        }}
+        open={confirmDone}
+        keepMounted
+        TransitionComponent={Transition}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle
+          id="alert-dialog-slide-title"
+          className={classes.modalHeader}
+        >
+          <div className={classes.modalTitle}>
+            Done with profile and photos?
+          </div>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            Please confirm if you want us to begin reviewing the information.
+            You can continue to add photos and documents during the review
+            process.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions className={classes.modalFooter}>
+          <Button color="success" onClick={confirmMoveForward}>
+            Begin Review
+          </Button>
+          <Button color="info" onClick={closeDialog}>
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
