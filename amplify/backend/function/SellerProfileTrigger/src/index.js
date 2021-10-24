@@ -10,7 +10,7 @@ Amplify Params - DO NOT EDIT */
 const AWS = require("aws-sdk");
 const aws_region = "us-east-1";
 const senderAddress = "support@s2rb.com";
-const subject = "Created your S2RB real estate profile";
+const subject = "Thank you for creating your S2RB account.";
 const charset = "UTF-8";
 const appId = "a26086a12195450f9540c83b1fa73da3";
 
@@ -18,7 +18,6 @@ exports.handler = (event) => {
   //eslint-disable-line
   //console.log(JSON.stringify(event, null, 2));
   event.Records.forEach((record) => {
-    //console.log(record.eventID);
     console.log(record.eventName); //console.log('DynamoDB Record: %j', record.dynamodb); // Specify that you're using a shared credentials file. NOT NEEDED FOR LAMBDA - GETS VIA IAM ROLE!!! //var credentials = new AWS.SharedIniFileCredentials({profile: 'default'}); //AWS.config.credentials = credentials;
     if (record.eventName == "INSERT") {
       console.log("In insert record: %j", record.eventID); // The email body for recipients with non-HTML email clients.
@@ -74,17 +73,45 @@ exports.handler = (event) => {
           );
         }
       });
-      console.log("After sending SMS"); //  code to send email
-      var body_html = `<html>
+      var body_html =
+        `<html>
               <head></head>
               <body>
-                <h3>Thank you for creating your S2RB real estate profile</h3>
-<br/>
-                <p>Our representatives will review and contact you with next steps. You can review and edit your profile at:
-                  <a href='https://s2rb.com/sdashboard/'>Your S2RB Dashboard</a>
+                <h4>Hello ` +
+        record.dynamodb.NewImage.firstName.S +
+        `,</h4>
+                <p>
+                   You can view and edit your profile at: <a href='https://s2rb.com/app/sdashboard/'>Your S2RB Dashboard</a>
+                   Once you add photos and initiate a review our representatives will contact you with next steps. S2RB connects 
+                   you with licensed real estate agents to help and advise you in finding investors for your property.   
+                 </p>
+                 <p>
+                   We work with local real estate brokerages and investors to help you find a suitable solution for your real estet needs.
+                 </p>
+                 <p>
+                   Thank you,
+                 </p>
+                 <p>
+                   S2RB Support
+                 </p>
+                 <br/>
+                 <p>
+                   <small><b>About S2RB</b></small>
+                 </p>
+                 <p>
+                   <small>
+                     S2RB is a FREE service that works with you, local real estate agents and potential investors to create a 
+                     win-win solution and help you sell the home and rent it back. We understand your concerns and strive to 
+                     make this transaction as smooth and streamlined as possible. 
+                   </small>
+                 </p>
+                 <p>
+                   <small>
+                    To keep receiving emails from us, please add <b>support@s2rb.com</b> to your contacts. 
+                   <small>
                  </p>
               </body> 
-              </html>`; // Specify the parameters to pass to the API.
+              </html>`;
 
       var params = {
         ApplicationId: appId,

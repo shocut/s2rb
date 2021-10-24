@@ -25,8 +25,11 @@ function Signup(props) {
   const history = useHistory();
   var currentAuthState = AuthState.SignIn;
   const queryValues = queryString.parse(props.location.search);
-
-  if (props.location.pathname == "/signup") {
+  console.log(props.location.pathname);
+  if (
+    props.location.pathname &&
+    props.location.pathname.startsWith("/signup")
+  ) {
     currentAuthState = AuthState.SignUp;
   }
   var nextPage = "/app/sdashboard";

@@ -120,6 +120,7 @@ export default function HomeList() {
           p.or((p) =>
             p
               .status("eq", RealEstateStatus.DOCS_UPLOADED)
+              .status("eq", RealEstateStatus.DOCS_IN_REVIEW)
               .status("eq", RealEstateStatus.DOCS_REVIEWED)
               .status("eq", RealEstateStatus.REFERRAL_GENERATED)
           )

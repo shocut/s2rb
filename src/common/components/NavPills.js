@@ -54,6 +54,7 @@ export default function NavPills(props) {
         return (
           <Tab
             label={prop.tabButton}
+            id={"id_" + prop.tabButton + "_tab"}
             key={key}
             {...icon}
             classes={{
