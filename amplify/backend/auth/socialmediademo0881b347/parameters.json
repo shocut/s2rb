@@ -1,6 +1,6 @@
 {
     "identityPoolName": "socialmediademo0881b347_identitypool_0881b347",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "social0881b347",
     "userPoolName": "socialmediademo0881b347_userpool_0881b347",
     "autoVerifiedAttributes": [

@@ -50,7 +50,10 @@
         {
           "category": "api",
           "resourceName": "socialmediademo",
-          "attributes": ["GraphQLAPIIdOutput", "GraphQLAPIEndpointOutput"]
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
         }
       ]
     }
@@ -63,9 +66,19 @@
         {
           "category": "function",
           "resourceName": "S3Trigger055ac222",
-          "attributes": ["Name", "Arn", "LambdaExecutionRole"]
+          "attributes": [
+            "Name",
+            "Arn",
+            "LambdaExecutionRole"
+          ]
         }
       ]
+    }
+  },
+  "analytics": {
+    "s2rb": {
+      "service": "Pinpoint",
+      "providerPlugin": "awscloudformation"
     }
   }
 }

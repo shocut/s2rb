@@ -14,7 +14,7 @@ const ErrorFallback = ({ error, resetErrorBoundary }) => {
 
 ErrorFallback.propTypes = {
   error: PropTypes.string,
-  resetErrorBoundary: PropTypes.object,
+  resetErrorBoundary: PropTypes.function,
 };
 
 export default ErrorFallback;

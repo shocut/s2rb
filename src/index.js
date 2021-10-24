@@ -1,6 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Amplify, { Logger, DataStore, AuthModeStrategyType } from "aws-amplify";
+import Amplify, {
+  Logger,
+  DataStore,
+  AuthModeStrategyType,
+  Analytics,
+} from "aws-amplify";
 import { AWSCloudWatchProvider } from "@aws-amplify/core";
 import awsconfig from "./aws-exports";
 import { createBrowserHistory } from "history";
@@ -20,22 +25,33 @@ import ErrorFallback from "./common/components/ErrorFallback";
 import Unauthorized from "./common/components/Unauthorized";
 import ProtectedRoute from "./common/components/ProtectedRoute";
 import Signup from "./common/components/Signup";
-import reportWebVitals from "./reportWebVitals";
 
 var hist = createBrowserHistory();
 
 Amplify.configure({
+  ...awsconfig,
+  ssr: true,
   Logging: {
     logGroupName: "s2rb-webapp-dev",
     logStreamName: "browser-logs",
+    region: "us-east-1",
   },
-  ...awsconfig,
-  ssr: true,
   DataStore: {
     authModeStrategyType: AuthModeStrategyType.MULTI_AUTH,
   },
 });
 
+const analyticsConfig = {
+  AWSPinpoint: {
+    // Amazon Pinpoint App Client ID
+    appId: "9a1650ed6473474cae14ca6650b98bed",
+    // Amazon service region
+    region: "us-east-1",
+    mandatorySignIn: false,
+  },
+};
+Analytics.configure(analyticsConfig);
+Analytics.record({ name: "s2rb index.js init" });
 const logger = new Logger("s2rb-webapp-logger");
 Amplify.register(logger);
 logger.addPluggable(new AWSCloudWatchProvider());
@@ -78,8 +94,3 @@ ReactDOM.render(
   </ErrorBoundary>,
   document.getElementById("root")
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

@@ -57,7 +57,7 @@ function App(props) {
 
   useEffect(() => {
     checkLoginState();
-    throw "Unacceptable performancee";
+    //throw "Unacceptable performancee";
   }, []);
 
   return (
