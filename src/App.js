@@ -32,6 +32,7 @@ function App(props) {
   const [currentUser, setCurrentUser] = useState(null);
   const { ...rest } = props;
   const classes = useStyles();
+
   const onLogout = async () => {
     console.log("in log out - clearing localstorage");
     localStorage.clear();
@@ -41,6 +42,7 @@ function App(props) {
 
   const checkLoginState = async () => {
     try {
+      console.log("Checking login state");
       const currentUser = await Auth.currentAuthenticatedUser();
       if (currentUser) {
         setCurrentUser(currentUser);
@@ -55,6 +57,7 @@ function App(props) {
 
   useEffect(() => {
     checkLoginState();
+    throw "Unacceptable performancee";
   }, []);
 
   return (
