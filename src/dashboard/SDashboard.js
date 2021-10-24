@@ -287,11 +287,6 @@ export default function SDashboard(props) {
     }
   };
 
-  /* eslint-disable */
-  const showDocumentTab = () => {
-    setActiveTab(2);
-  };
-
   function saveREProfileAttachments(originalREObj, newAttachments) {
     console.log("in saveREProfileAttachments: " + newAttachments);
     if (originalREObj) {
@@ -369,6 +364,19 @@ export default function SDashboard(props) {
     }
   }
 
+  function invokePhotosTabClick() {
+    var ele = document.getElementById("id_Photos_tab");
+    if (ele) {
+      ele.click();
+    }
+  }
+
+  const handleStep = (step) => () => {
+    if (step === 2) {
+      invokePhotosTabClick();
+    }
+  };
+
   function saveREProfileStatus(originalREObj, nextStatus) {
     if (originalREObj) {
       DataStore.save(
@@ -444,7 +452,10 @@ export default function SDashboard(props) {
                                 className={classes.timeLineCtr}
                               >
                                 {progressSteps.map((step, index) => (
-                                  <Step key={step.label}>
+                                  <Step
+                                    key={step.label}
+                                    onClick={handleStep(index)}
+                                  >
                                     <StepLabel
                                       StepIconComponent={ColorlibStepIcon}
                                     >
@@ -487,12 +498,12 @@ export default function SDashboard(props) {
                                     Thank you for updating your real estate
                                     profile.
                                   </h4>
-                                  <h5 onClick={showDocumentTab}>
+                                  <h5>
                                     In order to start the investor matching
                                     process we need you to upload property
-                                    photos. Plase navigate to the{" "}
-                                    <a href="/app/sdashboard/d" target="_self">
-                                      Photos
+                                    photos. Please navigate to the{" "}
+                                    <a href="#" onClick={invokePhotosTabClick}>
+                                      <b>photos</b>
                                     </a>{" "}
                                     tab to upload house photos. All photos and
                                     documents are uploaded, transimitted and
@@ -657,6 +668,7 @@ export default function SDashboard(props) {
                 },
                 {
                   tabButton: "Photos",
+                  id: "photosTab",
                   tabIcon: CameraEnhanceOutlinedIcon,
                   tabContent: (
                     <span>
