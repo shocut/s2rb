@@ -12,7 +12,7 @@ const aws_region = "us-east-1";
 const senderAddress = "support@s2rb.com";
 const subject = "Thank you for creating your S2RB account.";
 const charset = "UTF-8";
-const appId = "a26086a12195450f9540c83b1fa73da3";
+const appId = "9a1650ed6473474cae14ca6650b98bed";
 
 exports.handler = (event) => {
   //eslint-disable-line
