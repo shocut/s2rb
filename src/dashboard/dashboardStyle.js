@@ -1,6 +1,6 @@
 import { container, title, primaryColor } from "../common/jss/baseStyles.js";
 
-const timelineStyle = {
+const dashboardStyle = {
   container: {
     zIndex: "12",
     color: "black",
@@ -19,7 +19,6 @@ const timelineStyle = {
   },
   subtitle: {
     fontSize: "1.313rem",
-    maxWidth: "500px",
   },
   main: {
     background: "#FFFFFF",
@@ -65,6 +64,10 @@ const timelineStyle = {
     fontWeight: "500",
     color: primaryColor[1],
   },
+  lineItem: {
+    lineHeight: "2em",
+    height: "auto",
+  },
 };
 
-export default timelineStyle;
+export default dashboardStyle;

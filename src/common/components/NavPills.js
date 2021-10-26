@@ -42,6 +42,7 @@ export default function NavPills(props) {
       centered={alignCenter}
     >
       {tabs.map((prop, key) => {
+        if (!prop) return;
         var icon = {};
         if (prop.tabIcon !== undefined) {
           icon["icon"] = <prop.tabIcon className={classes.tabIcon} />;

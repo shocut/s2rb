@@ -14,13 +14,25 @@ const subject = "Thank you for creating your S2RB account.";
 const charset = "UTF-8";
 const appId = "9a1650ed6473474cae14ca6650b98bed";
 
+async function asyncSendMessage(pinpoint, params) {
+  console.log("In asyncSendMessage");
+  try {
+    let data = await pinpoint.sendMessages(params).promise();
+    console.log("Message sent!", data);
+  } catch (e) {
+    console.log(e);
+  }
+  // expected output: "resolved"
+}
+
 exports.handler = (event) => {
   //eslint-disable-line
   //console.log(JSON.stringify(event, null, 2));
   event.Records.forEach((record) => {
     console.log(record.eventName); //console.log('DynamoDB Record: %j', record.dynamodb); // Specify that you're using a shared credentials file. NOT NEEDED FOR LAMBDA - GETS VIA IAM ROLE!!! //var credentials = new AWS.SharedIniFileCredentials({profile: 'default'}); //AWS.config.credentials = credentials;
     if (record.eventName == "INSERT") {
-      console.log("In insert record: %j", record.eventID); // The email body for recipients with non-HTML email clients.
+      //console.log("In insert record: %j", record.eventID);
+      console.log(JSON.stringify(record.dynamodb.NewImage));
 
       var body_text = "Your S2RB real estate profile details:"; //var toAddress = record.dynamodb.NewImage.sellerReference.S;
       //var toAddress = "manyapradhan@gmail.com";
@@ -36,10 +48,10 @@ exports.handler = (event) => {
         "opt out.";
 
       // Specify the region.
-      AWS.config.update({ region: aws_region }); //Create a new Pinpoint object.
+      AWS.config.update({ region: aws_region });
+      var pinpoint = new AWS.Pinpoint();
 
-      var pinpoint = new AWS.Pinpoint(); // Specify the parameters to pass to the API.
-
+      // Specify the parameters to pass to the API.
       var params = {
         ApplicationId: appId,
         MessageRequest: {
@@ -59,20 +71,9 @@ exports.handler = (event) => {
       };
 
       console.log("Before sending SMS new"); //Try to send the message.
+      asyncSendMessage(pinpoint, params);
 
-      pinpoint.sendMessages(params, function (err, data) {
-        // If something goes wrong, print an error message.
-        if (err) {
-          console.log(err.message); // Otherwise, show the unique ID for the message.
-        } else {
-          console.log(
-            "Message sent! " +
-              data["MessageResponse"]["Result"][destinationNumber][
-                "StatusMessage"
-              ]
-          );
-        }
-      });
+      //build email content
       var body_html =
         `<html>
               <head></head>
@@ -144,25 +145,7 @@ exports.handler = (event) => {
       };
 
       console.log("Before sending email"); //console.log(JSON.stringify(params)); //Try to send the email.
-      try {
-        pinpoint.sendMessages(params, function (err, data) {
-          // If something goes wrong, print an error message.
-          console.log(err);
-          console.log(data);
-
-          if (err) {
-            console.log(err.message);
-          } else {
-            console.log(
-              "Email sent! Message ID: ",
-              data["MessageResponse"]["Result"][toAddress]["MessageId"]
-            );
-          }
-        });
-        console.log("After sending email");
-      } catch (e) {
-        console.log(e);
-      }
+      asyncSendMessage(pinpoint, params);
     }
   });
   return Promise.resolve("Successfully processed DynamoDB record");

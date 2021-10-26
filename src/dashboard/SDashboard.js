@@ -318,6 +318,8 @@ export default function SDashboard(props) {
         reProfile.status == RealEstateStatus.DOCS_IN_REVIEW
       ) {
         setREProfileProgress(60);
+      } else if (reProfile.status == RealEstateStatus.DOCS_REVIEWED) {
+        setREProfileProgress(80);
       } else {
         setREProfileProgress(100);
       }
@@ -491,60 +493,95 @@ export default function SDashboard(props) {
                                 </div>
                               </GridItem>
                             )}
-                            {s2rb_re_profile_id && (
+
+                            {s2rb_re_profile_id && reProfileProgress > 60 && (
                               <GridItem xs={10} sm={10} md={10} lg={10}>
                                 <div>
                                   <h4 className={classes.subtitle}>
-                                    Thank you for updating your real estate
-                                    profile.
+                                    Congratulations on completing this process.
+                                    Here's what happens next:
                                   </h4>
                                   <h5>
-                                    In order to start the investor matching
-                                    process we need you to upload property
-                                    photos. Please navigate to the{" "}
-                                    <a href="#" onClick={invokePhotosTabClick}>
-                                      <b>photos</b>
-                                    </a>{" "}
-                                    tab to upload house photos. All photos and
-                                    documents are uploaded, transimitted and
-                                    stored in secure encrypted format.
+                                    <ol>
+                                      <li className={classes.lineItem}>
+                                        S2RB finds a licensed local realtor to
+                                        represent you for the sale of your
+                                        house.
+                                      </li>
+                                      <li className={classes.lineItem}>
+                                        Realtor requests a representation
+                                        agreement and visits you to advise on
+                                        terms of sale.
+                                      </li>
+                                      <li className={classes.lineItem}>
+                                        When terms are finalized with an
+                                        investor on S2RB, standard closing
+                                        process follows.
+                                      </li>
+                                    </ol>
                                   </h5>
-
-                                  {reProfile.status ===
-                                    RealEstateStatus.DOCS_UPLOADED && (
-                                    <p>
-                                      <a href="#" onClick={showConfirmDone}>
-                                        <b>
-                                          Done with estate profile and uploading
-                                          photos{" "}
-                                          <Button
-                                            round={true}
-                                            onClick={showConfirmDone}
-                                            color="primary"
-                                            justIcon={true}
-                                            size="sm"
-                                          >
-                                            ?
-                                          </Button>
-                                        </b>
-                                      </a>
-                                    </p>
-                                  )}
-
-                                  {reProfile.status ===
-                                    RealEstateStatus.DOCS_IN_REVIEW && (
-                                    <h5 className={classes.statusNote}>
-                                      <i>
-                                        <b>Note:</b> S2RB is in the process of
-                                        reviewing your real estate profile, you
-                                        may continue to add photos and documents
-                                        during this time.
-                                      </i>
-                                    </h5>
-                                  )}
                                 </div>
                               </GridItem>
                             )}
+
+                            {s2rb_re_profile_id &&
+                              reProfileProgress < 80 && ( //show only until not fully reviewed
+                                <GridItem xs={10} sm={10} md={10} lg={10}>
+                                  <div>
+                                    <h4 className={classes.subtitle}>
+                                      Thank you for updating your real estate
+                                      profile.
+                                    </h4>
+                                    <h5>
+                                      In order to start the investor matching
+                                      process we need you to upload property
+                                      photos. Please navigate to the{" "}
+                                      <a
+                                        href="#"
+                                        onClick={invokePhotosTabClick}
+                                      >
+                                        <b>photos</b>
+                                      </a>{" "}
+                                      tab to upload house photos. All photos and
+                                      documents are uploaded, transimitted and
+                                      stored in secure encrypted format.
+                                    </h5>
+
+                                    {reProfile.status ===
+                                      RealEstateStatus.DOCS_UPLOADED && (
+                                      <p>
+                                        <a href="#" onClick={showConfirmDone}>
+                                          <b>
+                                            Done with estate profile and
+                                            uploading photos{" "}
+                                            <Button
+                                              round={true}
+                                              onClick={showConfirmDone}
+                                              color="primary"
+                                              justIcon={true}
+                                              size="sm"
+                                            >
+                                              ?
+                                            </Button>
+                                          </b>
+                                        </a>
+                                      </p>
+                                    )}
+
+                                    {reProfile.status ===
+                                      RealEstateStatus.DOCS_IN_REVIEW && (
+                                      <h5 className={classes.statusNote}>
+                                        <i>
+                                          <b>Note:</b> S2RB is in the process of
+                                          reviewing your real estate profile,
+                                          you may continue to add photos and
+                                          documents during this time.
+                                        </i>
+                                      </h5>
+                                    )}
+                                  </div>
+                                </GridItem>
+                              )}
                           </GridContainer>
                         </CardBody>
                       </Card>
@@ -666,133 +703,138 @@ export default function SDashboard(props) {
                     </div>
                   ),
                 },
-                {
-                  tabButton: "Photos",
-                  id: "photosTab",
-                  tabIcon: CameraEnhanceOutlinedIcon,
-                  tabContent: (
-                    <span>
-                      <Card className={classes.dashCard}>
-                        <CardBody>
-                          <GridContainer>
-                            {!s2rb_re_profile_id && (
-                              <GridItem xs={12} sm={12} md={12} lg={12}>
-                                <div>
-                                  <h4 className={classes.subtitle}>
-                                    Thank you for signing-up!
-                                  </h4>
-                                  <h5>
-                                    {" "}
-                                    Please create your{" "}
-                                    <a href="/app/reprofile" target="_self">
-                                      <b>real-estate profile </b>
-                                    </a>
-                                    next to move forward.
-                                  </h5>
-                                  <h5>
-                                    Completing that information does NOT
-                                    initiate any application process or credit
-                                    checks. It simply helps you begin the
-                                    process to consult with a licensed real
-                                    estate agent and match investors who may be
-                                    interested in your property.
-                                  </h5>
-                                </div>
-                              </GridItem>
-                            )}
-                            {s2rb_re_profile_id && (
-                              <GridItem xs={12} sm={12} md={12} lg={12}>
-                                <div>
-                                  <h4 className={classes.subtitle}>
-                                    Please upload your house photos.
-                                  </h4>
-                                  <h5>
-                                    All photos and documents are uploaded,
-                                    transimitted and stored in secure encrypted
-                                    format. Only house photos are required to
-                                    move forward but uploading documents such as
-                                    recent mortgage statement help expedite the
-                                    review.
-                                  </h5>
-                                  <h5>
-                                    Once your profile is complete you can
-                                    initiate the next step to begin data
-                                    verification. Then S2RB will introduce a
-                                    licensed real estate agent to help you with
-                                    matching investors who may be interested in
-                                    your property.
-                                  </h5>
+                s2rb_re_profile_id && reProfileProgress < 80 //show Photos tab only when uploading photos/docs is allowed.
+                  ? {
+                      tabButton: "Photos",
+                      id: "photosTab",
+                      tabIcon: CameraEnhanceOutlinedIcon,
+                      tabContent: (
+                        <span>
+                          <Card className={classes.dashCard}>
+                            <CardBody>
+                              <GridContainer>
+                                {!s2rb_re_profile_id && (
+                                  <GridItem xs={12} sm={12} md={12} lg={12}>
+                                    <div>
+                                      <h4 className={classes.subtitle}>
+                                        Thank you for signing-up!
+                                      </h4>
+                                      <h5>
+                                        {" "}
+                                        Please create your{" "}
+                                        <a href="/app/reprofile" target="_self">
+                                          <b>real-estate profile </b>
+                                        </a>
+                                        next to move forward.
+                                      </h5>
+                                      <h5>
+                                        Completing that information does NOT
+                                        initiate any application process or
+                                        credit checks. It simply helps you begin
+                                        the process to consult with a licensed
+                                        real estate agent and match investors
+                                        who may be interested in your property.
+                                      </h5>
+                                    </div>
+                                  </GridItem>
+                                )}
 
-                                  {reProfile.status ===
-                                    RealEstateStatus.DOCS_UPLOADED && (
-                                    <p>
-                                      <a href="#" onClick={showConfirmDone}>
-                                        <b>
-                                          Done with estate profile and uploading
-                                          photos{" "}
-                                          <Button
-                                            round={true}
-                                            onClick={showConfirmDone}
-                                            color="primary"
-                                            justIcon={true}
-                                            size="sm"
-                                          >
-                                            ?
-                                          </Button>
-                                        </b>
-                                      </a>
-                                    </p>
-                                  )}
+                                {s2rb_re_profile_id && reProfileProgress < 80 && (
+                                  <GridItem xs={12} sm={12} md={12} lg={12}>
+                                    <div>
+                                      <h4 className={classes.subtitle}>
+                                        Please upload your house photos.
+                                      </h4>
+                                      <h5>
+                                        All photos and documents are uploaded,
+                                        transimitted and stored in secure
+                                        encrypted format. Only house photos are
+                                        required to move forward but uploading
+                                        documents such as recent mortgage
+                                        statement help expedite the review.
+                                      </h5>
+                                      <h5>
+                                        Once your profile is complete you can
+                                        initiate the next step to begin data
+                                        verification. Then S2RB will introduce a
+                                        licensed real estate agent to help you
+                                        with matching investors who may be
+                                        interested in your property.
+                                      </h5>
 
-                                  {reProfile.status ===
-                                    RealEstateStatus.DOCS_IN_REVIEW && (
-                                    <h5 className={classes.statusNote}>
-                                      <i>
-                                        <b>Note:</b> S2RB is in the process of
-                                        reviewing your real estate profile, you
-                                        may continue to add photos and documents
-                                        during this time.
-                                      </i>
-                                    </h5>
-                                  )}
-                                  <div>
-                                    <S3FileHandler
-                                      attachments={attachments}
-                                      allowDelete={
-                                        reProfile.status ===
-                                          RealEstateStatus.NEW ||
-                                        reProfile.status ===
-                                          RealEstateStatus.DOCS_UPLOADED
-                                      }
-                                      setAndSaveAttachments={
-                                        setAndSaveAttachments
-                                      }
-                                      formControlProps={{
-                                        fullWidth: true,
-                                      }}
-                                      inputProps={{
-                                        placeholder: "Select a file to upload.",
-                                      }}
-                                      maxFileSize={10000000}
-                                      endButton={{
-                                        buttonProps: {
-                                          round: true,
-                                          color: "success",
-                                          justIcon: true,
-                                        },
-                                        icon: <AttachFile />,
-                                      }}
-                                    />
-                                  </div>
-                                </div>
-                              </GridItem>
-                            )}
-                          </GridContainer>
-                        </CardBody>
-                      </Card>
-                    </span>
-                  ),
-                },
+                                      {reProfile.status ===
+                                        RealEstateStatus.DOCS_UPLOADED && (
+                                        <p>
+                                          <a href="#" onClick={showConfirmDone}>
+                                            <b>
+                                              Done with estate profile and
+                                              uploading photos{" "}
+                                              <Button
+                                                round={true}
+                                                onClick={showConfirmDone}
+                                                color="primary"
+                                                justIcon={true}
+                                                size="sm"
+                                              >
+                                                ?
+                                              </Button>
+                                            </b>
+                                          </a>
+                                        </p>
+                                      )}
+
+                                      {reProfile.status ===
+                                        RealEstateStatus.DOCS_IN_REVIEW && (
+                                        <h5 className={classes.statusNote}>
+                                          <i>
+                                            <b>Note:</b> S2RB is in the process
+                                            of reviewing your real estate
+                                            profile, you may continue to add
+                                            photos and documents during this
+                                            time.
+                                          </i>
+                                        </h5>
+                                      )}
+                                      <div>
+                                        <S3FileHandler
+                                          attachments={attachments}
+                                          allowDelete={
+                                            reProfile.status ===
+                                              RealEstateStatus.NEW ||
+                                            reProfile.status ===
+                                              RealEstateStatus.DOCS_UPLOADED
+                                          }
+                                          setAndSaveAttachments={
+                                            setAndSaveAttachments
+                                          }
+                                          formControlProps={{
+                                            fullWidth: true,
+                                          }}
+                                          inputProps={{
+                                            placeholder:
+                                              "Select a file to upload.",
+                                          }}
+                                          maxFileSize={10000000}
+                                          endButton={{
+                                            buttonProps: {
+                                              round: true,
+                                              color: "success",
+                                              justIcon: true,
+                                            },
+                                            icon: <AttachFile />,
+                                          }}
+                                        />
+                                      </div>
+                                    </div>
+                                  </GridItem>
+                                )}
+                              </GridContainer>
+                            </CardBody>
+                          </Card>
+                        </span>
+                      ),
+                    }
+                  : "",
               ]}
             />
           </GridItem>
