@@ -1,12 +1,10 @@
 /* Amplify Params - DO NOT EDIT
-	ENV
-	REGION
-	PINPOINT_APPID
-	PROJECT_ID
-  PROJECTID
+ENV
+REGION
+PINPOINT_APPID
+PROJECT_ID
 Amplify Params - DO NOT EDIT */
 
-"use strict";
 const AWS = require("aws-sdk");
 const aws_region = "us-east-1";
 const senderAddress = "support@s2rb.com";
@@ -15,17 +13,17 @@ const charset = "UTF-8";
 const appId = "9a1650ed6473474cae14ca6650b98bed";
 
 async function asyncSendMessage(pinpoint, params) {
-  console.log("In asyncSendMessage");
+  console.log("In asyncSendMessage", params);
   try {
-    let data = await pinpoint.sendMessages(params).promise();
-    console.log("Message sent!", data);
+    const data = await pinpoint.sendMessages(params).promise();
+    console.log("data:", data);
+    //const response = await pinpoint.sendMessages(params);
   } catch (e) {
     console.log(e);
   }
-  // expected output: "resolved"
 }
 
-exports.handler = (event) => {
+exports.handler = async (event) => {
   //eslint-disable-line
   //console.log(JSON.stringify(event, null, 2));
   event.Records.forEach((record) => {
@@ -64,7 +62,7 @@ exports.handler = (event) => {
             SMSMessage: {
               Body: message,
               MessageType: messageType,
-              OriginationNumber: originationNumber,
+              //OriginationNumber: originationNumber,
             },
           },
         },
@@ -114,7 +112,7 @@ exports.handler = (event) => {
               </body> 
               </html>`;
 
-      var params = {
+      var emailParams = {
         ApplicationId: appId,
         MessageRequest: {
           Addresses: {
@@ -145,7 +143,7 @@ exports.handler = (event) => {
       };
 
       console.log("Before sending email"); //console.log(JSON.stringify(params)); //Try to send the email.
-      asyncSendMessage(pinpoint, params);
+      asyncSendMessage(pinpoint, emailParams);
     }
   });
   return Promise.resolve("Successfully processed DynamoDB record");
