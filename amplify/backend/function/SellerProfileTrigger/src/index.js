@@ -23,58 +23,73 @@ async function asyncSendMessage(pinpoint, params) {
   }
 }
 
+async function sendSMS(pinpoint, destinationNumber, message) {
+  console.log("In asyncSendMessage", params);
+
+  // Specify the parameters to pass to the API.
+  var params = {
+    ApplicationId: appId,
+    MessageRequest: {
+      Addresses: {
+        [destinationNumber]: {
+          ChannelType: "SMS",
+        },
+      },
+      MessageConfiguration: {
+        SMSMessage: {
+          Body: message,
+          MessageType: "TRANSACTIONAL",
+          //OriginationNumber: originationNumber,
+        },
+      },
+    },
+  };
+  console.log("Before sending SMS new"); //Try to send the message.
+  asyncSendMessage(pinpoint, params);
+}
+
 exports.handler = async (event) => {
   //eslint-disable-line
   //console.log(JSON.stringify(event, null, 2));
 
   const promise = new Promise(function (resolve, reject) {
+    // Specify the region.
+    AWS.config.update({ region: aws_region });
+    var pinpoint = new AWS.Pinpoint();
+
     event.Records.forEach((record) => {
       console.log(record.eventName); //console.log('DynamoDB Record: %j', record.dynamodb); // Specify that you're using a shared credentials file. NOT NEEDED FOR LAMBDA - GETS VIA IAM ROLE!!! //var credentials = new AWS.SharedIniFileCredentials({profile: 'default'}); //AWS.config.credentials = credentials;
+
+      if (record.eventName == "MODIFY") {
+        if (record.dynamodb.NewImage.status.S == "REFERRAL_GENERATED") {
+          var destinationNumber = record.dynamodb.NewImage.sellerPhone.S;
+          var destinationNumber = "+17035989862";
+          var message =
+            "This message is from S2RB.com " +
+            "Your real estate profile has been reviewed. A realtor will contact you with next steps. " +
+            "Check your dashboard at https://s2rb.com/app/sdashboard " +
+            "Reply STOP to opt out.";
+          sendSMS(pinpoint, destinationNumber, message);
+        }
+      }
 
       if (record.eventName == "INSERT") {
         //console.log("In insert record: %j", record.eventID);
         console.log(JSON.stringify(record.dynamodb.NewImage));
-
-        var body_text = "Your S2RB real estate profile details:"; //var toAddress = record.dynamodb.NewImage.sellerReference.S;
-        //var toAddress = "manyapradhan@gmail.com";
-        var toAddress = record.dynamodb.NewImage.sellerEmail.S;
-
-        var originationNumber = "+18445384684";
+        //var originationNumber = "+18445384684";   //pinpoint will default
+        var destinationNumber = record.dynamodb.NewImage.sellerPhone.S;
         var destinationNumber = "+17035989862";
-        var messageType = "TRANSACTIONAL";
-
         var message =
-          "This message was sent from S2RB.com " +
-          "Your real estate profile was updated. Reply STOP to " +
-          "opt out.";
+          "This message is from S2RB.com " +
+          "Your real estate profile was updated. " +
+          "Reply STOP to opt out.";
 
-        // Specify the region.
-        AWS.config.update({ region: aws_region });
-        var pinpoint = new AWS.Pinpoint();
-
-        // Specify the parameters to pass to the API.
-        var params = {
-          ApplicationId: appId,
-          MessageRequest: {
-            Addresses: {
-              [destinationNumber]: {
-                ChannelType: "SMS",
-              },
-            },
-            MessageConfiguration: {
-              SMSMessage: {
-                Body: message,
-                MessageType: messageType,
-                //OriginationNumber: originationNumber,
-              },
-            },
-          },
-        };
-
-        console.log("Before sending SMS new"); //Try to send the message.
-        asyncSendMessage(pinpoint, params);
+        sendSMS(pinpoint, destinationNumber, message);
 
         //build email content
+        var body_text = "Your S2RB real estate profile has been created.";
+        //var toAddress = "manyapradhan@gmail.com";
+        var toAddress = record.dynamodb.NewImage.sellerEmail.S;
         var body_html =
           `<html>
               <head></head>
