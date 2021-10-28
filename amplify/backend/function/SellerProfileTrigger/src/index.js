@@ -17,7 +17,7 @@ async function asyncSendMessage(pinpoint, params) {
   try {
     const data = await pinpoint.sendMessages(params).promise();
     console.log("data:", data);
-    //const response = await pinpoint.sendMessages(params);
+    //const response = await pinpoint.sendMessages(params);;
   } catch (e) {
     console.log(e);
   }
@@ -26,59 +26,62 @@ async function asyncSendMessage(pinpoint, params) {
 exports.handler = async (event) => {
   //eslint-disable-line
   //console.log(JSON.stringify(event, null, 2));
-  event.Records.forEach((record) => {
-    console.log(record.eventName); //console.log('DynamoDB Record: %j', record.dynamodb); // Specify that you're using a shared credentials file. NOT NEEDED FOR LAMBDA - GETS VIA IAM ROLE!!! //var credentials = new AWS.SharedIniFileCredentials({profile: 'default'}); //AWS.config.credentials = credentials;
-    if (record.eventName == "INSERT") {
-      //console.log("In insert record: %j", record.eventID);
-      console.log(JSON.stringify(record.dynamodb.NewImage));
 
-      var body_text = "Your S2RB real estate profile details:"; //var toAddress = record.dynamodb.NewImage.sellerReference.S;
-      //var toAddress = "manyapradhan@gmail.com";
-      var toAddress = record.dynamodb.NewImage.sellerEmail.S;
+  const promise = new Promise(function (resolve, reject) {
+    event.Records.forEach((record) => {
+      console.log(record.eventName); //console.log('DynamoDB Record: %j', record.dynamodb); // Specify that you're using a shared credentials file. NOT NEEDED FOR LAMBDA - GETS VIA IAM ROLE!!! //var credentials = new AWS.SharedIniFileCredentials({profile: 'default'}); //AWS.config.credentials = credentials;
 
-      var originationNumber = "+18445384684";
-      var destinationNumber = "+17035989862";
-      var messageType = "TRANSACTIONAL";
+      if (record.eventName == "INSERT") {
+        //console.log("In insert record: %j", record.eventID);
+        console.log(JSON.stringify(record.dynamodb.NewImage));
 
-      var message =
-        "This message was sent from S2RB.com " +
-        "Your real estate profile was updated. Reply STOP to " +
-        "opt out.";
+        var body_text = "Your S2RB real estate profile details:"; //var toAddress = record.dynamodb.NewImage.sellerReference.S;
+        //var toAddress = "manyapradhan@gmail.com";
+        var toAddress = record.dynamodb.NewImage.sellerEmail.S;
 
-      // Specify the region.
-      AWS.config.update({ region: aws_region });
-      var pinpoint = new AWS.Pinpoint();
+        var originationNumber = "+18445384684";
+        var destinationNumber = "+17035989862";
+        var messageType = "TRANSACTIONAL";
 
-      // Specify the parameters to pass to the API.
-      var params = {
-        ApplicationId: appId,
-        MessageRequest: {
-          Addresses: {
-            [destinationNumber]: {
-              ChannelType: "SMS",
+        var message =
+          "This message was sent from S2RB.com " +
+          "Your real estate profile was updated. Reply STOP to " +
+          "opt out.";
+
+        // Specify the region.
+        AWS.config.update({ region: aws_region });
+        var pinpoint = new AWS.Pinpoint();
+
+        // Specify the parameters to pass to the API.
+        var params = {
+          ApplicationId: appId,
+          MessageRequest: {
+            Addresses: {
+              [destinationNumber]: {
+                ChannelType: "SMS",
+              },
+            },
+            MessageConfiguration: {
+              SMSMessage: {
+                Body: message,
+                MessageType: messageType,
+                //OriginationNumber: originationNumber,
+              },
             },
           },
-          MessageConfiguration: {
-            SMSMessage: {
-              Body: message,
-              MessageType: messageType,
-              //OriginationNumber: originationNumber,
-            },
-          },
-        },
-      };
+        };
 
-      console.log("Before sending SMS new"); //Try to send the message.
-      asyncSendMessage(pinpoint, params);
+        console.log("Before sending SMS new"); //Try to send the message.
+        asyncSendMessage(pinpoint, params);
 
-      //build email content
-      var body_html =
-        `<html>
+        //build email content
+        var body_html =
+          `<html>
               <head></head>
               <body>
                 <h4>Hello ` +
-        record.dynamodb.NewImage.firstName.S +
-        `,</h4>
+          record.dynamodb.NewImage.firstName.S +
+          `,</h4>
                 <p>
                    You can view and edit your profile at: <a href='https://s2rb.com/app/sdashboard/'>Your S2RB Dashboard</a>
                    Once you add photos and initiate a review our representatives will contact you with next steps. S2RB connects 
@@ -112,39 +115,41 @@ exports.handler = async (event) => {
               </body> 
               </html>`;
 
-      var emailParams = {
-        ApplicationId: appId,
-        MessageRequest: {
-          Addresses: {
-            [toAddress]: {
-              ChannelType: "EMAIL",
+        var emailParams = {
+          ApplicationId: appId,
+          MessageRequest: {
+            Addresses: {
+              [toAddress]: {
+                ChannelType: "EMAIL",
+              },
             },
-          },
-          MessageConfiguration: {
-            EmailMessage: {
-              FromAddress: senderAddress,
-              SimpleEmail: {
-                Subject: {
-                  Charset: charset,
-                  Data: subject,
-                },
-                HtmlPart: {
-                  Charset: charset,
-                  Data: body_html,
-                },
-                TextPart: {
-                  Charset: charset,
-                  Data: body_text,
+            MessageConfiguration: {
+              EmailMessage: {
+                FromAddress: senderAddress,
+                SimpleEmail: {
+                  Subject: {
+                    Charset: charset,
+                    Data: subject,
+                  },
+                  HtmlPart: {
+                    Charset: charset,
+                    Data: body_html,
+                  },
+                  TextPart: {
+                    Charset: charset,
+                    Data: body_text,
+                  },
                 },
               },
             },
           },
-        },
-      };
+        };
 
-      console.log("Before sending email"); //console.log(JSON.stringify(params)); //Try to send the email.
-      asyncSendMessage(pinpoint, emailParams);
-    }
+        console.log("Before sending email"); //console.log(JSON.stringify(params)); //Try to send the email.
+        asyncSendMessage(pinpoint, emailParams);
+      }
+    });
   });
-  return Promise.resolve("Successfully processed DynamoDB record");
+
+  return promise;
 };
