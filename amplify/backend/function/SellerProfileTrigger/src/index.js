@@ -63,7 +63,7 @@ exports.handler = async (event) => {
       if (record.eventName == "MODIFY") {
         if (record.dynamodb.NewImage.status.S == "REFERRAL_GENERATED") {
           var destinationNumber = record.dynamodb.NewImage.sellerPhone.S;
-          var destinationNumber = "+17035989862";
+          //var destinationNumber = "+17035989862";
           var message =
             "This message is from S2RB.com " +
             "Your real estate profile has been reviewed. A realtor will contact you with next steps. " +
@@ -78,7 +78,7 @@ exports.handler = async (event) => {
         console.log(JSON.stringify(record.dynamodb.NewImage));
         //var originationNumber = "+18445384684";   //pinpoint will default
         var destinationNumber = record.dynamodb.NewImage.sellerPhone.S;
-        var destinationNumber = "+17035989862";
+        //var destinationNumber = "+17035989862";
         var message =
           "This message is from S2RB.com " +
           "Your real estate profile was updated. " +
