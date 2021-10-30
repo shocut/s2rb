@@ -27,6 +27,7 @@ const useStyles = makeStyles(styles);
 export default function ProductSection() {
   const classes = useStyles();
   const signupURL = generatePath("/signup");
+  const signinURL = generatePath("/signin");
   const sellerProfileURL = generatePath("/app/reprofile");
 
   return (
@@ -98,6 +99,7 @@ export default function ProductSection() {
             />
             <Button
               color="success"
+              size="lg"
               href={signupURL}
               target="_self"
               className={classes.navLink}
@@ -115,22 +117,32 @@ export default function ProductSection() {
             />
             <Button
               color="info"
+              size="lg"
               href={sellerProfileURL}
               target="_self"
               className={classes.navLink}
             >
-              Complete Profile
+              Profile
             </Button>
           </GridItem>
           <GridItem xs={12} sm={12} md={4}>
             <InfoArea
               title="Match Investors"
+              size="lg"
               description="S2RB helps you find real-estate investors who can meet your rent-back and other preferences to create a win-win opportunity for you both. Feel free to communicate."
               icon={threeIcon}
               iconColor="warning"
               vertical
             />
-            <Button color="warning">Review Investors</Button>
+            <Button
+              color="warning"
+              size="lg"
+              href={signinURL}
+              target="_self"
+              className={classes.navLink}
+            >
+              Sign-in
+            </Button>
           </GridItem>
         </GridContainer>
       </div>

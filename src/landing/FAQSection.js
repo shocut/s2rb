@@ -35,9 +35,11 @@ export default function FAQSection() {
             </AccordionSummary>
             <AccordionDetails>
               <Typography>
-                S2RB is a FREE service that works directly with you and
-                potential real-estate investors to provide a path where you can
-                get mortgage debt free.
+                S2RB is a platform and service that works with you (seller) and
+                potential real-estate investors (buyer) to provide an
+                opportunity where you can stay in your home even after selling
+                it. We provide real-estate investors opportunities to invest in
+                good properties that can be rented back to former owners.
               </Typography>
             </AccordionDetails>
           </Accordion>
@@ -53,13 +55,14 @@ export default function FAQSection() {
             </AccordionSummary>
             <AccordionDetails>
               <Typography>
-                S2RB works closely with a group of real estate professionals
-                including realtors, investors, mortgage bankers etc. to ensure
-                you can meet your goal of getting debt free. We verify your
-                financial information, negotiate with your lenders, and create
-                an investment package. The real-estate professionals and
-                investors pay S2RB transaction and lead generation fees for this
-                service so it is completely free to you.
+                S2RB works closely with realtors, investors, mortgage bankers
+                etc. to ensure you can meet your real estate goals. We verify
+                your property information, facilitate terms with investors,
+                bankers and create an investment package. The investors and
+                real-estate professionals pay S2RB transaction and lead
+                generation fees for this service so it is completely free to you
+                the seller. S2RB does not represent buyers or sellers, it
+                provides a platform where goals of both can be met.
               </Typography>
             </AccordionDetails>
           </Accordion>
@@ -78,11 +81,15 @@ export default function FAQSection() {
             </AccordionSummary>
             <AccordionDetails>
               <Typography>
-                S2RB works with a team of realors who can advice you on the best
-                strategy for getting market price for your house. Since unlike
-                traditional home sales, you plan to occupy the house after the
-                sale, the potential buyers are limited to folks who want to buy
-                the property as an investment rather than as their next home.
+                We facilitate sharing of property information with multiple
+                potential investors. The investors (buyers) and you (seller)
+                determine the property value based on professional real-estate
+                assessors and automated valuation techniques. Unlike traditional
+                home sale transactions you plan to occupy the house even after
+                the sale, so the potential buyers are limited to folks who want
+                to buy the property as an investment rather than as their next
+                home. Registering with S2RB is not the same as listing on MLS,
+                it simply enables us to find investors for your property.
               </Typography>
             </AccordionDetails>
           </Accordion>
@@ -93,20 +100,20 @@ export default function FAQSection() {
               id="panel2a-header"
             >
               <Typography className={classes.heading}>
-                <b>
-                  What if the investor wants to sell the house after two years
-                  and I want to continue living here?
-                </b>
+                <b>Can I buy the house back in future?</b>
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Typography>
-                Our team of real estate lawyers and realtors will help you
-                negotiate terms up front where you can have the right of first
-                refusal on a future sale. Simply put, if the investors plan to
-                sell, they can give you the first right to buy the house back.
-                Since all situations are unique, the period, price, terms can
-                vary but if you wish to buy it back, we will ensure that you
+                Yes you can. S2RB facilitates terms that include an option to
+                buy the house back. Our team of real estate lawyers and realtors
+                have created provisions that enable a {'"'}First right of
+                refusal{'" '}
+                when the home to be sold again. This can be part of the terms
+                negotiated up-front when selling your house. Simply put, if the
+                investors plan to sell, they can give you the first right to buy
+                the house back. Since all situations are unique, the period,
+                price, terms can vary but if you wish to buy it back, you will
                 have that opportunity.
               </Typography>
             </AccordionDetails>

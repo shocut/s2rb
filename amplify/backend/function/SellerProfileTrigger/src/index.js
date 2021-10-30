@@ -8,7 +8,6 @@ Amplify Params - DO NOT EDIT */
 const AWS = require("aws-sdk");
 const aws_region = "us-east-1";
 const senderAddress = "support@s2rb.com";
-const subject = "Thank you for creating your S2RB account.";
 const charset = "UTF-8";
 const appId = "9a1650ed6473474cae14ca6650b98bed";
 
@@ -58,18 +57,97 @@ exports.handler = async (event) => {
     var pinpoint = new AWS.Pinpoint();
 
     event.Records.forEach((record) => {
-      console.log(record.eventName); //console.log('DynamoDB Record: %j', record.dynamodb); // Specify that you're using a shared credentials file. NOT NEEDED FOR LAMBDA - GETS VIA IAM ROLE!!! //var credentials = new AWS.SharedIniFileCredentials({profile: 'default'}); //AWS.config.credentials = credentials;
+      console.log(record.eventName);
 
       if (record.eventName == "MODIFY") {
-        if (record.dynamodb.NewImage.status.S == "REFERRAL_GENERATED") {
+        if (
+          record.dynamodb.NewImage.status.S == "REFERRAL_GENERATED" &&
+          record.dynamodb.OldImage.status.S != record.dynamodb.NewImage.status.S //do this only the first time this status changes to ref generated ...
+        ) {
           var destinationNumber = record.dynamodb.NewImage.sellerPhone.S;
           //var destinationNumber = "+17035989862";
           var message =
             "This message is from S2RB.com " +
-            "Your real estate profile has been reviewed. A realtor will contact you with next steps. " +
+            "Your real estate profile has been accepted. An S2RB affiliated local realtor will contact you with next steps. " +
             "Check your dashboard at https://s2rb.com/app/sdashboard " +
             "Reply STOP to opt out.";
           sendSMS(pinpoint, destinationNumber, message);
+
+          //build email content
+          var body_text = "Your S2RB real estate profile has been accepted.";
+          var toAddress = record.dynamodb.NewImage.sellerEmail.S;
+          var subject = "Your S2RB real estate profile has been accepted.";
+          var body_html =
+            `<html>
+              <head></head>
+              <body>
+                <h4>Hello ` +
+            record.dynamodb.NewImage.firstName.S +
+            `,</h4>
+                <p>
+                   We are happy to inform you that your real estate profile has been accepted. An S2RB affiliated local realtor will contact you with next steps.
+                   The licensed realtor will request a formal representation agreement and then help you in finding investors for your property.   
+                 </p>
+                 <p>
+                   We work with local real estate brokerages and investors to help you find a suitable solution for your real estet needs.
+                 </p>
+                 <p>
+                   Thank you,
+                 </p>
+                 <p>
+                   S2RB Support
+                 </p>
+                 <br/>
+                 <p>
+                   <small><b>About S2RB</b></small>
+                 </p>
+                 <p>
+                   <small>
+                     S2RB is a FREE service that works with you, local real estate agents and potential investors to create a 
+                     win-win solution and help you sell the home and rent it back. We understand your concerns and strive to 
+                     make this transaction as smooth and streamlined as possible. 
+                   </small>
+                 </p>
+                 <p>
+                   <small>
+                    To keep receiving emails from us, please add <b>support@s2rb.com</b> to your contacts. 
+                   <small>
+                 </p>
+              </body> 
+              </html>`;
+
+          var emailParams = {
+            ApplicationId: appId,
+            MessageRequest: {
+              Addresses: {
+                [toAddress]: {
+                  ChannelType: "EMAIL",
+                },
+              },
+              MessageConfiguration: {
+                EmailMessage: {
+                  FromAddress: senderAddress,
+                  SimpleEmail: {
+                    Subject: {
+                      Charset: charset,
+                      Data: subject,
+                    },
+                    HtmlPart: {
+                      Charset: charset,
+                      Data: body_html,
+                    },
+                    TextPart: {
+                      Charset: charset,
+                      Data: body_text,
+                    },
+                  },
+                },
+              },
+            },
+          };
+
+          console.log("Before sending email"); //console.log(JSON.stringify(params)); //Try to send the email.
+          asyncSendMessage(pinpoint, emailParams);
         }
       }
 
@@ -88,8 +166,10 @@ exports.handler = async (event) => {
 
         //build email content
         var body_text = "Your S2RB real estate profile has been created.";
+        var subject = "Your S2RB real estate profile has been created.";
         //var toAddress = "manyapradhan@gmail.com";
         var toAddress = record.dynamodb.NewImage.sellerEmail.S;
+
         var body_html =
           `<html>
               <head></head>
