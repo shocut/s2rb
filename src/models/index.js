@@ -2,6 +2,13 @@
 import { initSchema } from '@aws-amplify/datastore';
 import { schema } from './schema';
 
+const PropertyCondition = {
+  "EXCELLENT": "EXCELLENT",
+  "GOOD": "GOOD",
+  "FAIR": "FAIR",
+  "POOR": "POOR"
+};
+
 const ClientReason = {
   "FORBEARANCE": "FORBEARANCE",
   "FORECLOSURE": "FORECLOSURE",
@@ -35,17 +42,21 @@ const ReferralType = {
   "SELLER": "SELLER"
 };
 
-const { Referral, Agent, InvestorInterest, SellerRealEstateProfile, Location, Attachment } = initSchema(schema);
+const { BrokerPriceOpinion, Referral, Agent, InvestorInterest, SellerRealEstateProfile, ExteriorRepair, InteriorRepair, Attachment, Location } = initSchema(schema);
 
 export {
+  BrokerPriceOpinion,
   Referral,
   Agent,
   InvestorInterest,
   SellerRealEstateProfile,
+  PropertyCondition,
   ClientReason,
   RealEstateStatus,
   FeeType,
   ReferralType,
-  Location,
-  Attachment
+  ExteriorRepair,
+  InteriorRepair,
+  Attachment,
+  Location
 };

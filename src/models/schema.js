@@ -1,5 +1,192 @@
 export const schema = {
     "models": {
+        "BrokerPriceOpinion": {
+            "name": "BrokerPriceOpinion",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "sellerRealEstateProfileID": {
+                    "name": "sellerRealEstateProfileID",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "dateInspected": {
+                    "name": "dateInspected",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "agentEmail": {
+                    "name": "agentEmail",
+                    "isArray": false,
+                    "type": "AWSEmail",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "exteriorInspected": {
+                    "name": "exteriorInspected",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "interiorInspected": {
+                    "name": "interiorInspected",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "salePriceEstimateAsIs": {
+                    "name": "salePriceEstimateAsIs",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "salePriceEstimateAsRepaired": {
+                    "name": "salePriceEstimateAsRepaired",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "houseType": {
+                    "name": "houseType",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "occupant": {
+                    "name": "occupant",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "attachments": {
+                    "name": "attachments",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "Attachment"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
+                "interiorRepairs": {
+                    "name": "interiorRepairs",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "InteriorRepair"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "exteriorRepairs": {
+                    "name": "exteriorRepairs",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "ExteriorRepair"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "repairsRecommended": {
+                    "name": "repairsRecommended",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "propertyCondition": {
+                    "name": "propertyCondition",
+                    "isArray": false,
+                    "type": {
+                        "enum": "PropertyCondition"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "inspectionComments": {
+                    "name": "inspectionComments",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "isPropertyOnMLS": {
+                    "name": "isPropertyOnMLS",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "revision": {
+                    "name": "revision",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "status": {
+                    "name": "status",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "BrokerPriceOpinions",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "Referral": {
             "name": "Referral",
             "fields": {
@@ -517,6 +704,15 @@ export const schema = {
         }
     },
     "enums": {
+        "PropertyCondition": {
+            "name": "PropertyCondition",
+            "values": [
+                "EXCELLENT",
+                "GOOD",
+                "FAIR",
+                "POOR"
+            ]
+        },
         "ClientReason": {
             "name": "ClientReason",
             "values": [
@@ -560,6 +756,140 @@ export const schema = {
         }
     },
     "nonModels": {
+        "ExteriorRepair": {
+            "name": "ExteriorRepair",
+            "fields": {
+                "painting": {
+                    "name": "painting",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "structure": {
+                    "name": "structure",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "landscaping": {
+                    "name": "landscaping",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "roof": {
+                    "name": "roof",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "windows": {
+                    "name": "windows",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "other": {
+                    "name": "other",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
+        "InteriorRepair": {
+            "name": "InteriorRepair",
+            "fields": {
+                "painting": {
+                    "name": "painting",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "structure": {
+                    "name": "structure",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "appliances": {
+                    "name": "appliances",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "utilities": {
+                    "name": "utilities",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "flooring": {
+                    "name": "flooring",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "other": {
+                    "name": "other",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
+        "Attachment": {
+            "name": "Attachment",
+            "fields": {
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "category": {
+                    "name": "category",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "fileKey": {
+                    "name": "fileKey",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "status": {
+                    "name": "status",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "description": {
+                    "name": "description",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
         "Location": {
             "name": "Location",
             "fields": {
@@ -655,47 +985,7 @@ export const schema = {
                     "attributes": []
                 }
             }
-        },
-        "Attachment": {
-            "name": "Attachment",
-            "fields": {
-                "name": {
-                    "name": "name",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "category": {
-                    "name": "category",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "fileKey": {
-                    "name": "fileKey",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "status": {
-                    "name": "status",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "description": {
-                    "name": "description",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                }
-            }
         }
     },
-    "version": "693fb6d834b1b0601122e84c86d1a378"
+    "version": "52c531e963d5a2de408a265d9f225718"
 };

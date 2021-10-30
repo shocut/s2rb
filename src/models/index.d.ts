@@ -1,5 +1,12 @@
 import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplify/datastore";
 
+export enum PropertyCondition {
+  EXCELLENT = "EXCELLENT",
+  GOOD = "GOOD",
+  FAIR = "FAIR",
+  POOR = "POOR"
+}
+
 export enum ClientReason {
   FORBEARANCE = "FORBEARANCE",
   FORECLOSURE = "FORECLOSURE",
@@ -33,6 +40,35 @@ export enum ReferralType {
   SELLER = "SELLER"
 }
 
+export declare class ExteriorRepair {
+  readonly painting?: number;
+  readonly structure?: number;
+  readonly landscaping?: number;
+  readonly roof?: number;
+  readonly windows?: number;
+  readonly other?: number;
+  constructor(init: ModelInit<ExteriorRepair>);
+}
+
+export declare class InteriorRepair {
+  readonly painting?: number;
+  readonly structure?: number;
+  readonly appliances?: number;
+  readonly utilities?: number;
+  readonly flooring?: number;
+  readonly other?: number;
+  constructor(init: ModelInit<InteriorRepair>);
+}
+
+export declare class Attachment {
+  readonly name: string;
+  readonly category?: string;
+  readonly fileKey?: string;
+  readonly status?: string;
+  readonly description?: string;
+  constructor(init: ModelInit<Attachment>);
+}
+
 export declare class Location {
   readonly id?: string;
   readonly name: string;
@@ -50,13 +86,8 @@ export declare class Location {
   constructor(init: ModelInit<Location>);
 }
 
-export declare class Attachment {
-  readonly name: string;
-  readonly category?: string;
-  readonly fileKey?: string;
-  readonly status?: string;
-  readonly description?: string;
-  constructor(init: ModelInit<Attachment>);
+type BrokerPriceOpinionMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
 type ReferralMetaData = {
@@ -73,6 +104,32 @@ type InvestorInterestMetaData = {
 
 type SellerRealEstateProfileMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
+export declare class BrokerPriceOpinion {
+  readonly id: string;
+  readonly sellerRealEstateProfileID?: string;
+  readonly dateInspected?: string;
+  readonly agentEmail?: string;
+  readonly exteriorInspected?: boolean;
+  readonly interiorInspected?: boolean;
+  readonly salePriceEstimateAsIs?: number;
+  readonly salePriceEstimateAsRepaired?: number;
+  readonly houseType?: string;
+  readonly occupant?: string;
+  readonly attachments?: (Attachment | null)[];
+  readonly interiorRepairs?: InteriorRepair;
+  readonly exteriorRepairs?: ExteriorRepair;
+  readonly repairsRecommended?: boolean;
+  readonly propertyCondition?: PropertyCondition | keyof typeof PropertyCondition;
+  readonly inspectionComments?: string;
+  readonly isPropertyOnMLS?: boolean;
+  readonly revision?: number;
+  readonly status?: string;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<BrokerPriceOpinion, BrokerPriceOpinionMetaData>);
+  static copyOf(source: BrokerPriceOpinion, mutator: (draft: MutableModel<BrokerPriceOpinion, BrokerPriceOpinionMetaData>) => MutableModel<BrokerPriceOpinion, BrokerPriceOpinionMetaData> | void): BrokerPriceOpinion;
 }
 
 export declare class Referral {

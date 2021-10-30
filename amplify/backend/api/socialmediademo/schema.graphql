@@ -1,3 +1,50 @@
+enum PropertyCondition {
+  EXCELLENT
+  GOOD
+  FAIR
+  POOR
+}
+
+type ExteriorRepair {
+  painting: Float
+  structure: Float
+  landscaping: Float
+  roof: Float
+  windows: Float
+  other: Float
+}
+
+type InteriorRepair {
+  painting: Float
+  structure: Float
+  appliances: Float
+  utilities: Float
+  flooring: Float
+  other: Float
+}
+
+type BrokerPriceOpinion @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  sellerRealEstateProfileID: String
+  dateInspected: AWSDateTime
+  agentEmail: AWSEmail
+  exteriorInspected: Boolean
+  interiorInspected: Boolean
+  salePriceEstimateAsIs: Float
+  salePriceEstimateAsRepaired: Float
+  houseType: String
+  occupant: String
+  attachments: [Attachment]
+  interiorRepairs: InteriorRepair
+  exteriorRepairs: ExteriorRepair
+  repairsRecommended: Boolean
+  propertyCondition: PropertyCondition
+  inspectionComments: String
+  isPropertyOnMLS: Boolean
+  revision: Int
+  status: String
+}
+
 enum ClientReason {
   FORBEARANCE
   FORECLOSURE

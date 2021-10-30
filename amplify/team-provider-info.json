@@ -22,7 +22,7 @@
         },
         "SellerProfileTrigger": {
           "deploymentBucketName": "amplify-s2rb-dev-90947-deployment",
-          "s3Key": "amplify-builds/SellerProfileTrigger-564a4d31367678336946-build.zip"
+          "s3Key": "amplify-builds/SellerProfileTrigger-316b7379576742773363-build.zip"
         }
       }
     }
