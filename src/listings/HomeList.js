@@ -85,6 +85,7 @@ export default function HomeList() {
   const [listingPriceEstimate, setListingPriceEstimate] = useState("");
   const [loadingData, setLoadingData] = useState(false);
   const [loadingCounter, setLoadingCounter] = useState(0);
+  const [refreshCount, setRefreshCount] = useState(0);
 
   const onLogout = async () => {
     localStorage.clear();
@@ -114,6 +115,7 @@ export default function HomeList() {
   };
   useEffect(() => {
     checkLoginState();
+    console.log("refreshCount", refreshCount);
     const loadREProfiles = async () => {
       try {
         var reProfiles = await DataStore.query(SellerRealEstateProfile, (p) =>
@@ -133,7 +135,7 @@ export default function HomeList() {
       }
     };
     loadREProfiles();
-  }, []);
+  }, [refreshCount]);
 
   function genTableData(reProfiles) {
     var tableData = [];
@@ -370,6 +372,7 @@ export default function HomeList() {
         })
       );
     }
+    setTimeout(setRefreshCount, 2000, refreshCount + 1);
   }
 
   function generateUniqueReferralToken() {
@@ -403,7 +406,7 @@ export default function HomeList() {
       sellerRealEstateProfileID: reProfileId,
     });
 
-    console.log("newRef", newRef);
+    //console.log("newRef", newRef);
     return newRef;
   }
 
@@ -595,6 +598,7 @@ export default function HomeList() {
           //new
           await DataStore.save(getNewReferral(reProfileId));
         }
+        setTimeout(setRefreshCount, 2000, refreshCount + 1);
       } catch (e) {
         console.log(e);
       }

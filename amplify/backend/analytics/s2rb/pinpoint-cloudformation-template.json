@@ -47,7 +47,9 @@
           "Label": {
             "default": "Creating pinpoint app"
           },
-          "Parameters": ["appName"]
+          "Parameters": [
+            "appName"
+          ]
         }
       ]
     }
@@ -103,9 +105,13 @@
             {
               "Effect": "Allow",
               "Principal": {
-                "Service": ["lambda.amazonaws.com"]
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
               },
-              "Action": ["sts:AssumeRole"]
+              "Action": [
+                "sts:AssumeRole"
+              ]
             }
           ]
         },
@@ -140,7 +146,10 @@
               "Statement": [
                 {
                   "Effect": "Allow",
-                  "Action": ["mobileanalytics:*", "mobiletargeting:*"],
+                  "Action": [
+                    "mobileanalytics:*",
+                    "mobiletargeting:*"
+                  ],
                   "Resource": "*"
                 }
               ]
@@ -155,7 +164,9 @@
               "Statement": [
                 {
                   "Effect": "Allow",
-                  "Action": ["cloudformation:*"],
+                  "Action": [
+                    "cloudformation:*"
+                  ],
                   "Resource": "*"
                 }
               ]
@@ -238,7 +249,10 @@
         "Runtime": "nodejs12.x",
         "Timeout": 300,
         "Role": {
-          "Fn::GetAtt": ["LambdaExecutionRole", "Arn"]
+          "Fn::GetAtt": [
+            "LambdaExecutionRole",
+            "Arn"
+          ]
         }
       }
     },
@@ -247,7 +261,10 @@
       "Condition": "ShouldCreatePinpointApp",
       "Properties": {
         "ServiceToken": {
-          "Fn::GetAtt": ["PinpointFunction", "Arn"]
+          "Fn::GetAtt": [
+            "PinpointFunction",
+            "Arn"
+          ]
         },
         "region": {
           "Ref": "AWS::Region"
@@ -331,7 +348,10 @@
                           },
                           ":apps/",
                           {
-                            "Fn::GetAtt": ["PinpointFunctionOutputs", "Id"]
+                            "Fn::GetAtt": [
+                              "PinpointFunctionOutputs",
+                              "Id"
+                            ]
                           },
                           "*"
                         ]
@@ -416,7 +436,10 @@
                           },
                           ":apps/",
                           {
-                            "Fn::GetAtt": ["PinpointFunctionOutputs", "Id"]
+                            "Fn::GetAtt": [
+                              "PinpointFunctionOutputs",
+                              "Id"
+                            ]
                           },
                           "*"
                         ]
@@ -474,7 +497,10 @@
         "Fn::If": [
           "ShouldCreatePinpointApp",
           {
-            "Fn::GetAtt": ["PinpointFunctionOutputs", "Id"]
+            "Fn::GetAtt": [
+              "PinpointFunctionOutputs",
+              "Id"
+            ]
           },
           {
             "Ref": "appId"
@@ -487,7 +513,10 @@
         "Fn::If": [
           "ShouldCreatePinpointApp",
           {
-            "Fn::GetAtt": ["PinpointFunctionOutputs", "Name"]
+            "Fn::GetAtt": [
+              "PinpointFunctionOutputs",
+              "Name"
+            ]
           },
           {
             "Ref": "appName"
