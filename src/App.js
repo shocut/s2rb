@@ -23,7 +23,6 @@ import styles from "./landing/landingPageStyle.js";
 // Sections for this page
 import ProductSection from "./landing/ProductSection.js";
 import FAQSection from "./landing/FAQSection.js";
-import ContactUsSection from "./landing/ContactUS";
 
 const dashboardRoutes = [];
 const useStyles = makeStyles(styles);
@@ -93,7 +92,7 @@ function App(props) {
                 href="#how-it-works"
                 rel="noopener noreferrer"
               >
-                How this works
+                Find out more
               </Button>
             </GridItem>
           </GridContainer>
@@ -108,7 +107,6 @@ function App(props) {
               }
             }}
           />
-          <ContactUsSection />
           <FAQSection />
         </div>
       </div>

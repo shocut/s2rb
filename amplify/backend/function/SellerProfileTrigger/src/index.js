@@ -89,7 +89,7 @@ exports.handler = async (event) => {
                    The licensed realtor will request a formal representation agreement and then help you in finding investors for your property.   
                  </p>
                  <p>
-                   We work with local real estate brokerages and investors to help you find a suitable solution for your real estet needs.
+                   We work with local real estate brokerages and investors to help you find a suitable solution for your real estate needs.
                  </p>
                  <p>
                    Thank you,

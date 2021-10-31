@@ -15,7 +15,6 @@ const productStyle = {
   description: {
     color: "#999",
   },
-
   darkbg: {
     background: "#fbfbfb",
     padding: "10px",

@@ -4,6 +4,7 @@ import { generatePath } from "react-router";
 // @material-ui/core components
 
 import { makeStyles } from "@material-ui/core/styles";
+import { useHistory } from "react-router-dom";
 
 // @material-ui/icons
 import oneIcon from "@material-ui/icons/Filter1Outlined";
@@ -15,7 +16,6 @@ import GridContainer from "../common/components/GridContainer.js";
 import GridItem from "../common/components/GridItem.js";
 import InfoArea from "../common/components/InfoArea.js";
 import Button from "../common/components/Button.js";
-
 import Card from "../common/components/Card.js";
 import CardBody from "../common/components/CardBody.js";
 import CardHeader from "../common/components/CardHeader.js";
@@ -27,14 +27,21 @@ const useStyles = makeStyles(styles);
 export default function ProductSection() {
   const classes = useStyles();
   const signupURL = generatePath("/signup");
-  const signinURL = generatePath("/signin");
-  const sellerProfileURL = generatePath("/app/reprofile");
+  const history = useHistory();
+
+  const goSignUP = () => {
+    history.push(signupURL);
+  };
 
   return (
     <div className={classes.section} id="how-it-works">
       <GridContainer justify="center">
         <GridItem xs={12} sm={12} md={8}>
           <h2 className={classes.title}>Who is this for?</h2>
+          <h3 className={classes.description}>
+            Want to sell your home but stay on?
+          </h3>
+          <p>&nbsp;</p>
         </GridItem>
       </GridContainer>
       <GridContainer justify="center">
@@ -84,7 +91,13 @@ export default function ProductSection() {
 
       <GridContainer justify="center" className={classes.darkbg}>
         <GridItem xs={12} sm={12} md={8}>
-          <h2 className={classes.title}>Interested?</h2>
+          <h2 className={classes.title}>Here&apos;s how it works</h2>
+          <h3 className={classes.description}>
+            <a href={signupURL} _target="_self">
+              Sign-up
+            </a>{" "}
+            and create your real estate profile in minutes.
+          </h3>
         </GridItem>
       </GridContainer>
       <div>
@@ -92,56 +105,43 @@ export default function ProductSection() {
           <GridItem xs={12} sm={12} md={4}>
             <InfoArea
               title="Sign-up"
+              onClick={goSignUP}
               description="We take data protection extremely seriously. That's why S2RB uses end to end encryption on all data. S2RB does not share your data without your authorization."
               icon={oneIcon}
               iconColor="success"
               vertical
             />
-            <Button
-              color="success"
-              size="lg"
-              href={signupURL}
-              target="_self"
-              className={classes.navLink}
-            >
-              Sign Up
-            </Button>
           </GridItem>
           <GridItem xs={12} sm={12} md={4}>
             <InfoArea
               title="Complete House Profile"
+              onClick={goSignUP}
               description="Provide details such as address, type of house, rent back period preference etc. This information will be used to find and match interested investors in the region."
               icon={twoIcon}
               iconColor="info"
               vertical
             />
-            <Button
-              color="info"
-              size="lg"
-              href={sellerProfileURL}
-              target="_self"
-              className={classes.navLink}
-            >
-              Profile
-            </Button>
           </GridItem>
           <GridItem xs={12} sm={12} md={4}>
             <InfoArea
               title="Match Investors"
+              onClick={goSignUP}
               size="lg"
               description="S2RB helps you find real-estate investors who can meet your rent-back and other preferences to create a win-win opportunity for you both. Feel free to communicate."
               icon={threeIcon}
               iconColor="warning"
               vertical
             />
+          </GridItem>
+          <GridItem xs={12} sm={12} md={12}>
             <Button
-              color="warning"
+              color="primary"
               size="lg"
-              href={signinURL}
+              href={signupURL}
               target="_self"
               className={classes.navLink}
             >
-              Sign-in
+              Sign Up
             </Button>
           </GridItem>
         </GridContainer>

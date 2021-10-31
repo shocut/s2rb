@@ -12,7 +12,7 @@ const useStyles = makeStyles(styles);
 
 export default function InfoArea(props) {
   const classes = useStyles();
-  const { title, description, iconColor, vertical } = props;
+  const { title, description, iconColor, vertical, onClick } = props;
   const iconWrapper = classNames({
     [classes.iconWrapper]: true,
     [classes[iconColor]]: true,
@@ -23,7 +23,7 @@ export default function InfoArea(props) {
     [classes.iconVertical]: vertical,
   });
   return (
-    <div className={classes.infoArea}>
+    <div className={classes.infoArea} onClick={onClick}>
       <div className={iconWrapper}>
         <props.icon className={iconClasses} />
       </div>
@@ -43,6 +43,7 @@ InfoArea.propTypes = {
   icon: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
   iconColor: PropTypes.oneOf([
     "primary",
     "warning",
