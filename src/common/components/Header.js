@@ -19,7 +19,11 @@ import logoImg from "../img/s2rb_logo_v1.png";
 const useStyles = makeStyles(styles);
 //#2a6f2c
 export default function Header(props) {
+  const { slimHeader, ...rest } = props;
   const classes = useStyles();
+  const slimHeaderLogo = slimHeader ? classes.slimHeaderLogo : "";
+  const logoClasses = `${classes.headerLogo}  ${slimHeaderLogo}`;
+
   const [mobileOpen, setMobileOpen] = React.useState(false);
   React.useEffect(() => {
     if (props.changeColorOnScroll) {
@@ -63,7 +67,7 @@ export default function Header(props) {
   const brandComponent = (
     <a className={classes.title} title={brand} target="_self" href="/">
       <div
-        className={classes.headerLogo}
+        className={logoClasses}
         style={{
           display: "flex",
           backgroundImage: `url(${logoImg})`,
@@ -72,7 +76,7 @@ export default function Header(props) {
     </a>
   );
   return (
-    <AppBar className={appBarClasses}>
+    <AppBar {...rest} className={appBarClasses}>
       <Toolbar className={classes.container}>
         {leftLinks !== undefined ? brandComponent : null}
         <div className={classes.flex}>
@@ -136,6 +140,7 @@ Header.propTypes = {
   rightLinks: PropTypes.node,
   leftLinks: PropTypes.node,
   brand: PropTypes.string,
+  slimHeader: PropTypes.bool,
   fixed: PropTypes.bool,
   absolute: PropTypes.bool,
   // this will cause the sidebar to change the color from

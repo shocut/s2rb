@@ -399,6 +399,7 @@ export default function SDashboard(props) {
       <Header
         color="white"
         routes={dashboardRoutes}
+        slimHeader={true}
         brand="Sell To Rent Back"
         rightLinks={<HeaderLinks onLogout={onLogout} />}
         fixed

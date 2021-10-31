@@ -211,9 +211,12 @@ const headerStyle = (theme) => ({
   headerLogo: {
     marginTop: "-10px",
     marginBottom: "-15px",
-    height: "30px",
+    height: "50px",
     width: "150px",
     backgroundRepeat: "no-repeat",
+  },
+  slimHeaderLogo: {
+    height: "30px",
   },
 });
 
