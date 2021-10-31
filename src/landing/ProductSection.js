@@ -96,7 +96,7 @@ export default function ProductSection() {
             <a href={signupURL} _target="_self">
               Sign-up
             </a>{" "}
-            and create your real estate profile in minutes.
+            for free and create your real estate profile in minutes.
           </h3>
         </GridItem>
       </GridContainer>
@@ -106,7 +106,7 @@ export default function ProductSection() {
             <InfoArea
               title="Sign-up"
               onClick={goSignUP}
-              description="We take data protection extremely seriously. That's why S2RB uses end to end encryption on all data. S2RB does not share your data without your authorization."
+              description="We take data protection extremely seriously. That's why S2RB uses end to end encryption on all data. S2RB does not share your data without authorization."
               icon={oneIcon}
               iconColor="success"
               vertical
@@ -116,7 +116,7 @@ export default function ProductSection() {
             <InfoArea
               title="Complete House Profile"
               onClick={goSignUP}
-              description="Provide details such as address, type of house, rent back period preference etc. This information will be used to find and match interested investors in the region."
+              description="Details such as type of house, number of bedrooms, bathrooms, rent back period etc. helps us find and match interested investors in the region."
               icon={twoIcon}
               iconColor="info"
               vertical
@@ -127,7 +127,7 @@ export default function ProductSection() {
               title="Match Investors"
               onClick={goSignUP}
               size="lg"
-              description="S2RB helps you find real-estate investors who can meet your rent-back and other preferences to create a win-win opportunity for you both. Feel free to communicate."
+              description="S2RB works with a pool of investors and helps you find people who can meet your sale and rent-back preferences and create a win-win opportunity."
               icon={threeIcon}
               iconColor="warning"
               vertical
